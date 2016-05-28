@@ -50,7 +50,7 @@ $this->load->view('template/sidebar');
                   <th>Produk</th>
                   <th>Kategori</th>
                   <th>Type</th>
-                  <th width="120px">Harga</th>
+                  <th>Harga</th>
                   <th>Stok</th>
                   <th>Deskripsi</th>
                   <th>Aksi</th>
@@ -65,7 +65,7 @@ $this->load->view('template/sidebar');
 							echo '<td>'.$value->inv_name.'</td>';
 							echo '<td>'.$value->category_name.'</td>';
 							echo '<td>'.$value->type_name.'</td>';
-							echo '<td><div style="float:left">Rp</div><div class="auto" data-a-sep="." data-a-dec="," style="text-align:right">'.$value->inv_price.'</div></td>';
+							echo '<td>'.$value->inv_price.'</td>';
 							echo '<td>'.$value->inv_stock.'</td>';
 							echo '<td>'.$value->inv_desc.'</td>';
 							echo '<td>
@@ -105,9 +105,6 @@ $this->load->view('template/js');
 <script src="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/datatables/jquery.dataTables.js')?>" type="text/javascript"></script>
 <script src="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/datatables/dataTables.bootstrap.js')?>" type="text/javascript"></script>
 
-<!-- AutoNumeric -->
-<script src="<?php echo base_url('assets/AutoNumeric/autoNumeric.js')?>" type="text/javascript"></script>
-
 <script>
   jQuery(function($) {
     $('#tbl-inventory').DataTable({
@@ -118,8 +115,6 @@ $this->load->view('template/js');
       "info": true,
       "autoWidth": false
     });
-	
-	$('.auto').autoNumeric('init');
   });
 </script>
 <?php

@@ -2,7 +2,7 @@
 
 if(!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Inventory_model extends CI_Model
+class Cashier_model extends CI_Model
 {
 	
     // public function __construct()
@@ -55,6 +55,13 @@ class Inventory_model extends CI_Model
 		$result = $query->row();
 		return $result;
 	}
+	
+	public function getLastOrderCode(){
+		$query = $this->db->query('SELECT MAX(order_code) AS order_code FROM cash_order');
+		$order_code = $query->row();
+		return $order_code->order_code;
+	}
+	
 	public function getInventoryType(){
 		$query = $this->db->get('inv_ref_inventory_type');
 		$result = $query->result();

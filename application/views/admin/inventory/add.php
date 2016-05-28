@@ -61,9 +61,9 @@ $this->load->view('template/sidebar');
 							<select id="type" name="type" class="form-control select2" style="width: 100%;">
 								<option value=''>--Pilih--</option>
 								<?php
-									foreach($type as $tp){
-										echo '<option value="'.$tp->type_id .'">'.$tp->type_name .'</option>';
-									}
+									// foreach($type as $tp){
+										// echo '<option value="'.$tp->type_id .'">'.$tp->type_name .'</option>';
+									// }
 								?>
 								
 							</select>
@@ -116,19 +116,40 @@ $this->load->view('template/js');
 
 <script>	
 	jQuery(function($) {
+		url='<?php echo site_url('inventory/getTypeByCat/')?>'
+		console.log(url);
 		$('#type').prop('disabled', true);
 		
 		$('#category').change(function(){
 			$('#type').prop('disabled', false);
+			var category_id = $('#category option:selected').val();
+			getTypeOpt(category_id);
+			
 		});
 		$('#type').change(function(){
 			var category = $('#category option:selected').text();
+			
 			var type = $('#type option:selected').text();
 			var produk = category + ' ' + type;
 			//console.log(produk);
 			$('#produk').val(produk);
 			
-		});		
+		});
+		
+		function getTypeOpt(cat_id){
+			$.ajax({
+				data={'category_id':cat_id},
+				method='post',
+				url='<?php echo site_url('inventory/getTypeByCat/')?>'
+			}).success(function(result){
+				result = JSON.parse(result);
+				for(i=0; i<result.length; i++){
+					$('type').apend('<option val="'+result[i]['type_id']+'">'+result[i]['type_name']+'</option>');
+				}
+				
+			});
+			
+		}
 	})
 </script>
 <?php
