@@ -79,6 +79,10 @@ class Inventory_model extends CI_Model
 		
 	}
 	
+	public function deleteInv($id){
+		$query = $this->db->delete('inv_inventory', array('inv_id' => $id));
+		return $query;
+	}
 	
 
 

@@ -6,6 +6,7 @@ class Inventory extends CI_Controller {
     {
         parent::__construct();
 		$this->load->model('Inventory_model');
+			
     }
 	
 	public function index()
@@ -14,6 +15,7 @@ class Inventory extends CI_Controller {
 			$data['message'] = $this->getMessage($_GET['msg']);
 		}
 		$data['list'] = $this->Inventory_model->getinventory();
+		//var_dump($data);die;
 		$this->load->view('admin/inventory/list', $data);
 		
 	}
@@ -73,8 +75,13 @@ class Inventory extends CI_Controller {
 		}
 	}
 	
-	public function doDelete(){
-		$this->load->view('add');
+	public function doDelete($id){
+		$result = $this->Inventory_model->deleteInv($id);
+		if($result == true){
+			redirect(site_url('inventory/index?msg=Dm1'));
+		}else{
+			redirect(site_url('inventory/index?msg=Dm0'));			
+		}
 	}
 	
 	private function getMessage($idx){

@@ -76,8 +76,8 @@ $this->load->view('template/sidebar');
 										<span class="sr-only">Toggle Dropdown</span>
 									</button>
 									<ul class="dropdown-menu" role="menu">
-										<li><a href="'.base_url('index.php/inventory/edit/'.$value->inv_id).'">Update</a></li>
-										<li><a href="'.base_url('index.php/inventory/doDelete/'.$value->inv_id).'">Delete</a></li>
+										<li><a href="'.base_url('index.php/inventory/edit/'.$value->inv_id).'">Edit</a></li>
+										<li><a href="'.site_url('inventory/doDelete/'.$value->inv_id).'">Hapus</a></li>
 									</ul>
 								</div>
 							
