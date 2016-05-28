@@ -78,6 +78,7 @@ $this->load->view('template/sidebar');
 									<ul class="dropdown-menu" role="menu">
 										<li><a href="'.base_url('index.php/inventory/edit/'.$value->inv_id).'">Edit</a></li>
 										<li><a href="'.site_url('inventory/doDelete/'.$value->inv_id).'">Hapus</a></li>
+										<li><a href="'.site_url('mass_price/listing/'.$value->inv_id).'">Lihat Harga Massal</a></li>
 									</ul>
 								</div>
 							
