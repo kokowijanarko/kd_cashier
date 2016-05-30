@@ -74,21 +74,20 @@ class MassPrice_model extends CI_Model
 		return $result;
 	}
 	
-	public function insertInventory($param){
-		$query = $this->db->insert('inv_inventory', $param);
+	public function insertMassPrice($param){
+		$query = $this->db->insert('inv_mass_price', $param);
 		
 		return $query;
 		
 	}
-	public function UpdateInventory($param_inv, $id){
-		//$query = $this->db->where('inv_id', $id);
-		$query = $this->db->update('inv_inventory', $param_inv, array('inv_id'=>$id));		
+	public function updateMassPrice($param, $id){
+		$query = $this->db->update('inv_mass_price', $param, array('massprice_id'=>$id));		
 		return $query;
 		
 	}
 	
-	public function deleteInv($id){
-		$query = $this->db->delete('inv_inventory', array('inv_id' => $id));
+	public function deleteMassPrice($id){
+		$query = $this->db->delete('inv_mass_price', array('massprice_id'=>$id));
 		return $query;
 	}
 	

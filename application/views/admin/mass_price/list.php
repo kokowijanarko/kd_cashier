@@ -30,27 +30,29 @@ $this->load->view('template/sidebar');
 	<div class="box">		
         <div class="box-header with-border">
 			<?php
-				foreach($list as $ls){
-					$nama = $ls->inv_name;
-					$inv_id = $ls->inv_id;
-				}
-				
+				//var_dump($inventory);
+				if(!empty($inventory)) {
+					$nama = strtoupper($inventory->inv_name);
+					$inv_id = $inventory->inv_id;
+					 					
+				} else {
+					$nama = null;
+					$inv_id = null;
+				}				
 			?>
-            <h3 class="box-title">Daftar Harga Massal <?php echo strtoupper($nama);?></h3>
+            <h3 class="box-title">Daftar Harga Massal <?php echo $nama;?></h3>
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
             </div>
         </div>
         <div class="box-body">
-			<div class="col-md-4">
+			
+			<div class="col-md-12">
 				<?php echo isset($message)?$message:NULL?>
 			</div>
-			<div style="float:right" class="col-md-2">
-				<a href="<?php echo base_url('index.php/mass_price/add')?>" ><button type="button" class="btn btn-block btn-success btn-sm">+</button></a>
-			</div>
-			</br>
-			</br>
+			<br/>
+			
 			<table id="tbl-mass_price" class="table table-bordered table-hover">
                 <thead>
                 <tr>
@@ -79,7 +81,7 @@ $this->load->view('template/sidebar');
 										<span class="sr-only">Toggle Dropdown</span>
 									</button>
 									<ul class="dropdown-menu" role="menu">
-										<li><a href="'.base_url('index.php/mass_price/edit/'.$value->inv_id.'/'.$value->massprice_id).'">Edit</a></li>
+										<li><a href="'.base_url('index.php/mass_price/listing/'.$value->inv_id.'/'.$value->massprice_id).'">Edit</a></li>
 										<li><a href="'.site_url('mass_price/doDelete/'.$value->inv_id.'/'.$value->massprice_id).'">Hapus</a></li>
 									</ul>
 								</div>
@@ -109,31 +111,28 @@ $this->load->view('template/sidebar');
             </div>
         </div>
         <div class="box-body">
-			<div class="col-md-4">
-				<?php echo isset($message)?$message:NULL?>
-			</div>
-			</br>
-			</br>
 			<form role="form" method="post" action="<?php echo base_url('index.php/mass_price/doAdd')?>">
+			<input type ="hidden" name="mass_price_id" value="<?php echo !empty($detail[0]->massprice_id)?$detail[0]->massprice_id:NULL?> ">
+				
 				<div class="form-group">
 					<label>Produk</label>
-					<input type="text" name="produk" id="produk" value="<?php echo $inv_id?>" class="form-control" placeholder="Produk">
-					<input type="hidden" name="produk_id" id="produk" value="<?php echo $inv_id?>" class="form-control" placeholder="Produk">
+					<input type="text" name="produk" id="produk" value="<?php echo $nama?>" class="form-control" readonly>
+					<input type="hidden" name="produk_id" id="produk_id" value="<?php echo $inv_id?>" class="form-control" placeholder="Produk">
 				</div>
 				<div class="form-group">
 					<label>Mulai</label>
-					<input type="text" name="start" id="start" value="<?php echo $inv_id?>" class="form-control" placeholder="Produk">
+					<input type="text" name="start" id="start" class="form-control" value="<?php echo !empty($detail[0]->massprice_range_start) ?$detail[0]->massprice_range_start:''?> " placeholder="Batas Bawah">
 				</div>
 				<div class="form-group">
 					<label>Sampai</label>
-					<input type="text" name="end" id="end" value="<?php echo $inv_id?>" class="form-control" placeholder="Produk">
+					<input type="text" name="end" id="end"  class="form-control" value="<?php echo !empty($detail[0]->massprice_range_end)?(($detail[0]->massprice_range_end == 9999999)?'':$detail[0]->massprice_range_end):''?> "placeholder="Batas Atas">
 				</div>
 				
 				<div class="form-group">
 					<label>Harga</label>
 					<div class="input-group">
 						<span class="input-group-addon">Rp</span>
-						<input id="harga"  type="text" name="harga" pattern="[1-9].{4,}" class="form-control">
+						<input id="harga"  type="text" name="harga" value="<?php echo !empty($detail[0]->massprice_price) ?$detail[0]->massprice_price:''?> " class="form-control">
 						<span class="input-group-addon">.00</span>
 					</div>
 				</div>
