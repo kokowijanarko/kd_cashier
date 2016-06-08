@@ -4,7 +4,8 @@ $this->load->view('template/head');
 <!--tambahkan custom css disini-->
 <!-- Select2 -->
 <link rel="stylesheet" href="../../plugins/select2/select2.min.css">
-
+<!-- bootstrap datepicker -->
+<link href="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/datepicker/datepicker3.css') ?>" rel="stylesheet" type="text/css" />
 <?php
 $this->load->view('template/topbar');
 $this->load->view('template/sidebar');
@@ -84,9 +85,40 @@ $this->load->view('template/sidebar');
 								<td><?php echo $order_code?></td>
 							</tr>
 							<tr>
-								<td>Tanggal</td>
+								<td>Tanggal Order</td>
 								<td>:</td>
-								<td><?php echo date('D, d-m-Y') ?></td>
+								<td>
+									<div class="input-group date">
+										<div class="input-group-addon">
+										<i class="fa fa-calendar"></i>
+										</div>
+										<input type="text" name="ord_date_order" readonly value="<?php echo date('d-m-Y')?>" class="form-control" id="ord_date_order">
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>Tanggal Pengambilan</td>
+								<td>:</td>
+								<td>
+									<div class="input-group date">
+										<div class="input-group-addon">
+										<i class="fa fa-calendar"></i>
+										</div>
+										<input type="text" name="ord_date_take" class="form-control" id="ord_date_take">
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>Tanggal Lihat Desain</td>
+								<td>:</td>
+								<td>
+									<div class="input-group date">
+										<div class="input-group-addon">
+										<i class="fa fa-calendar"></i>
+										</div>
+										<input type="text" name="ord_date_design" class="form-control" id="datepicker">
+									</div>
+								</td>
 							</tr>										
 						</table>
 					</div>	
@@ -95,22 +127,22 @@ $this->load->view('template/sidebar');
 							<tr>
 								<td>Nama</td>
 								<td>:</td>
-								<td>xxxx</td>
+								<td><input id="ord_name" type="text" name="ord_name" ></td>
 							</tr>
 							<tr>
 								<td>Alamat</td>
 								<td>:</td>
-								<td>xxxx</td>
+								<td><textarea name="ord_address"></textarea></td>
 							</tr>			
 							<tr>
 								<td>No. Kontak</td>
 								<td>:</td>
-								<td>xxxx</td>
+								<td><input id="ord_contact" type="text" name="ord_contact" ></td>
 							</tr>
 							<tr>
 								<td>No. email</td>
 								<td>:</td>
-								<td>xxxx</td>
+								<td><input id="ord_email" type="text" name="ord_email" ></td>
 							</tr>
 						</table>
 					</div>
@@ -122,17 +154,16 @@ $this->load->view('template/sidebar');
 								<th>Produk</th>
 								<th>Harga</th>
 								<th>Jumlah</th>
-								<th>Sub-Total</th>
 								<th>Keterangan</th>
+								<th>Sub-Total</th>
 							</tr>
 							</thead>
-							<tbody id="tbl-body-produk-order">							
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-							</tbody>
+							<tfoot>
+								<tr>
+									<td colspan="5">TOTAL</td>
+									<td id="total"></td>
+								</tr>
+							</tfoot>
 						</table>
 					</div>
 					
@@ -141,6 +172,10 @@ $this->load->view('template/sidebar');
 						<label> Rere
 						</label>
 					</div>
+				</div>
+				<div class="col-sm-12" id="ceking">
+				
+				asdasdas
 				</div>
 			</div><!-- /.box-body -->
         <div class="box-footer">
@@ -156,22 +191,23 @@ $this->load->view('template/js');
 <!--tambahkan custom js disini-->
 <!-- Select2 -->
 <script src="../../plugins/select2/select2.full.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/datepicker/bootstrap-datepicker.js')?>"></script>
 
-<?php
-	$td = '
-	<td></td>
-	<td>-</td>
-	<td>-</td>
-	<td>-</td>
-	<td>-</td>
-	';
-?>
 
 <script>	
-	jQuery(function($) {
+
+	jQuery(function($) {	
+		console.log('asd');
+		//Date picker
+		$('#datepicker').datepicker({
+			
+		  autoclose: true
+		});
 		
-		
-		
+		$('#ord_date_take').datepicker({
+		  autoclose: true
+		});
 		$('#type').prop('disabled', true);
 		
 		$('#category').change(function(){
@@ -193,7 +229,7 @@ $this->load->view('template/js');
 			
 			$('#harga').val(prod_price);
 			$('#jumlah').val('1');
-			console.log(prod);
+			//console.log(prod);
 		});
 		
 		var product_name = [];
@@ -202,6 +238,8 @@ $this->load->view('template/js');
 		var quantity = [];
 		var sub_total = [];
 		var desc = [];
+		var data_order = [product_name, product_id, price, quantity, sub_total, desc];
+		
 		$('#smt-order').click(function(){
 			var prod_val = $('#produk').val();
 			var prod_name = $('#produk option:selected').text();
@@ -211,8 +249,7 @@ $this->load->view('template/js');
 			var prod_quantity = $('#jumlah').val(); 
 			var prod_desc = $('#deskripsi').val(); 
 			var prod_sub_total = prod_price * prod_quantity;
-			
-			
+						
 			if(prod_id != ""){
 				product_id.push(prod_id);
 				product_name.push(prod_name);
@@ -220,11 +257,37 @@ $this->load->view('template/js');
 				quantity.push(prod_quantity);
 				sub_total.push(prod_sub_total);
 				desc.push(prod_desc);
+			}			
+			var total = 0;
+			for (var i = 0; i < sub_total.length; i++) {
+				total += sub_total[i] << 0;
 			}
-			console.log(product_id);
+			$('#total').text(total);
+			$("#tbl-produk-order").find('tbody').empty();
+			var $table = $( "<tbody></tbody>" );
 			
+			for(i=0; i < product_id.length; i++){
+				var $line = $( "<tr></tr>" );
+				$line.append( $( "<td></td>" ).html(i + 1) );
+				$line.append( $( "<td></td>" ).html(product_name[i]) );
+				$line.append( $( "<td></td>" ).html(price[i]) );
+				$line.append( $( "<td></td>" ).html(quantity[i]) );
+				$line.append( $( "<td></td>" ).html(desc[i]) );
+				$line.append( $( "<td></td>" ).html(sub_total[i]) );
+				$table.append($line);
+				console.log($line);
+			}
+			$table.appendTo($("#tbl-produk-order"));			
 		});
-	})
+		
+		
+		
+	});
+	
+	
+	
+	
+	
 </script>
 <?php
 $this->load->view('template/foot');
