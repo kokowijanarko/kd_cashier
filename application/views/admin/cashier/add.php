@@ -163,6 +163,22 @@ $this->load->view('template/sidebar');
 									<td colspan="5">TOTAL</td>
 									<td id="total"></td>
 								</tr>
+								<tr>
+									<td colspan="5">DP</td>
+									<td ><input type="text" name="down_payment" id="down_payment"></td>
+								</tr>
+								<tr>
+									<td colspan="5">Kurang</td>
+									<td ><input type="text" name="minus" id="minus"></td>
+								</tr>
+								<tr>
+									<td colspan="5">Bayar</td>
+									<td ><input type="text" name="cash" id="cash"></td>
+								</tr>
+								<tr>
+									<td colspan="5">Kembali</td>
+									<td id="cash_back"><input type="text" name="cash_back" id="cash_back"></td>
+								</tr>
 							</tfoot>
 						</table>
 					</div>
@@ -172,11 +188,7 @@ $this->load->view('template/sidebar');
 						<label> Rere
 						</label>
 					</div>
-				</div>
-				<div class="col-sm-12" id="ceking">
-				
-				asdasdas
-				</div>
+				</div>				
 			</div><!-- /.box-body -->
         <div class="box-footer">
            
@@ -198,7 +210,21 @@ $this->load->view('template/js');
 <script>	
 
 	jQuery(function($) {	
-		console.log('asd');
+		$('#down_payment').change(function(){
+			var total = $('total').text();
+			var dp = $('#down_payment').val();
+			var minus = total - dp;
+			$('minus').val(minus);			
+		});
+		
+		$('#cash').change(function(){
+			var bayar = $('#cash').val();
+			var dp = $('#down_payment').val();
+			var kembali = bayar - dp;
+			
+		});		
+		
+		
 		//Date picker
 		$('#datepicker').datepicker({
 			
