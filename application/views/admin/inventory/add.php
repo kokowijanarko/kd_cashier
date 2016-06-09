@@ -101,7 +101,7 @@ $this->load->view('template/sidebar');
 				</div>
 			</div><!-- /.box-body -->
         <div class="box-footer">
-           
+           asdasdasdas
         </div><!-- /.box-footer-->
     </div><!-- /.box -->
 
@@ -116,8 +116,8 @@ $this->load->view('template/js');
 
 <script>	
 	jQuery(function($) {
-		url='<?php echo site_url('inventory/getTypeByCat/')?>'
-		console.log(url);
+		//url='<?php echo site_url('inventory/get_type_by_cat/')?>'
+		//console.log(url);
 		$('#type').prop('disabled', true);
 		
 		$('#category').change(function(){
@@ -138,11 +138,12 @@ $this->load->view('template/js');
 		
 		function getTypeOpt(cat_id){
 			$.ajax({
-				data={'category_id':cat_id},
-				method='post',
-				url='<?php echo site_url('inventory/getTypeByCat/')?>'
+				data:{'category_id':cat_id},
+				method:'post',
+				url:'<?php echo site_url('cashier/get_type_by_cat/')?>'
 			}).success(function(result){
-				result = JSON.parse(result);
+				//result = JSON.parse(result);
+				console.log(result);
 				for(i=0; i<result.length; i++){
 					$('type').apend('<option val="'+result[i]['type_id']+'">'+result[i]['type_name']+'</option>');
 				}

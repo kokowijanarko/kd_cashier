@@ -105,6 +105,12 @@ class Cashier extends CI_Controller {
 		$this->load->view('add');
 	}
 	
+	public function get_type_by_cat(){
+		var_dump($_POST);die;
+		$result = $this->cashier_model->getTypeByCat();
+		
+	}
+	
 	private function getMessage($idx){
 		if($idx == 'Em1'){
 			return '

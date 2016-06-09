@@ -6,6 +6,8 @@ $this->load->view('template/head');
 <link rel="stylesheet" href="../../plugins/select2/select2.min.css">
 <!-- bootstrap datepicker -->
 <link href="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/datepicker/datepicker3.css') ?>" rel="stylesheet" type="text/css" />
+
+
 <?php
 $this->load->view('template/topbar');
 $this->load->view('template/sidebar');
@@ -164,20 +166,30 @@ $this->load->view('template/sidebar');
 									<td id="total"></td>
 								</tr>
 								<tr>
+									<td colspan="2">Pembayaran</td>	
+									<td colspan="4">
+										<div>
+											<input type="radio" name="payment" id="payment_dp" value="dp"><label for="payment_dp">DP</label>
+											&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+											<input type="radio" name="payment" id="payment_lunas" value="lunas"><label for="payment_lunas">Lunas</label>
+										</div>
+									</td>	
+								</tr>								
+								<tr id="tr_dp">
 									<td colspan="5">DP</td>
-									<td ><input type="text" name="down_payment" id="down_payment"></td>
+									<td><input type="number" min="0" value="0" name="down_payment" id="down_payment"></td>
 								</tr>
-								<tr>
+								<tr id="tr_kurang">
 									<td colspan="5">Kurang</td>
-									<td ><input type="text" name="minus" id="minus"></td>
+									<td ><input readonly type="number" min="0" value="0" name="minus" id="minus"></td>
 								</tr>
 								<tr>
 									<td colspan="5">Bayar</td>
-									<td ><input type="text" name="cash" id="cash"></td>
+									<td ><input type="number" min="0" value="0" name="cash" id="cash"></td>
 								</tr>
 								<tr>
 									<td colspan="5">Kembali</td>
-									<td id="cash_back"><input type="text" name="cash_back" id="cash_back"></td>
+									<td ><input readonly type="number" min="0" value="0" name="cash_back" id="cash_back"></td>
 								</tr>
 							</tfoot>
 						</table>
@@ -209,18 +221,53 @@ $this->load->view('template/js');
 
 <script>	
 
-	jQuery(function($) {	
+	jQuery(function($) {
+		$('input:radio[name=payment][id=payment_lunas]').prop('checked', true);
+		if($('input:radio[name=payment][id=payment_lunas]').is(':checked') == true){
+			var xxx = $('input:radio[name=payment][id=payment_lunas]').val();
+		}
+		if($('input:radio[name=payment][id=payment_dp]').is(':checked') == true){
+			xxx = $('input:radio[name=payment][id=payment_dp]').val();
+		}	
+		showHide(xxx);
+		
+		$('input:radio[name=payment]').change(function(){
+			if($('input:radio[name=payment][id=payment_lunas]').is(':checked') == true){
+			 xxx = $('input:radio[name=payment][id=payment_lunas]').val();
+			}
+			if($('input:radio[name=payment][id=payment_dp]').is(':checked') == true){
+				xxx = $('input:radio[name=payment][id=payment_dp]').val();
+			}
+			showHide(xxx);
+		});
+		
+		
+		
 		$('#down_payment').change(function(){
-			var total = $('total').text();
+			var total = parseInt($('#total').text());
 			var dp = $('#down_payment').val();
 			var minus = total - dp;
-			$('minus').val(minus);			
+			$('#minus').val(minus);
+			
 		});
 		
 		$('#cash').change(function(){
+			var total = parseInt($('#total').text());
 			var bayar = $('#cash').val();
-			var dp = $('#down_payment').val();
-			var kembali = bayar - dp;
+			var dp = $('#down_payment').val();			
+			
+			if(xxx == 'dp'){
+				var minus = total - dp;
+				var kembali = bayar - dp;
+				$('#minus').val(minus);
+				$('#cash_back').val(kembali);
+			}else if(xxx == 'lunas'){
+				$('#down_payment').val('0');
+				$('#minus').val('0');
+				var kembali = bayar - total;
+				$('#cash_back').val(kembali);
+			}
+			console.log(kembali);
 			
 		});		
 		
@@ -306,7 +353,15 @@ $this->load->view('template/js');
 			$table.appendTo($("#tbl-produk-order"));			
 		});
 		
-		
+		function showHide(par){
+			if(par == 'lunas'){
+				$('#tr_dp').addClass('hide');
+				$('#tr_kurang').addClass('hide');
+			}else if(par == 'dp'){
+				$('#tr_dp').removeClass('hide');
+				$('#tr_kurang').removeClass('hide');
+			}
+		}
 		
 	});
 	
