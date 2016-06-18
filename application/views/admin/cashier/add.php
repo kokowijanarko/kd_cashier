@@ -174,6 +174,18 @@ $this->load->view('template/sidebar');
 											<input type="radio" name="payment" id="payment_lunas" value="lunas"><label for="payment_lunas">Lunas</label>
 										</div>
 									</td>	
+								</tr>
+								<tr>
+									<td colspan="2">Cara Pembayaran</td>	
+									<td colspan="4">
+										<div>
+											<input type="radio" name="payment_way" id="payment_cash" value="dp" ><label for="payment_cash">Cash</label>
+											&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+											<input type="radio" name="payment_way" id="payment_transfer" value="lunas"><label for="payment_transfer">Transfer</label>
+											&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+											<input type="radio" name="payment_way" id="payment_debit" value="lunas"><label for="payment_debit">Debit</label>
+										</div>
+									</td>	
 								</tr>								
 								<tr id="tr_dp">
 									<td colspan="5">DP</td>
@@ -192,14 +204,17 @@ $this->load->view('template/sidebar');
 									<td ><input readonly type="number" min="0" value="0" name="cash_back" id="cash_back"></td>
 								</tr>
 							</tfoot>
-						</table>
+						</table>						
 					</div>
+					<div class="col-md-4 pull-left">
+						<button id="proc-order" type="submit" class="btn btn-success">Proses</button>	
+						</div>
 					
-					<div class="col-md-3 pull-right">
+					<div class="col-md-3 pull-right">						
 						Front Office </br></br></br></br>						
 						<label> Rere
-						</label>
-					</div>
+						</label>					
+					</div>					
 				</div>				
 			</div><!-- /.box-body -->
         <div class="box-footer">
@@ -223,6 +238,7 @@ $this->load->view('template/js');
 
 	jQuery(function($) {
 		$('input:radio[name=payment][id=payment_lunas]').prop('checked', true);
+		$('input:radio[name=payment_way][id=payment_cash]').prop('checked', true);
 		if($('input:radio[name=payment][id=payment_lunas]').is(':checked') == true){
 			var xxx = $('input:radio[name=payment][id=payment_lunas]').val();
 		}
@@ -267,6 +283,7 @@ $this->load->view('template/js');
 				var kembali = bayar - total;
 				$('#cash_back').val(kembali);
 			}
+			
 			console.log(kembali);
 			
 		});		
