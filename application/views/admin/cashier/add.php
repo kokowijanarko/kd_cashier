@@ -84,7 +84,7 @@ $this->load->view('template/sidebar');
 							<tr>
 								<td>No. Nota</td>
 								<td>:</td>
-								<td><?php echo $order_code?></td>
+								<td id="no_nota"><?php echo $order_code?></td>
 							</tr>
 							<tr>
 								<td>Tanggal Order</td>
@@ -106,7 +106,7 @@ $this->load->view('template/sidebar');
 										<div class="input-group-addon">
 										<i class="fa fa-calendar"></i>
 										</div>
-										<input type="text" name="ord_date_take" class="form-control" id="ord_date_take">
+										<input type="text" name="ord_date_take" data-date-format="dd-mm-yyyy" class="form-control" id="ord_date_take">
 									</div>
 								</td>
 							</tr>
@@ -118,7 +118,7 @@ $this->load->view('template/sidebar');
 										<div class="input-group-addon">
 										<i class="fa fa-calendar"></i>
 										</div>
-										<input type="text" name="ord_date_design" class="form-control" id="datepicker">
+										<input type="text" name="ord_date_design" data-date-format="dd-mm-yyyy" class="form-control" id="datepicker">
 									</div>
 								</td>
 							</tr>										
@@ -134,7 +134,7 @@ $this->load->view('template/sidebar');
 							<tr>
 								<td>Alamat</td>
 								<td>:</td>
-								<td><textarea name="ord_address"></textarea></td>
+								<td><textarea id="ord_address" name="ord_address"></textarea></td>
 							</tr>			
 							<tr>
 								<td>No. Kontak</td>
@@ -169,9 +169,9 @@ $this->load->view('template/sidebar');
 									<td colspan="2">Pembayaran</td>	
 									<td colspan="4">
 										<div>
-											<input type="radio" name="payment" id="payment_dp" value="dp"><label for="payment_dp">DP</label>
+											<input type="radio" name="payment" id="payment_dp" value="0"><label for="payment_dp">DP</label>
 											&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-											<input type="radio" name="payment" id="payment_lunas" value="lunas"><label for="payment_lunas">Lunas</label>
+											<input type="radio" name="payment" id="payment_lunas" value="1"><label for="payment_lunas">Lunas</label>
 										</div>
 									</td>	
 								</tr>
@@ -179,11 +179,11 @@ $this->load->view('template/sidebar');
 									<td colspan="2">Cara Pembayaran</td>	
 									<td colspan="4">
 										<div>
-											<input type="radio" name="payment_way" id="payment_cash" value="dp" ><label for="payment_cash">Cash</label>
+											<input type="radio" name="payment_way" id="payment_cash" value="0" ><label for="payment_cash">Cash</label>
 											&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-											<input type="radio" name="payment_way" id="payment_transfer" value="lunas"><label for="payment_transfer">Transfer</label>
+											<input type="radio" name="payment_way" id="payment_transfer" value="1"><label for="payment_transfer">Transfer</label>
 											&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-											<input type="radio" name="payment_way" id="payment_debit" value="lunas"><label for="payment_debit">Debit</label>
+											<input type="radio" name="payment_way" id="payment_debit" value="3"><label for="payment_debit">Debit</label>
 										</div>
 									</td>	
 								</tr>								
@@ -239,96 +239,21 @@ $this->load->view('template/js');
 	jQuery(function($) {
 		$('input:radio[name=payment][id=payment_lunas]').prop('checked', true);
 		$('input:radio[name=payment_way][id=payment_cash]').prop('checked', true);
+		
 		if($('input:radio[name=payment][id=payment_lunas]').is(':checked') == true){
-			var xxx = $('input:radio[name=payment][id=payment_lunas]').val();
+			var xxx = $('input:radio[name=payment][id=payment_lunas]').val();			
 		}
 		if($('input:radio[name=payment][id=payment_dp]').is(':checked') == true){
 			xxx = $('input:radio[name=payment][id=payment_dp]').val();
 		}	
 		showHide(xxx);
-		
-		$('input:radio[name=payment]').change(function(){
-			if($('input:radio[name=payment][id=payment_lunas]').is(':checked') == true){
-			 xxx = $('input:radio[name=payment][id=payment_lunas]').val();
-			}
-			if($('input:radio[name=payment][id=payment_dp]').is(':checked') == true){
-				xxx = $('input:radio[name=payment][id=payment_dp]').val();
-			}
-			showHide(xxx);
-		});
-		
-		
-		
-		$('#down_payment').change(function(){
-			var total = parseInt($('#total').text());
-			var dp = $('#down_payment').val();
-			var minus = total - dp;
-			$('#minus').val(minus);
-			
-		});
-		
-		$('#cash').change(function(){
-			var total = parseInt($('#total').text());
-			var bayar = $('#cash').val();
-			var dp = $('#down_payment').val();			
-			
-			if(xxx == 'dp'){
-				var minus = total - dp;
-				var kembali = bayar - dp;
-				$('#minus').val(minus);
-				$('#cash_back').val(kembali);
-			}else if(xxx == 'lunas'){
-				$('#down_payment').val('0');
-				$('#minus').val('0');
-				var kembali = bayar - total;
-				$('#cash_back').val(kembali);
-			}
-			
-			console.log(kembali);
-			
-		});		
-		
-		
-		//Date picker
-		$('#datepicker').datepicker({
-			
-		  autoclose: true
-		});
-		
-		$('#ord_date_take').datepicker({
-		  autoclose: true
-		});
-		$('#type').prop('disabled', true);
-		
-		$('#category').change(function(){
-			$('#type').prop('disabled', false);
-		});
-		$('#type').change(function(){
-			var category = $('#category option:selected').text();
-			var type = $('#type option:selected').text();
-			var produk = category + ' ' + type;
-			//console.log(produk);
-			$('#produk').val(produk);
-			
-		});
-
-		$('#produk').change(function(){
-			var prod_val = $('#produk').val();
-			var prod = prod_val.split('|');			
-			var prod_price = prod[1];
-			
-			$('#harga').val(prod_price);
-			$('#jumlah').val('1');
-			//console.log(prod);
-		});
-		
 		var product_name = [];
 		var product_id = [];
 		var price = [];
 		var quantity = [];
 		var sub_total = [];
 		var desc = [];
-		var data_order = [product_name, product_id, price, quantity, sub_total, desc];
+		var data_order = {product_name, product_id, price, quantity, sub_total, desc};
 		
 		$('#smt-order').click(function(){
 			var prod_val = $('#produk').val();
@@ -367,14 +292,146 @@ $this->load->view('template/js');
 				$table.append($line);
 				console.log($line);
 			}
-			$table.appendTo($("#tbl-produk-order"));			
+			$table.appendTo($("#tbl-produk-order"));
 		});
 		
+		$('#proc-order').click(function(){			
+			var payment_way = $('input:radio[name=payment_way]:checked' ).val();
+			var payment = $('input:radio[name=payment]:checked' ).val();
+			var dp = $('input[name=down_payment]' ).val();
+			var bayar = $('input[name=cash]' ).val();
+			var kurang = $('input[name=minus]' ).val();
+			var kembali = $('input[name=cash_back]' ).val();
+			var no_nota = $('#no_nota').text();
+			var tgl_order = $('input[name=ord_date_order]').val();
+			var tgl_pengambilan = $('input[name=ord_date_take]').val();
+			var tgl_lihat_design = $('input[name=ord_date_design]').val();
+			var nama = $('#ord_name').val();
+			var alamat = $('#ord_address').val();
+			var kontak = $('#ord_contact').val();
+			var email = $('#ord_email').val();
+			
+			
+			var total = 0;
+			for (var i = 0; i < sub_total.length; i++) {
+				total += sub_total[i] << 0;
+			}
+			
+			var params = {
+					data_order, 
+					payment_way, 
+					payment, 
+					dp, bayar, 
+					kurang, 
+					kembali, 
+					total,
+					no_nota,
+					tgl_lihat_design,
+					tgl_order,
+					tgl_pengambilan,
+					nama,
+					alamat,
+					kontak,
+					email
+				};
+			
+			console.log(params);
+			var url = '<?php echo site_url('cashier/add_order')?>';
+			$.ajax({
+				url: url,
+				method:'post',
+				data: params				
+			}).success(function(result){
+				result = JSONparse(result)
+			});
+			
+		});
+		
+		
+		
+		
+		$('input:radio[name=payment]').change(function(){
+			if($('input:radio[name=payment][id=payment_lunas]').is(':checked') == true){
+			 xxx = $('input:radio[name=payment][id=payment_lunas]').val();
+			}
+			if($('input:radio[name=payment][id=payment_dp]').is(':checked') == true){
+				xxx = $('input:radio[name=payment][id=payment_dp]').val();
+			}
+			showHide(xxx);
+		});
+		
+		
+		
+		$('#down_payment').change(function(){
+			var total = parseInt($('#total').text());
+			var dp = $('#down_payment').val();
+			var minus = total - dp;
+			$('#minus').val(minus);
+			
+		});
+		
+		$('#cash').change(function(){
+			var total = parseInt($('#total').text());
+			var bayar = $('#cash').val();
+			var dp = $('#down_payment').val();			
+			
+			if(xxx == '0'){
+				var minus = total - dp;
+				var kembali = bayar - dp;
+				$('#minus').val(minus);
+				$('#cash_back').val(kembali);
+			}else if(xxx == '1'){
+				$('#down_payment').val('0');
+				$('#minus').val('0');
+				var kembali = bayar - total;
+				$('#cash_back').val(kembali);
+			}
+			
+			console.log(kembali);
+			
+		});
+
+		
+		
+		
+		//Date picker
+		$('#datepicker').datepicker({			
+		  autoclose: true
+		});
+		
+		$('#ord_date_take').datepicker({
+		  autoclose: true
+		});
+		$('#type').prop('disabled', true);
+		
+		$('#category').change(function(){
+			$('#type').prop('disabled', false);
+		});
+		$('#type').change(function(){
+			var category = $('#category option:selected').text();
+			var type = $('#type option:selected').text();
+			var produk = category + ' ' + type;
+			//console.log(produk);
+			$('#produk').val(produk);
+			
+		});
+
+		$('#produk').change(function(){
+			var prod_val = $('#produk').val();
+			var prod = prod_val.split('|');			
+			var prod_price = prod[1];
+			
+			$('#harga').val(prod_price);
+			$('#jumlah').val('1');
+			//console.log(prod);
+		});	
+		
 		function showHide(par){
-			if(par == 'lunas'){
+			
+			if(par == '1'){
 				$('#tr_dp').addClass('hide');
 				$('#tr_kurang').addClass('hide');
-			}else if(par == 'dp'){
+			}else if(par == '0'){
 				$('#tr_dp').removeClass('hide');
 				$('#tr_kurang').removeClass('hide');
 			}

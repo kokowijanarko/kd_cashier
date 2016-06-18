@@ -22,35 +22,80 @@ class Cashier extends CI_Controller {
 	private function orderCodeGenerator(){
 		//loc = last order code
 		$last_order_code = $this->cashier_model->getLastOrderCode();
+		
 		if($last_order_code == null){
 			$new_order_code = 'INV.1/'.date('d').'/'.date('M').'/'.date('Y');
 		}else{
 			$loc_explode = explode('/', $last_order_code);
 			$loc_identifier = explode('.', $loc_explode[0]);
+			//var_dump($loc_explode, $loc_identifier);die;
 			$loc_prefix = $loc_identifier[0];
 			$loc_index = $loc_identifier[1];
-			$loc_date = $loc_identifier[1];
-			$loc_month = $loc_identifier[2];
-			$loc_year = $loc_identifier[3];
-			$loc_datestamp = $loc_date.$loc_month.$loc_year;
+			$loc_date = $loc_explode[1];
+			$loc_month = $loc_explode[2];
+			$loc_year = $loc_explode[3];
+			$loc_datestamp = $loc_date.'-'.$loc_month.'-'.$loc_year;
 			
 			if(date('d-M-Y') == $loc_datestamp){
 				$new_loc_index = $loc_index +  1;
 			}else{
 				$new_loc_index = 1;
 			}
-			
+			//var_dump();die;
 			$new_order_code = 'INV.'.$new_loc_index.'/'.date('d').'/'.date('M').'/'.date('Y');
 		}
 		return $new_order_code;
 		
 	}
 	
-	public function add(){
-		$data['type'] = $this->cashier_model->getcashierType();
-		$data['category'] = $this->cashier_model->getcashierCategory();
-		//var_dump($data);die;
-		$this->load->view('admin/cashier/add', $data);
+	public function add_order(){
+		$post = $_POST;
+		
+		$param_order = array(
+			'order_code' => $post['no_nota'],
+			'order_custommer_name' => $post['nama'],
+			'order_address'=> $post['alamat'],
+			'order_contact'=> $post['kontak'],
+			'order_email'=> $post['email'],
+			'order_date_order'=> date('Y-m-d', strtotime($post['tgl_order'])),
+			'order_date_design'=> date('Y-m-d', strtotime($post['tgl_lihat_design'])),
+			'order_date_take'=> date('Y-m-m', strtotime($post['tgl_pengambilan'])),
+			'order_amount'=> $post['total'],
+			'order_down_payment'=> $post['dp'],
+			'order_cash_minus'=> $post['kurang'],
+			'order_payment_way'=> $post['payment_way'],
+			'order_status'=> $post['payment'],
+			'insert_user_id'=> 1,
+			'insert_timestamp'=>date('Y-m-d H:i:s')		
+		);
+		
+		
+		//var_dump($param_order);die;
+		$this->db->trans_start();
+		$execute = $this->cashier_model->insertOrder($param_order);
+		
+		if($execute){
+			$id_order = $this->db->insert_id();	
+			for($i=0; $i<count($post['data_order']['product_id']); $i++){
+				$param_detail[] = array(
+					'orderdetail_order_id'=>$id_order,
+					'orderdetail_product_id'=>$post['data_order']['product_id'][$i],
+					'orderdetail_quantity'=>$post['data_order']['quantity'][$i],
+					'orderdetail_desc'=>$post['data_order']['desc'][$i]
+				);			
+			}
+			$execute = $execute && $this->cashier_model->insertOrderDetail($param_detail);			
+		}		
+		$this->db->trans_complete($execute);
+		
+		if($execute){
+			echo json_encode($execute);
+			exit;
+		}else{
+			echo json_encode(FALSE);
+			exit;
+		}
+		
 	}
 	
 	public function edit($id){

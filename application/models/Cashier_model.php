@@ -86,6 +86,16 @@ class Cashier_model extends CI_Model
 		
 	}
 	
+	public function insertOrder($param){
+		$query = $this->db->insert('cash_order', $param);
+		return $query;
+	}
+	
+	public function insertOrderDetail($param){
+		$query = $this->db->insert_batch('cash_order_detail', $param);		
+		return $query;
+	}
+	
 	
 
 

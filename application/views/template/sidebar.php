@@ -43,10 +43,14 @@
                 
             </li>
 			<li class="treeview">
-                <a href="<?php echo site_url('cashier')?>">
+                <a href="#">
                     <i class="fa fa-files-o"></i>
                     <span>Kasir</span>
-                </a>                
+                </a>
+				<ul class="treeview-menu">
+                    <li><a href="<?php echo site_url('cashier')?>"><i class="fa fa-circle-o"></i>Buat Order</a></li>
+                    <li><a href="<?php echo site_url('cashier/list_invoice') ?>"><i class="fa fa-circle-o"></i>Daftar Order</a></li>
+                </ul>
             </li>
 			<li class="treeview">
                 <a href="<?php echo site_url('#')?>">
