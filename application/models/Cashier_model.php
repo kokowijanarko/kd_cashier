@@ -96,6 +96,30 @@ class Cashier_model extends CI_Model
 		return $query;
 	}
 	
+	public function getInvDetailByInvNumber($inv_number){
+		$query = $this->db->query("
+			SELECT * FROM cash_order WHERE order_id='$inv_number'
+		");
+		return $query->row();
+	}
+	public function getInvDetail($id){
+		$query = $this->db->query("
+			SELECT 
+				a.`orderdetail_id`,
+				b.`inv_name`,
+				b.`inv_id`,
+				b.`inv_price`,
+				c.`type_name`,
+				d.`category_name`
+				
+			FROM cash_order_detail a 
+			JOIN inv_inventory b ON a.`orderdetail_product_id` = b.`inv_id`
+			JOIN inv_ref_inventory_type c ON c.`type_id` = b.`inv_type_id`
+			JOIN inv_ref_inventory_category d ON d.`category_id` = b.`inv_category_id`
+			WHERE a.`orderdetail_order_id` = '$id'
+		");
+		return $query->result();
+	}
 	
 
 

@@ -89,7 +89,7 @@ class Cashier extends CI_Controller {
 		$this->db->trans_complete($execute);
 		
 		if($execute){
-			echo json_encode($execute);
+			echo json_encode($id_order);
 			exit;
 		}else{
 			echo json_encode(FALSE);
@@ -154,6 +154,13 @@ class Cashier extends CI_Controller {
 		var_dump($_POST);die;
 		$result = $this->cashier_model->getTypeByCat();
 		
+	}
+	
+	public function inv_print($id){
+		$data['inv'] = $this->cashier_model->getInvDetailByInvNumber($id);		
+		$data['inv_detail'] = $this->cashier_model->getInvDetail($data['inv']->order_id);
+		//var_dump($data);die;
+		$this->load->view('admin/cashier/print', $data);
 	}
 	
 	private function getMessage($idx){
