@@ -121,6 +121,12 @@ class Cashier_model extends CI_Model
 		return $query->result();
 	}
 	
+	public function getTypeByCat($id){
+		$query = $this->db->query('SELECT * FROM inv_ref_inventory_type WHERE type_category_id='.$id);
+		$result = $query->result();
+		return $result;
+	}
+	
 
 
 }

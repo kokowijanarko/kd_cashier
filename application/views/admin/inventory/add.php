@@ -58,7 +58,7 @@ $this->load->view('template/sidebar');
 						
 						<div class="form-group">
 							<label>Tipe</label>
-							<select id="type" name="type" class="form-control select2" style="width: 100%;">
+							<select id="type" name="type" class="form-control" style="width: 100%;">
 								<option value=''>--Pilih--</option>
 								<?php
 									// foreach($type as $tp){
@@ -74,7 +74,7 @@ $this->load->view('template/sidebar');
 							<label>Harga</label>
 							<div class="input-group">
 								<span class="input-group-addon">Rp</span>
-								<input id="harga"  type="text" name="harga" pattern="[1-9].{4,}" class="form-control">
+								<input id="harga" type="number" name="harga" pattern="[1-9]" class="form-control">
 								<span class="input-group-addon">.00</span>
 							</div>
 						</div>
@@ -83,7 +83,7 @@ $this->load->view('template/sidebar');
 							<label>Stok</label>
 							<div class="input-group">
 								<span class="input-group-addon">@</span>
-								<input id="harga"  type="stok" name="stok" pattern="[1-9].{1,}" class="form-control">
+								<input id="stok"  type="number" name="stok" class="form-control">
 								<span class="input-group-addon">Biji</span>
 							</div>
 						</div>
@@ -100,9 +100,7 @@ $this->load->view('template/sidebar');
 					</form>
 				</div>
 			</div><!-- /.box-body -->
-        <div class="box-footer">
-           asdasdasdas
-        </div><!-- /.box-footer-->
+        
     </div><!-- /.box -->
 
 </section><!-- /.content -->
@@ -142,10 +140,10 @@ $this->load->view('template/js');
 				method:'post',
 				url:'<?php echo site_url('cashier/get_type_by_cat/')?>'
 			}).success(function(result){
-				//result = JSON.parse(result);
-				console.log(result);
+				$('#type').empty();
+				result = JSON.parse(result);
 				for(i=0; i<result.length; i++){
-					$('type').apend('<option val="'+result[i]['type_id']+'">'+result[i]['type_name']+'</option>');
+					$('#type').append('<option value="'+result[i]['type_id']+'">'+result[i]['type_name']+'</option>');
 				}
 				
 			});

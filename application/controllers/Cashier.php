@@ -151,8 +151,12 @@ class Cashier extends CI_Controller {
 	}
 	
 	public function get_type_by_cat(){
-		var_dump($_POST);die;
-		$result = $this->cashier_model->getTypeByCat();
+		//var_dump($_POST);die;
+		$type = $this->cashier_model->getTypeByCat($_POST['category_id']);
+		
+		$result = json_encode($type);
+		echo $result;
+		exit;
 		
 	}
 	

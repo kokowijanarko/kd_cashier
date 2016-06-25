@@ -75,7 +75,7 @@ $this->load->view('template/sidebar');
 							<label>Harga</label>
 							<div class="input-group">
 								<span class="input-group-addon">Rp</span>
-								<input id="harga"  type="text" name="harga" pattern="[1-9].{4,}" class="form-control">
+								<input id="harga"  type="number" name="harga" class="form-control">
 								<span class="input-group-addon">.00</span>
 							</div>
 						</div>
@@ -84,7 +84,7 @@ $this->load->view('template/sidebar');
 							<label>Stok</label>
 							<div class="input-group">
 								<span class="input-group-addon">@</span>
-								<input id="stok"  type="stok" name="stok" pattern="[1-9].{1,}" class="form-control">
+								<input id="stok"  type="number" name="stok" class="form-control">
 								<span class="input-group-addon">Biji</span>
 							</div>
 						</div>

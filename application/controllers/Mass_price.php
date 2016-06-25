@@ -20,7 +20,7 @@ class Mass_price extends CI_Controller {
 		}
 		$data['list'] = $this->MassPrice_model->getMassPrice($id);
 		$data['inventory'] = $this->MassPrice_model->getInvDetailById($id);
-		
+		//var_dump($data);die;
 		//var_dump($data);die;
 		$this->load->view('admin/mass_price/list', $data);
 	}
