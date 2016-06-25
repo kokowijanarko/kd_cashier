@@ -127,6 +127,45 @@ class Cashier_model extends CI_Model
 		return $result;
 	}
 	
+	public function getInvoice(){
+		$query = $this->db->query('SELECT * FROM cash_order');
+		$result = $query->result();
+		return $result;
+	}
+	
+	public function getDetailInvoiceByInvoiceCode($code){
+		$query1 = $this->db->query('SELECT * FROM cash_order WHERE order_code="'.$code.'"');
+		$result1 = $query1->row();
+		$query2 = $this->db->query('
+					SELECT
+						a.`orderdetail_id`,
+						a.`orderdetail_order_id`,
+						a.`orderdetail_product_id`,
+						b.`inv_name`,
+						c.`category_id`,
+						c.`category_name`,
+						d.`type_id`,
+						d.`type_name`,
+						b.`inv_price`,
+						a.`orderdetail_quantity`,
+						a.`orderdetail_timestamp`,
+						a.`orderdetail_user_id`
+
+					FROM cash_order_detail a
+					LEFT JOIN inv_inventory b ON b.`inv_id` = a.`orderdetail_product_id`
+					LEFT JOIN inv_ref_inventory_category c ON c.`category_id` = b.`inv_category_id`
+					LEFT JOIN inv_ref_inventory_type d ON d.`type_id` = b.`inv_type_id`
+					
+					WHERE a.`orderdetail_order_id`="'.$result1->order_id.'"		
+					');		
+		$result2 = $query2->result();
+		
+		$result = new stdClass();
+		$result->order = $result1;
+		$result->detail = $result2;
+		return $result;
+	}
+	
 
 
 }

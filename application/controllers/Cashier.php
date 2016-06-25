@@ -167,6 +167,19 @@ class Cashier extends CI_Controller {
 		$this->load->view('admin/cashier/print', $data);
 	}
 	
+	public function list_invoice(){
+		$data['invoice'] = $this->cashier_model->getInvoice();
+		//var_dump($data);die;
+		$this->load->view('admin/cashier/list', $data);
+	}
+	
+	public function get_detail_invoice(){
+		
+		$result = $this->cashier_model->getDetailInvoiceByInvoiceCode($_POST['invo_number']);
+		//var_dump($result);die;
+		echo json_encode($result);
+		exit;
+	}
 	private function getMessage($idx){
 		if($idx == 'Em1'){
 			return '
