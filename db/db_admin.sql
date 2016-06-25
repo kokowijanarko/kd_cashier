@@ -23,11 +23,28 @@ DROP TABLE IF EXISTS `cash_order`;
 CREATE TABLE `cash_order` (
   `order_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_code` varchar(100) DEFAULT NULL,
-  `order_custommer_id` int(11) DEFAULT NULL,
+  `order_custommer_name` varchar(100) DEFAULT NULL,
+  `order_address` text,
+  `order_contact` char(20) DEFAULT NULL,
+  `order_email` varchar(100) DEFAULT NULL,
+  `order_date_order` date DEFAULT NULL,
+  `order_date_design` date DEFAULT NULL,
+  `order_date_take` date DEFAULT NULL,
+  `order_down_payment` int(11) DEFAULT NULL,
+  `order_cash_minus` int(11) DEFAULT NULL,
+  `order_amount` int(11) DEFAULT NULL,
+  `order_payment_way` tinyint(4) DEFAULT NULL,
+  `order_status` tinyint(4) DEFAULT NULL,
+  `insert_user_id` int(11) DEFAULT NULL,
+  `insert_timestamp` timestamp NULL DEFAULT NULL,
+  `update_user_id` int(11) DEFAULT NULL,
+  `update_timestamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `cash_order` */
+
+insert  into `cash_order`(`order_id`,`order_code`,`order_custommer_name`,`order_address`,`order_contact`,`order_email`,`order_date_order`,`order_date_design`,`order_date_take`,`order_down_payment`,`order_cash_minus`,`order_amount`,`order_payment_way`,`order_status`,`insert_user_id`,`insert_timestamp`,`update_user_id`,`update_timestamp`) values (2,'INV.1/25/Jun/2016','koko','alamat koko','0998676436434','koko@ko.ko','2016-06-25','2016-06-25','2016-06-06',127,465000,3465000,0,0,1,'2016-06-25 21:09:58',NULL,NULL),(3,'INV.2/25/Jun/2016','Lele','alamt Lele','09874565436','lele@le.le','2016-06-25','2016-06-26','2016-06-06',2000000,1960000,3960000,0,0,1,'2016-06-25 21:25:57',NULL,NULL);
 
 /*Table structure for table `cash_order_detail` */
 
@@ -38,13 +55,15 @@ CREATE TABLE `cash_order_detail` (
   `orderdetail_order_id` varchar(100) DEFAULT NULL,
   `orderdetail_product_id` int(11) DEFAULT NULL,
   `orderdetail_quantity` int(11) DEFAULT NULL,
-  `order_desc` text,
-  `order_user_id` int(11) DEFAULT NULL,
-  `order_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `orderdetail_desc` text,
+  `orderdetail_user_id` int(11) DEFAULT NULL,
+  `orderdetail_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`orderdetail_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `cash_order_detail` */
+
+insert  into `cash_order_detail`(`orderdetail_id`,`orderdetail_order_id`,`orderdetail_product_id`,`orderdetail_quantity`,`orderdetail_desc`,`orderdetail_user_id`,`orderdetail_timestamp`) values (1,'2',8,1,'',NULL,'2016-06-26 02:09:58'),(2,'2',6,1,'',NULL,'2016-06-26 02:09:58'),(3,'3',6,1,'',NULL,'2016-06-26 02:25:58'),(4,'3',9,1,'',NULL,'2016-06-26 02:25:58');
 
 /*Table structure for table `cash_user` */
 

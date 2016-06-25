@@ -55,7 +55,7 @@ $this->load->view('template/sidebar');
 						foreach($invoice as $value){
 							echo '<tr>';
 							echo '<td>'.$no.'</td>';
-							echo '<td><button id="invoice_detail" type="button" class="btn btn-sm btn-info">'.$value->order_code.'</button></td>';
+							echo '<td class="invoice_detail"><button type="button" class="btn btn-sm btn-info">'.$value->order_code.'</button></td>';
 							echo '<td>'.$value->order_custommer_name.'</td>';
 							echo '<td>'.$value->order_address.'</td>';
 							echo '<td>'.$value->order_date_order.'</td>';
@@ -86,21 +86,119 @@ $this->load->view('template/sidebar');
         </div><!-- /.box-footer-->
     </div><!-- /.box -->
 	
-	<div class="inv_det">
-		<div class="box">
-			<!--
-			<div class="box-header with-border">
-				<h3 class="box-title">Detail Invoice</h3>
-				<div class="box-tools pull-right">
-					<button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-					<button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
-				</div>
-			</div>
-			-->
-			
-		</div>	
-	</div>
+	<div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Buat Order</h3>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
+        <div class="box-body">
+			<div class="row">
+				
+					<div class="col-md-6">
+						<table class="table">
+							<tr>
+								<td>No. Nota</td>
+								<td>:</td>
+								<td id="no_nota"></td>
+							</tr>
+							<tr>
+								<td>Tanggal Order</td>
+								<td>:</td>
+								<td id="ord_date_order"></td>
+							</tr>
+							<tr>
+								<td>Tanggal Pengambilan</td>
+								<td>:</td>
+								<td id="ord_date_take"></div>
+								</td>
+							</tr>
+							<tr>
+								<td>Tanggal Lihat Desain</td>
+								<td>:</td>
+								<td id="ord_date_design"></div>
+								</td>
+							</tr>										
+						</table>
+					</div>	
+					<div class="col-md-6 pull-right">
+						<table class="table">
+							<tr>
+								<td>Nama</td>
+								<td>:</td>
+								<td id="ord_name"></td>
+							</tr>
+							<tr>
+								<td>Alamat</td>
+								<td>:</td>
+								<td id="ord_address"></td>
+							</tr>			
+							<tr>
+								<td>No. Kontak</td>
+								<td>:</td>
+								<td id="ord_contact"></td>
+							</tr>
+							<tr>
+								<td>Email</td>
+								<td>:</td>
+								<td id="ord_email"></td>
+							</tr>
+						</table>
+					</div>
+					<div class="col-sm-12">
+						<table id="tbl-produk-order" class="table table-bordered table-hover">
+							<thead>
+							<tr>
+								<th>NO</th>
+								<th>Produk</th>
+								<th>Harga</th>
+								<th>Jumlah</th>
+								<th>Keterangan</th>
+								<th>Sub-Total</th>
+							</tr>
+							</thead>
+							<tfoot>
+								<tr>
+									<td colspan="5">TOTAL</td>
+									<td class="auto" id="total"></td>
+								</tr>
+								<tr>
+									<td colspan="2">Cara Pembayaran</td>	
+									<td id="cara_pembayaran" colspan="4"> </td>	
+								</tr>								
+								<tr id="tr_dp">
+									<td colspan="5">DP</td>
+									<td ><input class="auto" readonly type="number" min="0" value="0" name="down_payment" id="down_payment"></td>
+								</tr>
+								<tr id="tr_kurang">
+									<td colspan="5">Kurang</td>
+									<td ><input class="auto" readonly type="number" min="0" value="0" name="minus" id="minus"></td>
+								</tr>
+								<tr>
+									<td colspan="5">Bayar</td>
+									<td ><input class="auto" type="number" min="0" value="0" name="cash" id="cash"></td>
+								</tr>
+								<tr>
+									<td colspan="5">Kembali</td>
+									<td ><input class="auto" readonly type="number" min="0" value="0" name="cash_back" id="cash_back"></td>
+								</tr>
+							</tfoot>
+						</table>						
+					</div>
+					<div class="col-md-4 pull-left">						
+						<button id="proc-order" type="submit" class="btn btn-success">Proses</button>
+						<button id="proc-print" type="submit" class="btn btn-warning hide">Cetak</button>
+					</div>
+						
+			</div><!-- /.box-body -->
+        <div class="box-footer">
+          </div>
+        </div><!-- /.box-footer-->
+    </div><!-- /.box -->
 	
+
 
 </section><!-- /.content -->
 
@@ -118,7 +216,7 @@ $this->load->view('template/js');
 <script>
   jQuery(function($) {
 	  
-	$('#invoice_detail').click(function(){
+	$('.invoice_detail').click(function(){
 		var invoice_number = $(this).text();
 		console.log(invoice_number);
 		$.ajax({
@@ -128,7 +226,41 @@ $this->load->view('template/js');
 		}).success(function(result){
 			result = JSON.parse(result);
 			console.log(result);
-			$('.inv_det').append(' <div class="box"> <div class="box-header with-border"> <h3 class="box-title">Detail Invoice</h3><div class="box-tools pull-right">	<button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button><button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button></div></div></div>');
+			
+			var payment_way = $('#cara_pembayaran').text(result['order']['order_payment_way']);
+			var dp = $('#down_payment' ).val(result['order']['order_down_payment']);
+			var bayar = $('#cash' ).text();
+			var kurang = $('#minus' ).val(result['order']['order_cash_minus']);
+			var kembali = $('#cash_back' ).text();
+			var no_nota = $('#no_nota').text(result['order']['order_code']);
+			var tgl_order = $('#ord_date_order').text(result['order']['order_date_order']);
+			var tgl_pengambilan = $('#ord_date_take').text(result['order']['order_date_take']);
+			var tgl_lihat_design = $('#ord_date_design').text(result['order']['order_date_design']);
+			var nama = $('#ord_name').text(result['order']['order_custommer_name']);
+			var alamat = $('#ord_address').text(result['order']['order_address']);
+			var kontak = $('#ord_contact').text(result['order']['order_contact']);
+			var email = $('#ord_email').text(result['order']['order_email']);			
+			var email = $('#total').text(result['order']['order_amount']);			
+			
+			$( "tbody#order_detail_tbody" ).empty();
+			$table = $( "<tbody id=order_detail_tbody></tbody>" );
+			
+			for(i=0; i < result['detail'].length; i++){
+				var sub_total = result['detail'][i]['orderdetail_quantity'] * result['detail'][i]['inv_price'];
+				var $line = $( "<tr></tr>" );
+				$line.append( $( "<td></td>" ).html(i + 1) );
+				$line.append( $( "<td></td>" ).html(result['detail'][i]['inv_name']) );
+				$line.append( $( "<td></td>" ).html(result['detail'][i]['inv_price']));
+				$line.append( $( "<td></td>" ).html(result['detail'][i]['orderdetail_quantity']));
+				$line.append( $( "<td></td>" ).html(result['detail'][i]['orderdetail_desc']) );
+				$line.append( $( "<td></td>" ).html(sub_total));
+				$table.append($line);
+				//console.log($line);
+			}
+			$table.appendTo($("#tbl-produk-order"));
+			
+			$('#box_header_detail').removeClass('hide');
+			$('#box_content_detail').removeClass('hide');
 		});
 	});
 		
