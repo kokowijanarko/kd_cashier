@@ -53,21 +53,28 @@ $this->load->view('template/sidebar');
 					<?php
 						$no=1;
 						foreach($invoice as $value){
+							$hide='';
+							$disabled = 'disabled';
+							if($value->order_cash_minus > 0){
+								$hide='hide';
+								$disabled = '';
+							}
+							echo '<input type="hidden" id="list_order_id" value="'.$value->order_id.'">';
 							echo '<tr>';
 							echo '<td>'.$no.'</td>';
-							echo '<td class="invoice_detail"><button type="button" class="btn btn-sm btn-info">'.$value->order_code.'</button></td>';
+							echo '<td><button  type="button" class="invoice_detail btn btn-sm btn-info '.$disabled.'">'.$value->order_code.'</button></td>';
 							echo '<td>'.$value->order_custommer_name.'</td>';
 							echo '<td>'.$value->order_address.'</td>';
 							echo '<td>'.$value->order_date_order.'</td>';
 							echo '<td>'.$value->order_date_take.'</td>';
 							echo '<td class="auto">'.$value->order_amount.'</td>';
-							echo '<td class="auto">'.$value->order_cash_minus.'</td>';
+							echo '<td class="auto" id="cash_minus">'.$value->order_cash_minus.'</td>';
 							echo '<td>
 								<div class="btn-group">
-									<a href="'.base_url('index.php/invoice/edit/'.$value->order_id).'">
+									<a class="hide" id="order_edit" href="'.base_url('index.php/invoice/edit/'.$value->order_id).'">
 										<button type="button" class="btn btn-info btn-flat">Edit</button>
 									</a>
-									<a href="'.base_url('index.php/invoice/edit/'.$value->order_id).'">
+									<a class="'.$hide.'" id="order_done" href="'.base_url('index.php/invoice/edit/'.$value->order_id).'">
 										<button type="button" class="btn btn-success btn-flat">Selesai</button>
 									</a>								
 								</div>
@@ -86,11 +93,11 @@ $this->load->view('template/sidebar');
         </div><!-- /.box-footer-->
     </div><!-- /.box -->
 	
-	<div class="box">
+	<div id="box_pelunasan" class="box hide">
         <div class="box-header with-border">
-            <h3 class="box-title">Buat Order</h3>
+            <h3 class="box-title">Pelunasan Order</h3>
             <div class="box-tools pull-right">
-                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                <button class="btn btn-box-tool hide" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
             </div>
         </div>
@@ -185,7 +192,8 @@ $this->load->view('template/sidebar');
 									<td ><input class="auto" readonly type="number" min="0" value="0" name="cash_back" id="cash_back"></td>
 								</tr>
 							</tfoot>
-						</table>						
+						</table>		
+						<input type="hidden" id="order_id">
 					</div>
 					<div class="col-md-4 pull-left">						
 						<button id="proc-order" type="submit" class="btn btn-success">Proses</button>
@@ -215,8 +223,40 @@ $this->load->view('template/js');
 
 <script>
   jQuery(function($) {
-	  
+	$('#cash').change(function(){
+		var kurang = $('#minus').val();
+		var bayar = $('#cash').val();
+		var kembali = bayar - kurang;
+		$('#cash_back').val(kembali);
+		//console.log(kembali);
+	});
+	$('#proc-order').click(function(){
+		var invo_number = $('#no_nota').text();
+		var kembali = $('#cash_back').val();
+		console.log(invo_number);
+		if(kembali >= 0){
+			$.ajax({
+				url:"<?php echo site_url('cashier/doAcQuittal')?>",
+				method:'post',
+				data:{'invo_number':invo_number}
+			}).success(function(result){
+				result = JSON.parse(result);
+				
+				if(result){
+					alert('Pelunasan Berhasil');
+					$('#cash_minus').empty();
+					$('#cash_minus').append('0');
+					$('#box_pelunasan').addClass('hide');
+					$('#order_done').removeClass('hide');
+					$('.invoice_detail').addClass('disabled');
+				}
+			});
+		}else{
+			alert('Pembayaran Tidak Cukup Untuk Pelunasan!');
+		}
+	});
 	$('.invoice_detail').click(function(){
+		$('#box_pelunasan').removeClass('hide');
 		var invoice_number = $(this).text();
 		console.log(invoice_number);
 		$.ajax({
@@ -241,7 +281,7 @@ $this->load->view('template/js');
 			var kontak = $('#ord_contact').text(result['order']['order_contact']);
 			var email = $('#ord_email').text(result['order']['order_email']);			
 			var email = $('#total').text(result['order']['order_amount']);			
-			
+			$('#order_id').val($('#list_order_id').val());
 			$( "tbody#order_detail_tbody" ).empty();
 			$table = $( "<tbody id=order_detail_tbody></tbody>" );
 			
@@ -250,10 +290,10 @@ $this->load->view('template/js');
 				var $line = $( "<tr></tr>" );
 				$line.append( $( "<td></td>" ).html(i + 1) );
 				$line.append( $( "<td></td>" ).html(result['detail'][i]['inv_name']) );
-				$line.append( $( "<td></td>" ).html(result['detail'][i]['inv_price']));
+				$line.append( $( "<td class='auto'></td>" ).html(result['detail'][i]['inv_price']));
 				$line.append( $( "<td></td>" ).html(result['detail'][i]['orderdetail_quantity']));
 				$line.append( $( "<td></td>" ).html(result['detail'][i]['orderdetail_desc']) );
-				$line.append( $( "<td></td>" ).html(sub_total));
+				$line.append( $( "<td class='auto'></td>" ).html(sub_total));
 				$table.append($line);
 				//console.log($line);
 			}
