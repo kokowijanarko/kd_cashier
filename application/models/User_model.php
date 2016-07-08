@@ -8,6 +8,7 @@ class User_model extends CI_Model
 		$query = $this->db->query("
 			SELECT
 			a.`user_id`,
+			a.`user_photo_name`,
 			a.`user_full_name`,
 			a.`user_username`,
 			a.`user_email`,

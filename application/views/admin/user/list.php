@@ -47,6 +47,7 @@ $this->load->view('template/sidebar');
                 <thead>
                 <tr>
                   <th>No</th>
+                  <th>Photo</th>
                   <th>Nama Lengkap</th>
                   <th>Username</th>
                   <th>email</th>
@@ -58,8 +59,10 @@ $this->load->view('template/sidebar');
 					<?php
 						$no=1;
 						foreach($list as $value){
+							$photo = !empty($value->user_photo_name)?$value->user_photo_name:'avatar5.png';
 							echo '<tr>';
 							echo '<td>'.$no.'</td>';
+							echo '<td> <img width="100px" src="'. base_url('assets/user_img/'.$photo).'"></td>';
 							echo '<td>'.$value->user_full_name.'</td>';
 							echo '<td>'.$value->user_username.'</td>';
 							echo '<td>'.$value->user_email.'</td>';

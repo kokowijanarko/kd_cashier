@@ -1,3 +1,7 @@
+<?php
+	$photo = !empty($this->session->userdata('photo'))?$this->session->userdata('photo'):'avatar5.png';
+	//var_dump($photo);die;
+?>
 <!-- Left side column. contains the sidebar -->
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
@@ -5,7 +9,7 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="<?php echo base_url('assets/AdminLTE-2.0.5/dist/img/user2-160x160.jpg') ?>" class="img-circle" alt="User Image" />
+                <img src="<?php echo base_url('assets/user_img/'.$photo) ?>" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info">
                 <p><?php echo $this->session->userdata('fullname')?></p>

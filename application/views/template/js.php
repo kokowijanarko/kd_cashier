@@ -30,9 +30,7 @@
 		}
 		if(level == 1){
 			$('#menu_user').removeClass('hide');
-		}
-		
-		
+		}		
 		console.log(level);		
 	});
 </script>
