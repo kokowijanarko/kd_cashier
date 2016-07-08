@@ -28,6 +28,9 @@
 		if(level == 3){
 			$('#menu_inventory').addClass('hide');
 		}
+		if(level == 1){
+			$('#menu_user').removeClass('hide');
+		}
 		
 		
 		console.log(level);		

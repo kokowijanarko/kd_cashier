@@ -8,12 +8,12 @@
                 <img src="<?php echo base_url('assets/AdminLTE-2.0.5/dist/img/user2-160x160.jpg') ?>" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info">
-                <p>Alexander Pierce</p>
+                <p><?php echo $this->session->userdata('fullname')?></p>
 
-                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                <a href="#"><i class="fa fa-circle text-success"></i> Logged In</a>
             </div>
         </div>
-        <!-- search form -->
+        <!-- search form 
         <form action="#" method="get" class="sidebar-form">
             <div class="input-group">
                 <input type="text" name="q" class="form-control" placeholder="Search..."/>
@@ -21,7 +21,7 @@
                     <button type='submit' name='seach' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
                 </span>
             </div>
-        </form>
+        </form>-->
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
@@ -59,6 +59,14 @@
 				<ul id="child_menu_report" class="treeview-menu">
                     <li id="child_menu_report_laporan_shift"><a href="<?php echo site_url('#') ?>"><i class="fa fa-circle-o"></i>Laporan Shift</a></li>
                     <li id="child_menu_report_laporan_harian"><a href="<?php echo site_url('#') ?>"><i class="fa fa-circle-o"></i>Laporan Harian</a></li>
+                </ul>
+            </li>
+			<li id="menu_user" class="treeview hide">
+                <a href="<?php echo site_url('#')?>">
+					<i class="fa fa-files-o"></i> <span>Pengguna</span><i class="fa fa-angle-left pull-right"></i>
+                </a>       
+				<ul id="child_menu_user" class="treeview-menu">
+                    <li id="child_menu_report_daftar_user"><a href="<?php echo site_url('user') ?>"><i class="fa fa-circle-o"></i>Daftar Pengguna</a></li>
                 </ul>
             </li>
         </ul>

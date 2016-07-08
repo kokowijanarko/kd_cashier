@@ -67,7 +67,10 @@ class Authex{
          $CI->session->set_userdata("user_id", $query->row()->user_id);
          $CI->session->set_userdata("username", $query->row()->user_username);
          $CI->session->set_userdata("fullname", $query->row()->user_full_name);
+		 
+		 $query_level = $CI->db->get_where("user_ref_level", array('level_id'=>$query->row()->user_level_id));
          $CI->session->set_userdata("level", $query->row()->user_level_id);
+         $CI->session->set_userdata("level_name", $query_level->row()->level_name);
          return true;
      }
  }

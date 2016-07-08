@@ -13,9 +13,9 @@ class Auth extends CI_Controller {
 	}
         
 	public function login(){
-		var_dump($_POST);
+		//var_dump($_POST);
 		$auth = $this->authex->login($_POST['key'], $_POST['password']);
-		var_dump($auth, $this->session->userdata());
+		//var_dump($auth, $this->session->userdata());
 		//die;
 		if($auth){
 			redirect('dashboard1');			
@@ -25,6 +25,7 @@ class Auth extends CI_Controller {
 	}
 	
 	public function logout(){
-                redirect('auth');
+		$this->authex->logout();
+		redirect(site_url(''));
 	}
 }
