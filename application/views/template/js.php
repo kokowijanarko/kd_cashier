@@ -18,3 +18,18 @@
 <script src='<?php echo base_url('assets/AdminLTE-2.0.5/plugins/fastclick/fastclick.min.js') ?>'></script>
 <!-- AdminLTE App -->
 <script src="<?php echo base_url('assets/AdminLTE-2.0.5/dist/js/app.min.js') ?>" type="text/javascript"></script>
+
+<script>
+	jQuery(function($) {
+		var level = <?php echo $this->session->userdata('level')?>;
+		if(level == 2 || level == 4){
+			$('#menu_cashier').addClass('hide');
+		}
+		if(level == 3){
+			$('#menu_inventory').addClass('hide');
+		}
+		
+		
+		console.log(level);		
+	});
+</script>

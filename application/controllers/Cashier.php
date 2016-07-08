@@ -6,16 +6,26 @@ class Cashier extends CI_Controller {
     {
         parent::__construct();
 		$this->load->model('cashier_model');
+		$this->load->library('authex');
+		$login = $this->authex->logged_in();
+		if(!$login){
+			redirect(site_url(''));
+		}
     }
 	
 	public function index()
 	{
-		if(isset($_GET['msg'])){
-			$data['message'] = $this->getMessage($_GET['msg']);
-		}
-		$data['order_code'] = $this->orderCodeGenerator();
-		$data['produk'] = $this->cashier_model->getinventory();
-		$this->load->view('admin/cashier/add', $data);
+		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
+			if(isset($_GET['msg'])){
+				$data['message'] = $this->getMessage($_GET['msg']);
+			}
+			$data['order_code'] = $this->orderCodeGenerator();
+			$data['produk'] = $this->cashier_model->getinventory();
+			$this->load->view('admin/cashier/add', $data);
+		}else{
+			redirect(site_url(''));
+		}	
+		
 		
 	}
 	
@@ -49,52 +59,53 @@ class Cashier extends CI_Controller {
 	}
 	
 	public function add_order(){
-		$post = $_POST;
-		
-		$param_order = array(
-			'order_code' => $post['no_nota'],
-			'order_custommer_name' => $post['nama'],
-			'order_address'=> $post['alamat'],
-			'order_contact'=> $post['kontak'],
-			'order_email'=> $post['email'],
-			'order_date_order'=> date('Y-m-d', strtotime($post['tgl_order'])),
-			'order_date_design'=> date('Y-m-d', strtotime($post['tgl_lihat_design'])),
-			'order_date_take'=> date('Y-m-m', strtotime($post['tgl_pengambilan'])),
-			'order_amount'=> $post['total'],
-			'order_down_payment'=> $post['dp'],
-			'order_cash_minus'=> $post['kurang'],
-			'order_payment_way'=> $post['payment_way'],
-			'order_status'=> $post['payment'],
-			'insert_user_id'=> 1,
-			'insert_timestamp'=>date('Y-m-d H:i:s')		
-		);
-		
-		
-		//var_dump($param_order);die;
-		$this->db->trans_start();
-		$execute = $this->cashier_model->insertOrder($param_order);
-		
-		if($execute){
-			$id_order = $this->db->insert_id();	
-			for($i=0; $i<count($post['data_order']['product_id']); $i++){
-				$param_detail[] = array(
-					'orderdetail_order_id'=>$id_order,
-					'orderdetail_product_id'=>$post['data_order']['product_id'][$i],
-					'orderdetail_quantity'=>$post['data_order']['quantity'][$i],
-					'orderdetail_desc'=>$post['data_order']['desc'][$i]
-				);			
+		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
+			$post = $_POST;			
+			$param_order = array(
+				'order_code' => $post['no_nota'],
+				'order_custommer_name' => $post['nama'],
+				'order_address'=> $post['alamat'],
+				'order_contact'=> $post['kontak'],
+				'order_email'=> $post['email'],
+				'order_date_order'=> date('Y-m-d', strtotime($post['tgl_order'])),
+				'order_date_design'=> date('Y-m-d', strtotime($post['tgl_lihat_design'])),
+				'order_date_take'=> date('Y-m-m', strtotime($post['tgl_pengambilan'])),
+				'order_amount'=> $post['total'],
+				'order_down_payment'=> $post['dp'],
+				'order_cash_minus'=> $post['kurang'],
+				'order_payment_way'=> $post['payment_way'],
+				'order_status'=> $post['payment'],
+				'insert_user_id'=> 1,
+				'insert_timestamp'=>date('Y-m-d H:i:s')		
+			);			
+			//var_dump($param_order);die;
+			$this->db->trans_start();
+			$execute = $this->cashier_model->insertOrder($param_order);
+			
+			if($execute){
+				$id_order = $this->db->insert_id();	
+				for($i=0; $i<count($post['data_order']['product_id']); $i++){
+					$param_detail[] = array(
+						'orderdetail_order_id'=>$id_order,
+						'orderdetail_product_id'=>$post['data_order']['product_id'][$i],
+						'orderdetail_quantity'=>$post['data_order']['quantity'][$i],
+						'orderdetail_desc'=>$post['data_order']['desc'][$i]
+					);			
+				}
+				$execute = $execute && $this->cashier_model->insertOrderDetail($param_detail);			
+			}		
+			$this->db->trans_complete($execute);
+			
+			if($execute){
+				echo json_encode($id_order);
+				exit;
+			}else{
+				echo json_encode(FALSE);
+				exit;
 			}
-			$execute = $execute && $this->cashier_model->insertOrderDetail($param_detail);			
-		}		
-		$this->db->trans_complete($execute);
-		
-		if($execute){
-			echo json_encode($id_order);
-			exit;
 		}else{
-			echo json_encode(FALSE);
-			exit;
-		}
+			redirect(site_url(''));
+		}	
 		
 	}
 	
@@ -107,43 +118,53 @@ class Cashier extends CI_Controller {
 	}
 	
 	public function doAdd(){
-		//var_dump($_POST);//die;
-		$param_inv = array(
-			'inv_name' => $_POST['produk'],
-			'inv_type_id' => $_POST['type'],
-			'inv_category_id' => $_POST['category'],
-			'inv_price' => $_POST['harga'],
-			'inv_stock' => $_POST['stok'],
-			'inv_desc' => $_POST['deskripsi']
-		);
-		//var_dump($param_inv);die;
-		$result = $this->cashier_model->insertcashier($param_inv);
-		
-		if($result == true){
-			redirect(base_url('index.php/cashier/index?msg=Am1'));
+		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
+			//var_dump($_POST);//die;
+			$param_inv = array(
+				'inv_name' => $_POST['produk'],
+				'inv_type_id' => $_POST['type'],
+				'inv_category_id' => $_POST['category'],
+				'inv_price' => $_POST['harga'],
+				'inv_stock' => $_POST['stok'],
+				'inv_desc' => $_POST['deskripsi']
+			);
+			//var_dump($param_inv);die;
+			$result = $this->cashier_model->insertcashier($param_inv);
+			
+			if($result == true){
+				redirect(base_url('index.php/cashier/index?msg=Am1'));
+			}else{
+				redirect(base_url('index.php/cashier/index?msg=Am0'));
+			}
 		}else{
-			redirect(base_url('index.php/cashier/index?msg=Am0'));
-		}
+			redirect(site_url(''));
+		}	
+		
 	}
 	
 	public function doEdit(){
-		//var_dump($_POST);die;
-		$param_inv = array(
-			'inv_name' => $_POST['produk'],
-			'inv_type_id' => $_POST['type'],
-			'inv_category_id' => $_POST['category'],
-			'inv_price' => $_POST['harga'],
-			'inv_stock' => $_POST['stok'],
-			'inv_desc' => $_POST['deskripsi']
-		);
-		$id=$_POST['id'];
-		$result = $this->cashier_model->Updatecashier($param_inv, $id);
-		
-		if($result == true){
-			redirect(base_url('index.php/cashier/index?msg=Em1'));
+		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
+			//var_dump($_POST);die;
+			$param_inv = array(
+				'inv_name' => $_POST['produk'],
+				'inv_type_id' => $_POST['type'],
+				'inv_category_id' => $_POST['category'],
+				'inv_price' => $_POST['harga'],
+				'inv_stock' => $_POST['stok'],
+				'inv_desc' => $_POST['deskripsi']
+			);
+			$id=$_POST['id'];
+			$result = $this->cashier_model->Updatecashier($param_inv, $id);
+			
+			if($result == true){
+				redirect(base_url('index.php/cashier/index?msg=Em1'));
+			}else{
+				redirect(base_url('index.php/cashier/index?msg=Em0'));
+			}
 		}else{
-			redirect(base_url('index.php/cashier/index?msg=Em0'));
-		}
+			redirect(site_url(''));
+		}	
+		
 	}
 	
 	public function doDelete(){
@@ -161,13 +182,18 @@ class Cashier extends CI_Controller {
 	}
 	
 	public function inv_print($id){
-		$data['inv'] = $this->cashier_model->getInvDetailByInvNumber($id);		
-		$data['inv_detail'] = $this->cashier_model->getInvDetail($data['inv']->order_id);
-		//var_dump($data);die;
-		$this->load->view('admin/cashier/print', $data);
+		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
+			$data['inv'] = $this->cashier_model->getInvDetailByInvNumber($id);		
+			$data['inv_detail'] = $this->cashier_model->getInvDetail($data['inv']->order_id);
+			//var_dump($data);die;
+			$this->load->view('admin/cashier/print', $data);
+		}else{
+			redirect(site_url(''));
+		}	
+		
 	}
 	
-	public function list_invoice(){
+	public function list_invoice(){		
 		$data['invoice'] = $this->cashier_model->getInvoice();
 		//var_dump($data);die;
 		$this->load->view('admin/cashier/list', $data);
@@ -182,22 +208,25 @@ class Cashier extends CI_Controller {
 	}
 	
 	public function doAcQuittal(){
-		$post = $_POST;
-		$result = 0;
-		if(!empty($post['invo_number'])){
-			$params = array(
-				'order_cash_minus'=>0,
-				'update_user_id'=>1,
-				'update_timestamp'=>date('Y-m-d H:i:s')				
-			);
-			$update = $this->cashier_model->doUpdateOrder($params, $post['invo_number']);
-			if($update){
-				$result = 1;
+		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
+			$post = $_POST;
+			$result = 0;
+			if(!empty($post['invo_number'])){
+				$params = array(
+					'order_cash_minus'=>0,
+					'update_user_id'=>1,
+					'update_timestamp'=>date('Y-m-d H:i:s')				
+				);
+				$update = $this->cashier_model->doUpdateOrder($params, $post['invo_number']);
+				if($update){
+					$result = 1;
+				}
 			}
-		}
-		echo json_encode($result);
-		exit;
-		
+			echo json_encode($result);
+			exit;
+		}else{
+			redirect(site_url(''));
+		}		
 	}
 	private function getMessage($idx){
 		if($idx == 'Em1'){
