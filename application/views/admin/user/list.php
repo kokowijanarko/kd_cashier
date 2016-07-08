@@ -39,7 +39,7 @@ $this->load->view('template/sidebar');
 				<?php echo isset($message)?$message:NULL?>
 			</div>
 			<div style="float:right" class="col-md-2">
-				<a href="<?php echo base_url('index.php/inventory/add')?>" ><button type="button" class="btn btn-block btn-success btn-sm">Tambah Pengguna</button></a>
+				<a href="<?php echo base_url('index.php/user/add')?>" ><button type="button" class="btn btn-block btn-success btn-sm">Tambah Pengguna</button></a>
 			</div>
 			</br>
 			</br>

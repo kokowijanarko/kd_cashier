@@ -20,6 +20,16 @@ class User_model extends CI_Model
 		$result = $query->result();
 		return $result;
 	}
+	
+	public function getUserLevel(){
+		$query = $this->db->get('user_ref_level');
+		return $query->result();
+	}
+	
+	public function insertUser($param){
+		$query = $this->db->insert('user', $param);
+		return $query;		
+	}
     
 
 }

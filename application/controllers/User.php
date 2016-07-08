@@ -7,6 +7,7 @@ class User extends CI_Controller {
         parent::__construct();
 		$this->load->model('user_model');
 		$this->load->library('authex');
+		$this->load->library('foto_upload');
 		
 		$login = $this->authex->logged_in();
 		if(!$login){
@@ -31,8 +32,7 @@ class User extends CI_Controller {
 	
 	public function add(){
 		if($this->session->userdata('level') == 1  ){
-			$data['type'] = $this->user_model->getuserType();
-			$data['category'] = $this->user_model->getuserCategory();
+			$data['level'] = $this->user_model->getUserLevel();
 			//var_dump($data);die;
 			$this->load->view('admin/user/add', $data);
 		}else{
@@ -56,23 +56,36 @@ class User extends CI_Controller {
 	
 	public function doAdd(){
 		if($this->session->userdata('level') == 1  ){
-			//var_dump($_POST);//die;
-			$param_inv = array(
-				'inv_name' => $_POST['produk'],
-				'inv_type_id' => $_POST['type'],
-				'inv_category_id' => $_POST['category'],
-				'inv_price' => $_POST['harga'],
-				'inv_stock' => $_POST['stok'],
-				'inv_desc' => $_POST['deskripsi']
-			);
-			//var_dump($param_inv);die;
-			$result = $this->user_model->insertuser($param_inv);
-			
-			if($result == true){
+			var_dump($_POST, $_FILES);
+			if($_FILES['photo']['type'] == 'image/jpeg'){
+				$this->db->trans_start();
+				$password = md5($_POST['username']);	
+				$foto_name = $_POST['full_name'].'-'.$_POST['level'].'.jpeg';
+				$param = array(
+					'user_full_name'=>$_POST['full_name'],
+					'user_username'=>$_POST['username'],
+					'user_email'=>$_POST['email'],
+					'user_level_id'=>$_POST['level'],
+					'user_desc'=>$_POST['deskripsi'],
+					'user_photo_name'=>$foto_name,
+					'user_password'=>$password
+				);
+				$result = $this->user_model->insertUser($param);
+				if($result){				
+					
+					$result = $result && $this->foto_upload->process_image($_FILES['photo']['tmp_name'], $foto_name);	
+				}
+				$this->db->trans_complete($result);
+				
+				if($result){
 				redirect(base_url('index.php/user/index?msg=Am1'));
+				}else{
+					redirect(base_url('index.php/user/index?msg=Am0'));
+				}
 			}else{
-				redirect(base_url('index.php/user/index?msg=Am0'));
+				redirect(site_url('user/add'));
 			}
+			
 
 		}else{
 			redirect(site_url(''));
