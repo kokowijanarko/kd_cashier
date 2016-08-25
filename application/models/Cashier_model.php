@@ -170,5 +170,9 @@ class Cashier_model extends CI_Model
 		$query = $this->db->update('cash_order', $param, array('order_code'=>$id));	
 		return $query;
 	}
+	public function doUpdateOrderStat($param, $id){
+		$query = $this->db->update('cash_order', $param, array('order_id'=>$id));	
+		return $query;
+	}
 
 }

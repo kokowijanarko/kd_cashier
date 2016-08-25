@@ -194,6 +194,8 @@ class Cashier extends CI_Controller {
 	}
 	
 	public function list_invoice(){		
+		
+		//var_dump($data['msg']);die;
 		$data['invoice'] = $this->cashier_model->getInvoice();
 		//var_dump($data);die;
 		$this->load->view('admin/cashier/list', $data);
@@ -227,6 +229,34 @@ class Cashier extends CI_Controller {
 		}else{
 			redirect(site_url(''));
 		}		
+	}
+	
+	public function orderDone($id){
+		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
+			$result = 0;
+			if(!empty($id)){
+				$params = array(
+					'order_status'=>1								
+				);
+				$update = $this->cashier_model->doUpdateOrderStat($params, $id);
+				if($update){
+					$result = 1;
+				}
+			}
+			
+			if($result == 1){
+				$url = site_url('cashier/list_invoice?msg=ord_done_txt');
+				
+				redirect($url);
+			}else{
+				$url = site_url('cashier/list_invoice?msg=ord_fail_txt');
+				
+				redirect($url);
+			}
+			
+		}else{
+			redirect(site_url(''));
+		}	
 	}
 	private function getMessage($idx){
 		if($idx == 'Em1'){
@@ -276,6 +306,32 @@ class Cashier extends CI_Controller {
 					<h4><i class="icon fa fa-check"></i> Gagal!</h4>
 					Hapus Data cashier Gagal.
 				</div>
+			';
+		}elseif($idx == 'ord_done'){
+			return '
+				<div class="alert alert-success alert-dismissible">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					<h4><i class="icon fa fa-check"></i> Berhasil!</h4>
+					Job Order Telah Selesai.
+				</div>
+			';
+		}elseif($idx == 'ord_fail'){
+			return '
+				<div class="alert alert-danger alert-dismissible">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					<h4><i class="icon fa fa-check"></i> Gagal!</h4>
+					Update Status Job Order Gagal.
+				</div>
+			';
+		}elseif($idx == 'ord_done_txt'){
+			return '
+				Job Order Telah Selesai.
+				
+			';
+		}elseif($idx == 'ord_fail_txt'){
+			return '
+				Update Status Job Order Gagal.
+				
 			';
 		}
 	}

@@ -35,6 +35,13 @@ $this->load->view('template/sidebar');
             </div>
         </div>
         <div class="box-body">
+			<div>
+				<?php
+					if(!empty($msg)){
+						echo $msg;
+					}
+				?>
+			</div>
 			<table id="tbl-invoice" class="table table-bordered table-hover">
                 <thead>
                 <tr>
@@ -55,9 +62,15 @@ $this->load->view('template/sidebar');
 						foreach($invoice as $value){
 							$hide='';
 							$disabled = 'disabled';
+							$disabled_stat = '';
+							$url_stat = base_url('index.php/cashier/orderDone/'.$value->order_id);
 							if($value->order_cash_minus > 0){
 								$hide='hide';
 								$disabled = '';
+							}
+							if($value->order_status == 1){
+								$disabled_stat = 'disabled';
+								$url_stat='#';
 							}
 							echo '<input type="hidden" id="list_order_id" value="'.$value->order_id.'">';
 							echo '<tr>';
@@ -74,8 +87,8 @@ $this->load->view('template/sidebar');
 									<a class="hide" id="order_edit" href="'.base_url('index.php/invoice/edit/'.$value->order_id).'">
 										<button type="button" class="btn btn-info btn-flat">Edit</button>
 									</a>
-									<a class="'.$hide.'" id="order_done" href="'.base_url('index.php/invoice/edit/'.$value->order_id).'">
-										<button type="button" class="btn btn-success btn-flat">Selesai</button>
+									<a class="'.$hide.'" id="order_done" href="'.$url_stat.'">
+										<button type="button" class="btn btn-success btn-flat '.$disabled_stat.'">Selesai</button>
 									</a>								
 								</div>
 							
@@ -255,6 +268,7 @@ $this->load->view('template/js');
 			alert('Pembayaran Tidak Cukup Untuk Pelunasan!');
 		}
 	});
+	
 	$('.invoice_detail').click(function(){
 		$('#box_pelunasan').removeClass('hide');
 		var invoice_number = $(this).text();
