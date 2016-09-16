@@ -217,7 +217,7 @@ class Cashier extends CI_Controller {
 				$params = array(
 					'order_cash_minus'=>0,
 					'update_user_id'=>1,
-					'update_timestamp'=>date('Y-m-d H:i:s')				
+					'update_timestamp'=>date('Y-m-d H:i:s')
 				);
 				$update = $this->cashier_model->doUpdateOrder($params, $post['invo_number']);
 				if($update){
@@ -256,7 +256,7 @@ class Cashier extends CI_Controller {
 			
 		}else{
 			redirect(site_url(''));
-		}	
+		}
 	}
 	private function getMessage($idx){
 		if($idx == 'Em1'){

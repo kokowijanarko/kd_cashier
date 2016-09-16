@@ -28,7 +28,7 @@ $this->load->view('template/sidebar');
     <!-- Default box -->
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title">Daftar Invoice</h3>
+            <h3 class="box-title">Form Laporan Harian</h3>
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
@@ -89,9 +89,6 @@ $this->load->view('template/sidebar');
 									</a>
 									<a class="'.$hide.'" id="order_done" href="'.$url_stat.'">
 										<button type="button" class="btn btn-success btn-flat '.$disabled_stat.'">Selesai</button>
-									</a>
-									<a id="print" href="'. site_url('cashier/inv_print/'. $value->order_id) .'">
-										<button type="button" class="btn btn-warning btn-flat">Cetak</button>
 									</a>								
 								</div>
 							
@@ -135,13 +132,13 @@ $this->load->view('template/sidebar');
 							<tr>
 								<td>Tanggal Pengambilan</td>
 								<td>:</td>
-								<td id="ord_date_take">
+								<td id="ord_date_take"></div>
 								</td>
 							</tr>
 							<tr>
 								<td>Tanggal Lihat Desain</td>
 								<td>:</td>
-								<td id="ord_date_design">
+								<td id="ord_date_design"></div>
 								</td>
 							</tr>										
 						</table>

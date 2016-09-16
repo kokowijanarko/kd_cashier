@@ -81,7 +81,6 @@ $this->load->view('template/sidebar');
 				<div class="col-md-8">
 					<div class="col-md-6">
 						<table class="table">
-							<tbody>
 							<tr>
 								<td>No. Nota</td>
 								<td>:</td>
@@ -122,46 +121,43 @@ $this->load->view('template/sidebar');
 										<input type="text" name="ord_date_design" data-date-format="dd-mm-yyyy" class="form-control" id="datepicker">
 									</div>
 								</td>
-							</tr>	
-							<tbody>
+							</tr>										
 						</table>
 					</div>	
-					<div class="col-md-6">
+					<div class="col-md-6 pull-right">
 						<table class="table">
-							<tbody>
 							<tr>
 								<td>Nama</td>
 								<td>:</td>
-								<td><div class="form-group"><input class="form-control" id="ord_name" type="text" name="ord_name" ></div></td>
+								<td><input id="ord_name" type="text" name="ord_name" ></td>
 							</tr>
 							<tr>
 								<td>Alamat</td>
 								<td>:</td>
-								<td><div class="form-group"><textarea class="form-control" id="ord_address" name="ord_address"></textarea></div></td>
+								<td><textarea id="ord_address" name="ord_address"></textarea></td>
 							</tr>			
 							<tr>
 								<td>No. Kontak</td>
 								<td>:</td>
-								<td><div class="form-group"><input class="form-control" id="ord_contact" type="text" name="ord_contact" ></div></td>
+								<td><input id="ord_contact" type="text" name="ord_contact" ></td>
 							</tr>
 							<tr>
 								<td>Email</td>
 								<td>:</td>
-								<td><div class="form-group"><input class="form-control" id="ord_email" type="text" name="ord_email" ></div></td>
+								<td><input id="ord_email" type="text" name="ord_email" ></td>
 							</tr>
-							<tbody>
 						</table>
 					</div>
 					<div class="col-sm-12">
 						<table id="tbl-produk-order" class="table table-bordered table-hover">
 							<thead>
 							<tr>
-								<th>N O</th>
-								<th>P r o d u k</th>
-								<th>H a r g a</th>
-								<th>J u m l a h</th>
-								<th class="hidden-450">K e t e r a n g a n</th>
-								<th>S u b - T o t a l</th>
+								<th>NO</th>
+								<th>Produk</th>
+								<th>Harga</th>
+								<th>Jumlah</th>
+								<th>Keterangan</th>
+								<th>Sub-Total</th>
 							</tr>
 							</thead>
 							<tfoot>
@@ -174,8 +170,7 @@ $this->load->view('template/sidebar');
 									<td colspan="4">
 										<div>
 											<input type="radio" name="payment" id="payment_dp" value="0"><label for="payment_dp">DP</label>
-										</div>
-										<div>
+											&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
 											<input type="radio" name="payment" id="payment_lunas" value="1"><label for="payment_lunas">Lunas</label>
 										</div>
 									</td>	
@@ -185,30 +180,28 @@ $this->load->view('template/sidebar');
 									<td colspan="4">
 										<div>
 											<input type="radio" name="payment_way" id="payment_cash" value="0" ><label for="payment_cash">Cash</label>
-										</div>
-										<div>
+											&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
 											<input type="radio" name="payment_way" id="payment_transfer" value="1"><label for="payment_transfer">Transfer</label>
-										</div>
-										<div>
+											&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
 											<input type="radio" name="payment_way" id="payment_debit" value="3"><label for="payment_debit">Debit</label>
 										</div>
 									</td>	
 								</tr>								
 								<tr id="tr_dp">
-									<td colspan="2">DP</td>
-									<td colspan="4"><input type="number" min="0" value="0" name="down_payment" id="down_payment"></td>
+									<td colspan="5">DP</td>
+									<td><input type="number" min="0" value="0" name="down_payment" id="down_payment"></td>
 								</tr>
 								<tr id="tr_kurang">
-									<td colspan="2">Kurang</td>
-									<td colspan="4"><input readonly type="number" min="0" value="0" name="minus" id="minus"></td>
+									<td colspan="5">Kurang</td>
+									<td ><input readonly type="number" min="0" value="0" name="minus" id="minus"></td>
 								</tr>
 								<tr>
-									<td colspan="2">Bayar</td>
-									<td colspan="4"><input type="number" min="0" value="0" name="cash" id="cash"></td>
+									<td colspan="5">Bayar</td>
+									<td ><input type="number" min="0" value="0" name="cash" id="cash"></td>
 								</tr>
 								<tr>
-									<td colspan="2">Kembali</td>
-									<td colspan="4"><input readonly type="number" min="0" value="0" name="cash_back" id="cash_back"></td>
+									<td colspan="5">Kembali</td>
+									<td ><input readonly type="number" min="0" value="0" name="cash_back" id="cash_back"></td>
 								</tr>
 							</tfoot>
 						</table>						
@@ -299,7 +292,7 @@ $this->load->view('template/js');
 				$line.append( $( "<td></td>" ).html(product_name[i]) );
 				$line.append( $( "<td></td>" ).html(price[i]) );
 				$line.append( $( "<td></td>" ).html(quantity[i]) );
-				$line.append( $( "<td class='hidden-450'></td>" ).html(desc[i]) );
+				$line.append( $( "<td></td>" ).html(desc[i]) );
 				$line.append( $( "<td></td>" ).html(sub_total[i]) );
 				$table.append($line);
 				console.log($line);

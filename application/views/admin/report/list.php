@@ -12,7 +12,7 @@ $this->load->view('template/sidebar');
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Inventori
+        Job Order / Invoice
         <small></small>
     </h1>
     <ol class="breadcrumb">
@@ -28,73 +28,106 @@ $this->load->view('template/sidebar');
     <!-- Default box -->
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title">Daftar Barang dan Stok</h3>
+            <h3 class="box-title">Daftar Invoice</h3>
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
             </div>
         </div>
-        <div class="box-body">
-			<div class="col-md-4">
-				<?php echo isset($message)?$message:NULL?>
-			</div>
-			<div style="float:right" class="col-md-2">
-				<a href="<?php echo base_url('index.php/inventory/add')?>" ><button type="button" class="btn btn-block btn-success btn-sm">Tambah Produk</button></a>
-			</div>
-			</br>
-			</br>
-			<table id="tbl-inventory" class="table table table-striped table-bordered table-hover">
-                <thead>
+		<div class="box-body">
+			<form action="<?php echo site_url('report/daily_list')?>" method="POST">
+				<table>					
 					<tr>
-					  <th>No</th>
-					  <th>Produk</th>
-					  <th>Kategori</th>
-					  <th>Type</th>
-					  <th>Harga</th>
-					  <th>Stok</th>
-					  <th class="hidden-480">Deskripsi</th>
-					  <th>Aksi</th>
+						<td width="100px" ><br><label>Tanggal Transaksi</label><br></td>
+						<td width="200px">
+							<br>
+							<div class="input-group date">
+								
+								<input type="text" name="date" readonly value="<?php echo date('d-m-Y')?>" class="form-control" id="date">
+								<div class="input-group-addon">
+									<i class="fa fa-calendar"></i>
+								</div>
+							</div>	
+
+							<br>
+						</td>
 					</tr>
+					<tr>
+						<td width="100px" ><br><label>Front Officer</label><br></td>
+						<td width="200px">
+							<br>
+							<div class="input-group">
+								<select name="user" class="form-control">
+									<option value="all">---SEMUA---</option>
+								</select>
+							</div>
+							<br>							
+						</td>
+					</tr>
+				</table>
+			</form>			
+		</div>
+        <div class="box-body">
+			<table id="tbl-invoice" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Nomor Invoice</th>
+                  <th>Cara Pembayaran</th>
+                  <th>Total</th>
+                  <th>Kurang</th>
+                  <th>FO</th>
+                </tr>
                 </thead>
                 <tbody>
 					<?php
 						$no=1;
-						foreach($list as $value){
-							echo '<tr>';
-							echo '<td>'.$no.'</td>';
-							echo '<td>'.$value->inv_name.'</td>';
-							echo '<td>'.$value->category_name.'</td>';
-							echo '<td>'.$value->type_name.'</td>';
-							echo '<td><div style="float:left">Rp</div><div class="auto" data-a-sep="." data-a-dec="," style="text-align:right">'.$value->inv_price.'</div></td>';
-							echo '<td>'.$value->inv_stock.'</td>';
-							echo '<td class="hidden-480">'.$value->inv_desc.'</td>';
-							echo '<td>
-								<div class="btn-group">
-									<button type="button" class="btn btn-info btn-flat">Aksi</button>
-									<button type="button" class="btn btn-info btn-flat dropdown-toggle" data-toggle="dropdown">
-										<span class="caret"></span>
-										<span class="sr-only">Toggle Dropdown</span>
-									</button>
-									<ul class="dropdown-menu" role="menu">
-										<li><a href="'.base_url('index.php/inventory/edit/'.$value->inv_id).'">Edit</a></li>
-										<li><a href="'.site_url('inventory/doDelete/'.$value->inv_id).'">Hapus</a></li>
-										<li><a href="'.site_url('mass_price/listing/'.$value->inv_id).'">Lihat Harga Massal</a></li>
-									</ul>
-								</div>
+						$amount = array();
+						foreach($invoice as $val){	
+							array_push($amount, $val->order_amount);
+							echo'
+								<tr>
+									<td>'. $no .'</td>
+									<td>'. $val->order_code .'</td>
+									<td>'. $val->payment_way .'</td>
+									<td>'. $val->order_amount .'</td>
+									<td>'. $val->order_cash_minus .'</td>
+									<td>'. $val->user_full_name .'</td>
+								</tr>
+							';
 							
-							</td>';
-							echo '</tr>';
 							$no++;
 						}
+						$omset = array_sum($amount);
+						
 					?>
-                </tbody>
+				</tbody>
               </table>
-            
+				<br>
+				<br>
+				<br>
+				<br>
+				<table class="table-bordered table-hover" width="30%">
+					<thead>
+					<tr>
+					  <td>Omset</td>
+					  <td>:</td>
+					  <td><?php echo $omset?></td>
+					</tr>
+					</thead>
+				</table>
         </div><!-- /.box-body -->
         <div class="box-footer">
-           
+            
         </div><!-- /.box-footer-->
     </div><!-- /.box -->
+	
+        <div class="box-footer">
+          </div>
+        </div><!-- /.box-footer-->
+    </div><!-- /.box -->
+	
+
 
 </section><!-- /.content -->
 
@@ -111,7 +144,8 @@ $this->load->view('template/js');
 
 <script>
   jQuery(function($) {
-    $('#tbl-inventory').DataTable({
+	
+    $('#tbl-invoice').DataTable({
       "paging": true,
       "lengthChange": false,
       "searching": false,

@@ -15,7 +15,7 @@ $this->load->view('template/sidebar');
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Order
+        Cetak Invoince
         <small></small>
     </h1>
     <ol class="breadcrumb">
@@ -30,7 +30,7 @@ $this->load->view('template/sidebar');
     <!-- Default box -->
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title">Buat Order</h3>
+            <h3 class="box-title">Cetak</h3>
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
@@ -39,191 +39,11 @@ $this->load->view('template/sidebar');
         <div class="box-body">
 			<div class="row">
 				<div class="col-md-4">
-						<div class="form-group">
-							<label>Produk</label>
-							<select id="produk" name="produk" class="form-control select2" style="width: 100%;">
-								<option value=''>--Pilih--</option>
-								<?php
-									foreach($produk as $val){
-										echo '<option value="'.$val->inv_id.'|'.$val->inv_price.'">'.$val->inv_name .'</option>';
-									}
-								?>								
-							</select>
-						</div>						
-						<div class="form-group">
-							<label>Harga</label>
-							<div class="input-group">
-								<span class="input-group-addon">Rp</span>
-								<input id="harga"  readonly type="text" name="harga" pattern="[1-9].{4,}" class="form-control">
-								<span class="input-group-addon">.00</span>
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<label>Jumlah</label>
-							<div class="input-group">
-								<span class="input-group-addon">@</span>
-								<input id="jumlah"  type="jumlah" name="jumlah" pattern="[1-9].{1,}" class="form-control">
-								<span class="input-group-addon">Biji</span>
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<label>Catatan</label>
-							<textarea id="deskripsi" name="deskripsi" class="form-control" rows="3" placeholder="Enter ..."></textarea>
-						</div>
-						
-						<div class="box-footer">
-							<button id="smt-order" type="submit" class="btn btn-info">Tambah</button>
-						</div>
-					
+					<?php
+						var_dump($inv);
+						var_dump($inv_detail);
+					?>
 				</div>
-				<div class="col-md-8">
-					<div class="col-md-6">
-						<table class="table">
-							<tbody>
-							<tr>
-								<td>No. Nota</td>
-								<td>:</td>
-								<td id="no_nota"><?php echo $order_code?></td>
-							</tr>
-							<tr>
-								<td>Tanggal Order</td>
-								<td>:</td>
-								<td>
-									<div class="input-group date">
-										<div class="input-group-addon">
-										<i class="fa fa-calendar"></i>
-										</div>
-										<input type="text" name="ord_date_order" readonly value="<?php echo date('d-m-Y')?>" class="form-control" id="ord_date_order">
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>Tanggal Pengambilan</td>
-								<td>:</td>
-								<td>
-									<div class="input-group date">
-										<div class="input-group-addon">
-										<i class="fa fa-calendar"></i>
-										</div>
-										<input type="text" name="ord_date_take" data-date-format="dd-mm-yyyy" class="form-control" id="ord_date_take">
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>Tanggal Lihat Desain</td>
-								<td>:</td>
-								<td>
-									<div class="input-group date">
-										<div class="input-group-addon">
-										<i class="fa fa-calendar"></i>
-										</div>
-										<input type="text" name="ord_date_design" data-date-format="dd-mm-yyyy" class="form-control" id="datepicker">
-									</div>
-								</td>
-							</tr>	
-							<tbody>
-						</table>
-					</div>	
-					<div class="col-md-6">
-						<table class="table">
-							<tbody>
-							<tr>
-								<td>Nama</td>
-								<td>:</td>
-								<td><div class="form-group"><input class="form-control" id="ord_name" type="text" name="ord_name" ></div></td>
-							</tr>
-							<tr>
-								<td>Alamat</td>
-								<td>:</td>
-								<td><div class="form-group"><textarea class="form-control" id="ord_address" name="ord_address"></textarea></div></td>
-							</tr>			
-							<tr>
-								<td>No. Kontak</td>
-								<td>:</td>
-								<td><div class="form-group"><input class="form-control" id="ord_contact" type="text" name="ord_contact" ></div></td>
-							</tr>
-							<tr>
-								<td>Email</td>
-								<td>:</td>
-								<td><div class="form-group"><input class="form-control" id="ord_email" type="text" name="ord_email" ></div></td>
-							</tr>
-							<tbody>
-						</table>
-					</div>
-					<div class="col-sm-12">
-						<table id="tbl-produk-order" class="table table-bordered table-hover">
-							<thead>
-							<tr>
-								<th>N O</th>
-								<th>P r o d u k</th>
-								<th>H a r g a</th>
-								<th>J u m l a h</th>
-								<th class="hidden-450">K e t e r a n g a n</th>
-								<th>S u b - T o t a l</th>
-							</tr>
-							</thead>
-							<tfoot>
-								<tr>
-									<td colspan="5">TOTAL</td>
-									<td id="total"></td>
-								</tr>
-								<tr>
-									<td colspan="2">Pembayaran</td>	
-									<td colspan="4">
-										<div>
-											<input type="radio" name="payment" id="payment_dp" value="0"><label for="payment_dp">DP</label>
-										</div>
-										<div>
-											<input type="radio" name="payment" id="payment_lunas" value="1"><label for="payment_lunas">Lunas</label>
-										</div>
-									</td>	
-								</tr>
-								<tr>
-									<td colspan="2">Cara Pembayaran</td>	
-									<td colspan="4">
-										<div>
-											<input type="radio" name="payment_way" id="payment_cash" value="0" ><label for="payment_cash">Cash</label>
-										</div>
-										<div>
-											<input type="radio" name="payment_way" id="payment_transfer" value="1"><label for="payment_transfer">Transfer</label>
-										</div>
-										<div>
-											<input type="radio" name="payment_way" id="payment_debit" value="3"><label for="payment_debit">Debit</label>
-										</div>
-									</td>	
-								</tr>								
-								<tr id="tr_dp">
-									<td colspan="2">DP</td>
-									<td colspan="4"><input type="number" min="0" value="0" name="down_payment" id="down_payment"></td>
-								</tr>
-								<tr id="tr_kurang">
-									<td colspan="2">Kurang</td>
-									<td colspan="4"><input readonly type="number" min="0" value="0" name="minus" id="minus"></td>
-								</tr>
-								<tr>
-									<td colspan="2">Bayar</td>
-									<td colspan="4"><input type="number" min="0" value="0" name="cash" id="cash"></td>
-								</tr>
-								<tr>
-									<td colspan="2">Kembali</td>
-									<td colspan="4"><input readonly type="number" min="0" value="0" name="cash_back" id="cash_back"></td>
-								</tr>
-							</tfoot>
-						</table>						
-					</div>
-					<div class="col-md-4 pull-left">						
-						<button id="proc-order" type="submit" class="btn btn-success">Proses</button>
-						<button id="proc-print" type="submit" class="btn btn-warning hide">Cetak</button>
-					</div>
-					
-					<div class="col-md-3 pull-right">
-						Front Office </br></br></br></br>						
-						<label> Rere
-						</label>					
-					</div>					
-				</div>				
 			</div><!-- /.box-body -->
         <div class="box-footer">
            
@@ -265,7 +85,7 @@ $this->load->view('template/js');
 		var sub_total = [];
 		var desc = [];
 		var data_order = {product_name, product_id, price, quantity, sub_total, desc};
-		var id_order = [];
+		var inv_number = [];
 		
 		$('#smt-order').click(function(){
 			var prod_val = $('#produk').val();
@@ -299,7 +119,7 @@ $this->load->view('template/js');
 				$line.append( $( "<td></td>" ).html(product_name[i]) );
 				$line.append( $( "<td></td>" ).html(price[i]) );
 				$line.append( $( "<td></td>" ).html(quantity[i]) );
-				$line.append( $( "<td class='hidden-450'></td>" ).html(desc[i]) );
+				$line.append( $( "<td></td>" ).html(desc[i]) );
 				$line.append( $( "<td></td>" ).html(sub_total[i]) );
 				$table.append($line);
 				console.log($line);
@@ -322,7 +142,7 @@ $this->load->view('template/js');
 			var alamat = $('#ord_address').val();
 			var kontak = $('#ord_contact').val();
 			var email = $('#ord_email').val();
-			
+			inv_number.push(no_nota);
 			
 			var total = 0;
 			for (var i = 0; i < sub_total.length; i++) {
@@ -355,20 +175,24 @@ $this->load->view('template/js');
 				url: url,
 				method:'post',
 				data: params				
-			}).success(function(result){		
-					result = JSON.parse(result);
-					id_order.push(result);
+			}).success(function(result){
+				result= JSON.parse(result);
+				if(resul === 'true'){
 					alert('Order Sukses Dibuat');
 					$('#proc-order').addClass('hide');
-					$('#proc-print').removeClass('hide');
+					$('#proc-print').removeClass('hide');					
+				}
 			});
 			
 		});
 		
 		$('#proc-print').click(function(){			
-			// url = '<?php echo site_url('cashier/inv_print/7')?>';			
-			url = '<?php echo site_url('cashier/inv_print')?>/'+id_order[0];
-			window.location.replace(url);
+			url = '<?php echo site_url('cashier/inv_print/')?>';
+			$.ajax({
+				url:url,
+				method:'post',
+				data:{'inv_number':inv_number[0]}
+			});
 		});
 		
 		$('input:radio[name=payment]').change(function(){
