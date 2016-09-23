@@ -90,7 +90,7 @@ $this->load->view('template/sidebar');
 									<a class="'.$hide.'" id="order_done" href="'.$url_stat.'">
 										<button type="button" class="btn btn-success btn-flat '.$disabled_stat.'">Selesai</button>
 									</a>
-									<a id="print" href="'. site_url('cashier/inv_print/'. $value->order_id) .'">
+									<a id="print" href="'. site_url('cashier/inv_print/'. $value->order_id) .'" target="_blank">
 										<button type="button" class="btn btn-warning btn-flat">Cetak</button>
 									</a>								
 								</div>
