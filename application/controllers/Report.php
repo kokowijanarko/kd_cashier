@@ -75,4 +75,8 @@ class Report extends CI_Controller {
 		exit;
 	}
 	
+	public function printPdf(){
+		
+	}
+	
 }
