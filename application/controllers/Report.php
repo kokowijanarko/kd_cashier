@@ -40,17 +40,25 @@ class Report extends CI_Controller {
 	public function daily_list(){
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2 || $this->session->userdata('level') == 3){
 			$filter = array(
-				'date'=>date('Y-m-d'),
 				'user'=>'all'
 			);
 			
 			if(!empty($_POST)){
+				if($_POST['date'] == '1970-01-01'){
+					$date = null;
+				}else{
+					$date = $_POST['date'];
+				}
 				$filter = array(
-					'date'=>date('Y-m-d', strtotime($_POST['date'])),
+					'date'=> $date,
 					'user'=>$_POST['user']
 				);
-			}			
+				$data['post'] = $filter;
+			}
+			
 			$data['invoice'] = $this->report_model->getTransactionByDate($filter);
+			// var_dump($this->db->last_query());
+			$data['user'] = $this->report_model->getUser();
 			//var_dump($data);die;
 			
 			$this->load->view('admin/report/list', $data);

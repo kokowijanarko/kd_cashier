@@ -44,5 +44,10 @@ class Report_model extends CI_Model
 		$result = $query->result();
 		return $result;
 	}
+	
+	public function getUser(){
+		$query = $this->db->get('user');
+		return $query->result();
+	}
 
 }

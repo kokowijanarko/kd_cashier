@@ -153,12 +153,14 @@
 			console.log(result);
 			if(result['order']['order_cash_minus'] == 0){
 				var status = 'LUNAS';
-				$('#tr_status').removeClass('hide');
+				
 				$('#tr_kurang').addClass('hide');
-				$('#status').text(status);
+				
 			}else{
 				var status = 'BELUM LUNAS';
 			}
+			$('#tr_status').removeClass('hide');
+			$('#status').text(status);
 			var payment_way = $('#cara_pembayaran').text(result['order']['order_payment_way']);
 			var dp = $('#down_payment' ).text('Rp. ' + result['order']['order_down_payment']);
 			var bayar = $('#cash').text();

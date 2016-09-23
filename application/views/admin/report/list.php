@@ -5,6 +5,9 @@ $this->load->view('template/head');
 
 <!-- DataTables -->
   <link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/datatables/dataTables.bootstrap.css')?>" rel="stylesheet" type="text/css">
+<!-- bootstrap datepicker -->
+<link href="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/datepicker/datepicker3.css') ?>" rel="stylesheet" type="text/css" />
+
 <?php
 $this->load->view('template/topbar');
 $this->load->view('template/sidebar');
@@ -34,6 +37,9 @@ $this->load->view('template/sidebar');
                 <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
             </div>
         </div>
+		<?php
+			// var_dump($post);
+		?>
 		<div class="box-body">
 			<form action="<?php echo site_url('report/daily_list')?>" method="POST">
 				<table>					
@@ -43,12 +49,11 @@ $this->load->view('template/sidebar');
 							<br>
 							<div class="input-group date">
 								
-								<input type="text" name="date" readonly value="<?php echo date('d-m-Y')?>" class="form-control" id="date">
+								<input type="text" name="date" id="datepicker" value="<?php $val = isset($post['date']) ? ($post['date'] == '' ? null : date('d-m-Y', strtotime($post['date']))):null; echo $val;?>" class="form-control" id="date">
 								<div class="input-group-addon">
 									<i class="fa fa-calendar"></i>
 								</div>
 							</div>	
-
 							<br>
 						</td>
 					</tr>
@@ -59,11 +64,33 @@ $this->load->view('template/sidebar');
 							<div class="input-group">
 								<select name="user" class="form-control">
 									<option value="all">---SEMUA---</option>
+									<?php
+										
+										foreach($user as $val){
+											$cek = '';
+											if(isset($post['user'])){
+												if($post['user'] == $val->user_id){
+													$cek = 'selected';
+												}
+											}
+											echo '<option value="'. $val->user_id .'" '. $cek .'>'.$val->user_full_name.'</option>';
+										}
+									?>
 								</select>
 							</div>
 							<br>							
 						</td>
 					</tr>
+					<tr>
+						<td width="100px" ></td>
+						<td width="200px">
+							<div>						
+								<button id="proc-order" type="submit" class="btn btn-success">Cari</button>
+							</div>					
+						</td>
+					</tr>
+					
+					
 				</table>
 			</form>			
 		</div>
@@ -138,12 +165,17 @@ $this->load->view('template/js');
 <!-- DataTables -->
 <script src="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/datatables/jquery.dataTables.js')?>" type="text/javascript"></script>
 <script src="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/datatables/dataTables.bootstrap.js')?>" type="text/javascript"></script>
+<!-- bootstrap datepicker -->
+<script src="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/datepicker/bootstrap-datepicker.js')?>"></script>
 
 <!-- AutoNumeric -->
 <script src="<?php echo base_url('assets/AutoNumeric/autoNumeric.js')?>" type="text/javascript"></script>
 
 <script>
   jQuery(function($) {
+	$('#datepicker').datepicker({			
+		autoclose: true
+	});
 	
     $('#tbl-invoice').DataTable({
       "paging": true,
