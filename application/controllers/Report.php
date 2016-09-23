@@ -42,7 +42,7 @@ class Report extends CI_Controller {
 			$filter = array(
 				'user'=>'all'
 			);
-			
+			// var_dump($_POST);die;
 			if(!empty($_POST)){
 				if($_POST['date'] == '1970-01-01'){
 					$date = null;
@@ -50,7 +50,7 @@ class Report extends CI_Controller {
 					$date = $_POST['date'];
 				}
 				$filter = array(
-					'date'=> $date,
+					'date'=> date('Y-m-d', strtotime($date)),
 					'user'=>$_POST['user']
 				);
 				$data['post'] = $filter;

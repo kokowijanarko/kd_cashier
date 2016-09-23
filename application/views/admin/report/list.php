@@ -49,7 +49,7 @@ $this->load->view('template/sidebar');
 							<br>
 							<div class="input-group date">
 								
-								<input type="text" name="date" id="datepicker" value="<?php $val = isset($post['date']) ? ($post['date'] == '' ? null : date('d-m-Y', strtotime($post['date']))):null; echo $val;?>" class="form-control" id="date">
+								<input type="text" name="date" id="datepicker" value="<?php $val = isset($post['date']) ? ($post['date'] == '' ? null : $post['date']):null; echo $val;?>" class="form-control" id="date">
 								<div class="input-group-addon">
 									<i class="fa fa-calendar"></i>
 								</div>
