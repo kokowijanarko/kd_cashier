@@ -8,7 +8,7 @@
     <div class="wrapper">
 
         <header class="main-header">
-            <a href="#" class="logo"><b>Kedai Digital</b> Cashier</a>
+            <a href="#" class="logo"><img width="200px" height="45px" src="<?php echo base_url('assets/kd.JPG')?>"></a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
                 <!-- Sidebar toggle button-->

@@ -42,10 +42,9 @@ class User extends CI_Controller {
 	
 	public function edit($id){
 		if($this->session->userdata('level') == 1  ){
-			$data['type'] = $this->user_model->getuserType();
-			$data['category'] = $this->user_model->getuserCategory();		
-			$data['detail'] = $this->user_model->getInvDetailById($id);
-			//var_dump($data);die;
+			$data['level'] = $this->user_model->getUserLevel();	
+			$data['detail'] = $this->user_model->getDetailUser($id);
+			// var_dump($data);die;
 			$this->load->view('admin/user/edit', $data);
 
 		}else{
@@ -57,7 +56,7 @@ class User extends CI_Controller {
 	public function doAdd(){
 		if($this->session->userdata('level') == 1  ){
 			var_dump($_POST, $_FILES);
-			if($_FILES['photo']['type'] == 'image/jpeg'){
+			if(!empty($_POST)){
 				$this->db->trans_start();
 				$password = md5($_POST['username']);	
 				$foto_name = $_POST['full_name'].'-'.$_POST['level'].'.jpeg';
@@ -71,7 +70,8 @@ class User extends CI_Controller {
 					'user_password'=>$password
 				);
 				$result = $this->user_model->insertUser($param);
-				if($result){				
+				// var_dump($_FILES);die;
+				if($result && $_FILES['photo']['error'] != 4){				
 					
 					$result = $result && $this->foto_upload->process_image($_FILES['photo']['tmp_name'], $foto_name);	
 				}
@@ -95,17 +95,23 @@ class User extends CI_Controller {
 	
 	public function doEdit(){
 		if($this->session->userdata('level') == 1  ){
-			$param_inv = array(
-				'inv_name' => $_POST['produk'],
-				'inv_type_id' => $_POST['type'],
-				'inv_category_id' => $_POST['category'],
-				'inv_price' => $_POST['harga'],
-				'inv_stock' => $_POST['stok'],
-				'inv_desc' => $_POST['deskripsi']
+			$this->db->trans_start();
+			$param = array(
+				'user_full_name'=>$_POST['user_full_name'],
+				'user_username'=>$_POST['user_username'],
+				'user_email'=>$_POST['user_email'],
+				'user_level_id'=>$_POST['level'],
+				'user_desc'=>$_POST['deskripsi'],
+				'user_photo_name'=>$foto_name
 			);
 			$id=$_POST['id'];
-			$result = $this->user_model->Updateuser($param_inv, $id);
-			
+			$result = $this->user_model->updateUser($param, $id);
+			// var_dump ($result, $this->db->last_query()); die;
+			if($result && $_FILES['photo']['error'] != 3){				
+					
+					$result = $result && $this->foto_upload->process_image($_FILES['photo']['tmp_name'], $foto_name);	
+				}
+			$this->db->trans_complete($result);
 			if($result == true){
 				redirect(base_url('index.php/user/index?msg=Em1'));
 			}else{

@@ -36,7 +36,7 @@ $this->load->view('template/sidebar');
         <div class="box-body">
 			<div class="row">
 				<div class="col-md-6">
-					<form role="form" method="post" action="<?php echo base_url('index.php/inventory/doAdd')?>">
+					<form role="form" method="post" action="<?php echo site_url('inventory/doAdd')?>">
 						<div class="form-group">
 							<label>Produk</label>
 							<input type="text" name="produk" id="produk" class="form-control" placeholder="Produk">

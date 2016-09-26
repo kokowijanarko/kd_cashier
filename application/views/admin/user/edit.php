@@ -12,7 +12,7 @@ $this->load->view('template/sidebar');
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Inventori
+        User 
         <small></small>
     </h1>
     <ol class="breadcrumb">
@@ -27,7 +27,7 @@ $this->load->view('template/sidebar');
     <!-- Default box -->
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title">Tambah Barang</h3>
+            <h3 class="box-title">Edit Pengguna Aplikasi</h3>
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
@@ -36,62 +36,42 @@ $this->load->view('template/sidebar');
         <div class="box-body">
 			<div class="row">
 				<div class="col-md-6">
-					<form role="form" method="post" action="<?php echo base_url('index.php/inventory/doEdit')?>">
-					<input type="hidden" name="id" id="id">
+					<form role="form" method="post" action="<?php echo site_url('user/doEdit')?>">
+					<input type="hidden" value="<?php echo $detail->user_id?>" name="id" id="id">
 						<div class="form-group">
-							<label>Produk</label>
-							<input type="text" name="produk" id="produk" class="form-control" placeholder="Produk">
+							<label>Nama Lengkap</label>
+							<input type="text" value="<?php echo $detail->user_full_name?>" name="user_full_name" id="user_full_name" class="form-control" placeholder="Nama Lengkap">
 						</div>
-						
 						<div class="form-group">
-							<label>Kategori</label>
-							<select id="category" name="category" class="form-control select2" style="width: 100%;">
+							<label>Username</label>
+							<input type="text" value="<?php echo $detail->user_username?>" name="user_username" id="user_username" class="form-control" placeholder="Level">
+						</div>
+						<div class="form-group">
+							<label>Email</label>
+							<input type="text" value="<?php echo $detail->user_email?>" name="user_email" id="user_email" class="form-control" placeholder="Email">
+						</div>
+						<div class="form-group">
+							<label>Level</label>
+							<select id="level" name="level" class="form-control select2" style="width: 100%;">
 								<option value=''>--Pilih--</option>
 								<?php
-									foreach($category as $cat){
-										echo '<option value="'.$cat->category_id .'">'.$cat->category_name .'</option>';
+									foreach($level as $lvl){
+										$cek='';
+										if($lvl->level_id == $detail->user_level_id){
+											$cek = 'selected';
+										}
+										echo '<option value="'.$lvl->level_id .'" '. $cek .'>'.$lvl->level_name .'</option>';
 									}
 								?>
-								
 							</select>
 						</div>
-						<!-- /.form-group -->
-						
 						<div class="form-group">
-							<label>Tipe</label>
-							<select id="type" name="type" class="form-control select2" style="width: 100%;">
-								<option value=''>--Pilih--</option>
-								<?php
-									foreach($type as $tp){
-										echo '<option value="'.$tp->type_id .'">'.$tp->type_name .'</option>';
-									}
-								?>
-								
-							</select>
+							<label>Foto</label>
+							<input type="file" name="photo" id="photo">
 						</div>
-						<!-- /.form-group -->					
-						
-						<div class="form-group">
-							<label>Harga</label>
-							<div class="input-group">
-								<span class="input-group-addon">Rp</span>
-								<input id="harga"  type="number" name="harga" class="form-control">
-								<span class="input-group-addon">.00</span>
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<label>Stok</label>
-							<div class="input-group">
-								<span class="input-group-addon">@</span>
-								<input id="stok"  type="number" name="stok" class="form-control">
-								<span class="input-group-addon">Biji</span>
-							</div>
-						</div>
-						
 						<div class="form-group">
 							<label>Deskripsi</label>
-							<textarea id="deskripsi" name="deskripsi" class="form-control" rows="3" placeholder="Enter ..."></textarea>
+							<textarea id="deskripsi" name="deskripsi" class="form-control" rows="3" placeholder="Enter ..."><?php echo $detail->user_desc?></textarea>
 						</div>
 						
 						<div class="box-footer">
@@ -117,7 +97,7 @@ $this->load->view('template/js');
 
 <script>	
 	jQuery(function($) {
-		$('#produk').val('<?php echo $detail->inv_name?>');	
+		$('#user').val('<?php echo $detail->inv_name?>');	
 		$('#category').val('<?php echo $detail->inv_category_id?>');
 		$('#type').val('<?php echo $detail->inv_type_id?>');
 		$('#harga').val('<?php echo $detail->inv_price?>');

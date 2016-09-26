@@ -31,13 +31,10 @@
         <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
             <li id="menu_dashboard" class="treeview">
-                <a href="#">
-                    <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
+                <a href="<?php  echo site_url('dashboard1')?>">
+                    <i class="fa fa-dashboard"></i> 
+					<span>Home</span>
                 </a>
-                <ul class="treeview-menu">
-                    <li><a href="<?php echo site_url('dashboard1') ?>"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-                    <li><a href="<?php echo site_url('dashboard2') ?>"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-                </ul>
             </li>
             <li id="menu_inventory" class="treeview">
                 <a href="<?php echo site_url('inventory')?>">
@@ -49,7 +46,7 @@
 			<li id="menu_cashier" class="treeview">
                 <a href="#">
                     <i class="fa fa-files-o"></i>
-                    <span>Kasir</span>
+                    <span>Kasir</span><i class="fa fa-angle-left pull-right"></i>
                 </a>
 				<ul id="child_menu_cashier" class="treeview-menu">
                     <li id="child_menu_cashier_buat_order"><a href="<?php echo site_url('cashier')?>"><i class="fa fa-circle-o"></i>Buat Order</a></li>
