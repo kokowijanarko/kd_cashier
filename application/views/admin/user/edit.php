@@ -36,7 +36,7 @@ $this->load->view('template/sidebar');
         <div class="box-body">
 			<div class="row">
 				<div class="col-md-6">
-					<form role="form" method="post" action="<?php echo site_url('user/doEdit')?>">
+					<form role="form" method="post" action="<?php echo site_url('user/doEdit')?>" enctype="multipart/form-data">
 					<input type="hidden" value="<?php echo $detail->user_id?>" name="id" id="id">
 						<div class="form-group">
 							<label>Nama Lengkap</label>
@@ -67,7 +67,8 @@ $this->load->view('template/sidebar');
 						</div>
 						<div class="form-group">
 							<label>Foto</label>
-							<input type="file" name="photo" id="photo">
+							<input type="file" name="photo" id="photo">							
+							<label><img height="100px" src="<?php echo base_url('assets/user_img/'. $detail->user_photo_name)?>"></label>
 						</div>
 						<div class="form-group">
 							<label>Deskripsi</label>

@@ -71,7 +71,7 @@ class User extends CI_Controller {
 				);
 				$result = $this->user_model->insertUser($param);
 				// var_dump($_FILES);die;
-				if($result && $_FILES['photo']['error'] != 4){				
+				if($result && $_FILES['photo']['error'] != 4 && $_FILES['photo']['type'] == 'image/jpeg'){				
 					
 					$result = $result && $this->foto_upload->process_image($_FILES['photo']['tmp_name'], $foto_name);	
 				}
@@ -96,6 +96,7 @@ class User extends CI_Controller {
 	public function doEdit(){
 		if($this->session->userdata('level') == 1  ){
 			$this->db->trans_start();
+			$foto_name = $_POST['user_full_name'].'-'.$_POST['level'].'.jpeg';
 			$param = array(
 				'user_full_name'=>$_POST['user_full_name'],
 				'user_username'=>$_POST['user_username'],
@@ -106,11 +107,10 @@ class User extends CI_Controller {
 			);
 			$id=$_POST['id'];
 			$result = $this->user_model->updateUser($param, $id);
-			// var_dump ($result, $this->db->last_query()); die;
-			if($result && $_FILES['photo']['error'] != 3){				
-					
-					$result = $result && $this->foto_upload->process_image($_FILES['photo']['tmp_name'], $foto_name);	
-				}
+			if($result && $_FILES['photo']['error'] != 4 && $_FILES['photo']['type'] == 'image/jpeg'){
+				unlink('assets/user_img/'. $foto_name);
+				$result = $result && $this->foto_upload->process_image($_FILES['photo']['tmp_name'], $foto_name);	
+			}
 			$this->db->trans_complete($result);
 			if($result == true){
 				redirect(base_url('index.php/user/index?msg=Em1'));
