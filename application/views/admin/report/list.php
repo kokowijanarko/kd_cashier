@@ -11,6 +11,9 @@ $this->load->view('template/head');
 <?php
 $this->load->view('template/topbar');
 $this->load->view('template/sidebar');
+// var_dump($post);
+$date = isset($post['date']) ? ($post['date'] == '' ? 'all' : date('d-m-Y', strtotime($post['date']))):'all';
+$fo = isset($post['user']) ? $post['user'] : 'all';
 ?>
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -18,28 +21,21 @@ $this->load->view('template/sidebar');
         Job Order / Invoice
         <small></small>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Examples</a></li>
-        <li class="active">Blank page</li>
-    </ol>
+    
 </section>
 
 <!-- Main content -->
 <section class="content">
 
     <!-- Default box -->
-    <div class="box">
-        <div class="box-header with-border">
-            <h3 class="box-title">Daftar Invoice</h3>
+	<div class="box">
+		<div class="box-header with-border">
+            <h3 class="box-title">Cari Job Order</h3>
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
             </div>
         </div>
-		<?php
-			// var_dump($post);
-		?>
 		<div class="box-body">
 			<form action="<?php echo site_url('report/daily_list')?>" method="POST">
 				<table>					
@@ -49,7 +45,7 @@ $this->load->view('template/sidebar');
 							<br>
 							<div class="input-group date">
 								
-								<input type="text" name="date" id="datepicker" value="<?php $val = isset($post['date']) ? ($post['date'] == '' ? null : $post['date']):null; echo $val;?>" class="form-control" id="date">
+								<input type="text" name="date" id="datepicker" value="<?php $val = isset($post['date']) ? ($post['date'] == 'all' ? null : date('d-m-Y', strtotime($post['date']))):null; echo $val;?>" class="form-control" id="date">
 								<div class="input-group-addon">
 									<i class="fa fa-calendar"></i>
 								</div>
@@ -85,16 +81,32 @@ $this->load->view('template/sidebar');
 						<td width="100px" ></td>
 						<td width="200px">
 							<div>						
-								<button id="proc-order" type="submit" class="btn btn-success">Cari</button>
+								<button id="proc-order" type="submit" class="btn btn-default btn-sm">Cari</button>
 							</div>					
 						</td>
 					</tr>
 					
 					
 				</table>
-			</form>			
+			</form>				
 		</div>
+	
+	</div>
+	<div class="box">
+		<div class="box-header with-border">
+            <h3 class="box-title">Daftar Job Order</h3>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
+			
         <div class="box-body">
+			<div>
+				<a href="<?php echo site_url('report/print_report?date='. $date .'&fo='. $fo)?>" target="_blank"><button class="btn btn-sm btn-primary">Cetak Laporan</button></a>
+			</div>
+			<br>
+			<div>
 			<table id="tbl-invoice" class="table table-bordered table-hover">
                 <thead>
                 <tr>
@@ -130,9 +142,7 @@ $this->load->view('template/sidebar');
 					?>
 				</tbody>
               </table>
-				<br>
-				<br>
-				<br>
+			  </div>
 				<br>
 				<table class="table-bordered table-hover" width="30%">
 					<thead>

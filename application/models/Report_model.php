@@ -12,6 +12,11 @@ class Report_model extends CI_Model
 				a.`order_code`,
 				a.`order_cash_minus`,
 				a.`order_amount`,
+				a.`order_custommer_name`,
+				a.`order_date_order`,
+				a.`order_date_take`,
+				a.`order_address`,
+				a.`order_contact`,
 				a.`insert_user_id`,
 				a.`insert_timestamp`,	
 				a.`order_type`,
@@ -31,7 +36,7 @@ class Report_model extends CI_Model
 		';
 		
 		$str='';
-		if(!empty($filter['date'])){
+		if(!empty($filter['date']) && $filter['date'] != 'all'){
 			$str .= " AND a.`order_date_order` LIKE '%". $filter['date'] ."%'";
 		}
 		if(!empty($filter['user']) && $filter['user'] !== 'all'){
