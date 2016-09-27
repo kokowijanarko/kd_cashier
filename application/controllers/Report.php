@@ -33,7 +33,7 @@ class Report extends CI_Controller {
 			$filter = array(
 				'user'=>'all'
 			);
-			
+			// var_dump($_POST);
 			if(!empty($_POST)){
 				if($_POST['date'] == '1970-01-01' || $_POST['date'] == ''){
 					$date = 'all';
@@ -44,7 +44,7 @@ class Report extends CI_Controller {
 					'date'=> $date,
 					'user'=>$_POST['user']
 				);
-				$data['post'] = $filter;
+				$data['post'] = $_POST;
 			}
 			// var_dump($_POST, $filter);die;
 			$data['invoice'] = $this->report_model->getTransactionByDate($filter);
@@ -67,10 +67,10 @@ class Report extends CI_Controller {
 	}
 	public function print_report(){
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2 || $this->session->userdata('level') == 3){
-			// var_dump($_GET);
+			var_dump($_GET);die;
 			
 			if(!empty($_GET)){
-				if($_GET['date'] == '1970-01-01' || $_GET['date'] == ''){
+				if($_GET['date'] == '01-01-1970' || $_GET['date'] == '' || $_GET['date'] == 'all'){
 					$date = 'all';
 				}else{
 					$date = date('Y-m-d', strtotime($_GET['date']));
@@ -87,7 +87,7 @@ class Report extends CI_Controller {
 				'', 
 				array(216, 330), 
 				7, 
-				'Helvetica',
+				'Times New Roman',
 				15, //l
 				15, //r
 				16, //t
@@ -129,6 +129,12 @@ class Report extends CI_Controller {
 					</tr>
 				';
 				
+			}else{
+				$data_order .= '
+						<tr>
+							<td colspan="11" style="text-align=center;">Data Tidak Ditemukan</td>
+						</tr>
+					';
 			}
 			$tgl_header = $filter['date'] == 'all' ? 'Semua' : date('d-m-Y', strtotime($filter['date']));
 			$fo_name = $filter['user'] == 'all' ? 'Semua' : $this->user_model->getDetailUser($filter['user']);

@@ -125,6 +125,8 @@ class User extends CI_Controller {
 	
 	public function doDelete($id){
 		if($this->session->userdata('level') == 1  ){
+			$user = $this->user_model->getDetailUser($id);
+			unlink('assets/user_img/'. $user->user_photo_name);
 			$result = $this->user_model->deleteInv($id);
 			if($result == true){
 				redirect(site_url('user/index?msg=Dm1'));
