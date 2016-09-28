@@ -96,7 +96,7 @@
 								</tr>
 								<tr>
 									<td colspan="2">Cara Pembayaran</td>	
-									<td id="cara_pembayaran" colspan="3"> </td>	
+									<td id="order_payment_way" colspan="3"> </td>	
 								</tr>								
 								<tr id="tr_dp">
 									<td colspan="2">DP</td>
@@ -161,7 +161,7 @@
 			}
 			$('#tr_status').removeClass('hide');
 			$('#status').text(status);
-			var payment_way = $('#cara_pembayaran').text(result['order']['order_payment_way']);
+			var payment_way = $('#order_payment_way').text(result['order']['order_payment_way']);
 			var dp = $('#down_payment' ).text('Rp. ' + result['order']['order_down_payment']);
 			var bayar = $('#cash').text();
 			var kurang = $('#minus').text('Rp. ' + result['order']['order_cash_minus']);
