@@ -127,10 +127,10 @@ $this->load->view('template/js');
 		$('#type').change(function(){
 			var category = $('#category option:selected').text();
 			
-			var type = $('#type option:selected').text();
-			var produk = category + ' ' + type;
+			//var type = $('#type option:selected').text();
+			//var produk = category + ' ' + type;
 			//console.log(produk);
-			$('#produk').val(produk);
+			//$('#produk').val(produk);
 			
 		});
 		

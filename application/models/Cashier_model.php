@@ -11,7 +11,13 @@ class Cashier_model extends CI_Model
         // $this->load->database();
         // $this->load->library('session');
     // }
-	
+	public function updateStock($stock, $id){
+		$param = array(
+			'inv_stock'=>$stock
+		);
+		$query = $this->db->update('inv_inventory', $param, array('inv_id'=>$id));	
+		return $query;
+	}
 	public function getInventory(){		
 		$query = $this->db->query('
 			SELECT

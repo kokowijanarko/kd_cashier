@@ -21,7 +21,7 @@ class Cashier extends CI_Controller {
 				$data['message'] = $this->getMessage($_GET['msg']);
 			}
 			$data['order_code'] = $this->orderCodeGenerator();
-			$data['produk'] = $this->cashier_model->getinventory();
+			$data['produk'] = $this->cashier_model->getInventory();
 			$this->load->view('admin/cashier/add', $data);
 		}else{
 			redirect(site_url(''));
@@ -53,7 +53,6 @@ class Cashier extends CI_Controller {
 			$new_order_code = 'INV.'.$new_loc_index.'/'.date('d').'/'.date('M').'/'.date('Y');
 		}
 		return $new_order_code;
-		
 	}
 	
 	public function add_order(){
@@ -75,23 +74,26 @@ class Cashier extends CI_Controller {
 				'order_status'=> $post['payment'],
 				'insert_user_id'=> 1,
 				'insert_timestamp'=>date('Y-m-d H:i:s')		
-			);			
-			//var_dump($param_order);die;
+			);
 			$this->db->trans_start();
 			$execute = $this->cashier_model->insertOrder($param_order);
 			
 			if($execute){
-				$id_order = $this->db->insert_id();	
+				$id_order = $this->db->insert_id();
 				for($i=0; $i<count($post['data_order']['product_id']); $i++){
+					$inv = $this->cashier_model->getInvDetailById($post['data_order']['product_id'][$i]);
+					$new_stock = intval($inv->inv_stock) - intval($post['data_order']['quantity'][$i]);
+					$this->cashier_model->updateStock($new_stock, $post['data_order']['product_id'][$i]);
 					$param_detail[] = array(
 						'orderdetail_order_id'=>$id_order,
 						'orderdetail_product_id'=>$post['data_order']['product_id'][$i],
 						'orderdetail_quantity'=>$post['data_order']['quantity'][$i],
 						'orderdetail_desc'=>$post['data_order']['desc'][$i]
-					);			
+					);
+					
 				}
 				$execute = $execute && $this->cashier_model->insertOrderDetail($param_detail);			
-			}		
+			}			
 			$this->db->trans_complete($execute);
 			
 			if($execute){
