@@ -187,7 +187,7 @@ $this->load->view('template/sidebar');
 									<td colspan="5">TOTAL</td>
 									<td class="auto" id="total"></td>
 								</tr>
-								<tr>
+								<tr class="hide">
 									<td colspan="2">Cara Pembayaran</td>	
 									<td id="cara_pembayaran" colspan="4"> </td>	
 								</tr>								
