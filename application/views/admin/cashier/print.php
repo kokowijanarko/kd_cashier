@@ -114,9 +114,11 @@
 						</table>		
 						<input type="hidden" id="order_id">
 					</div>
-					<div>
-						<button id="print" onclick="window.print();" type="submit" class="btn btn-warning">Cetak</button>
-					</div>
+					<div class="col-md-3 pull-right">
+						Front Office </br></br></br></br>						
+						<label> <?php echo $this->session->userdata('fullname')?>
+						</label>					
+					</div>	
 			</div><!-- /.box-body -->
     </div><!-- /.box -->
 	
@@ -142,6 +144,7 @@
 <script>	
 
 	jQuery(function($) {
+		window.print();
 		var invoice_number = '<?php echo $inv->order_code?>';
 		console.log(invoice_number);
 		$.ajax({

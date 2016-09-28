@@ -9,14 +9,15 @@ class Auth extends CI_Controller {
     }
 	
 	public function index(){
-		$this->load->view('login');
+		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2 || $this->session->userdata('level') == 3){
+			redirect('dashboard1');
+		}else{
+			$this->load->view('login');
+		}		
 	}
         
 	public function login(){
-		//var_dump($_POST);
 		$auth = $this->authex->login($_POST['key'], $_POST['password']);
-		//var_dump($auth, $this->session->userdata());
-		//die;
 		if($auth){
 			redirect('dashboard1');			
 		}else{
@@ -25,7 +26,7 @@ class Auth extends CI_Controller {
 	}
 	
 	public function logout(){
-		$this->authex->logout();
+		session_destroy();
 		redirect(site_url(''));
 	}
 }

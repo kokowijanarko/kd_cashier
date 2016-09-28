@@ -40,8 +40,8 @@ $this->load->view('template/sidebar');
 			<div class="row">
 				<div class="col-md-4">
 					<?php
-						var_dump($inv);
-						var_dump($inv_detail);
+						//var_dump($inv);
+						//var_dump($inv_detail);
 					?>
 				</div>
 			</div><!-- /.box-body -->

@@ -132,22 +132,22 @@ $this->load->view('template/sidebar');
 							<tr>
 								<td>Nama</td>
 								<td>:</td>
-								<td><div class="form-group"><input class="form-control" id="ord_name" type="text" name="ord_name" ></div></td>
+								<td><div class="form-group"><input class="form-control" id="ord_name" type="text" name="ord_name" required></div></td>
 							</tr>
 							<tr>
 								<td>Alamat</td>
 								<td>:</td>
-								<td><div class="form-group"><textarea class="form-control" id="ord_address" name="ord_address"></textarea></div></td>
+								<td><div class="form-group"><textarea class="form-control" id="ord_address" name="ord_address" required></textarea></div></td>
 							</tr>			
 							<tr>
 								<td>No. Kontak</td>
 								<td>:</td>
-								<td><div class="form-group"><input class="form-control" id="ord_contact" type="text" name="ord_contact" ></div></td>
+								<td><div class="form-group"><input class="form-control" id="ord_contact" type="text" name="ord_contact" required></div></td>
 							</tr>
 							<tr>
 								<td>Email</td>
 								<td>:</td>
-								<td><div class="form-group"><input class="form-control" id="ord_email" type="text" name="ord_email" ></div></td>
+								<td><div class="form-group"><input class="form-control" id="ord_email" type="text" name="ord_email" required></div></td>
 							</tr>
 							<tbody>
 						</table>
@@ -204,7 +204,7 @@ $this->load->view('template/sidebar');
 								</tr>
 								<tr>
 									<td colspan="2">Bayar</td>
-									<td colspan="4"><input type="number" min="0" value="0" name="cash" id="cash"></td>
+									<td colspan="4"><input type="number" min="0" value="0" name="cash" id="cash" required></td>
 								</tr>
 								<tr>
 									<td colspan="2">Kembali</td>
@@ -220,7 +220,7 @@ $this->load->view('template/sidebar');
 					
 					<div class="col-md-3 pull-right">
 						Front Office </br></br></br></br>						
-						<label> Rere
+						<label> <?php echo $this->session->userdata('fullname')?>
 						</label>					
 					</div>					
 				</div>				

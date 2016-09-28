@@ -15,6 +15,7 @@ class Cashier extends CI_Controller {
 	
 	public function index()
 	{
+		// var_dump($this->session->userdata('fullname'));die;
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
 			if(isset($_GET['msg'])){
 				$data['message'] = $this->getMessage($_GET['msg']);
@@ -30,15 +31,13 @@ class Cashier extends CI_Controller {
 	}
 	
 	private function orderCodeGenerator(){
-		//loc = last order code
-		$last_order_code = $this->cashier_model->getLastOrderCode();
-		
-		if($last_order_code == null){
+		$date = date('Y-m-d');
+		$last_order_code = $this->cashier_model->getLastOrderCode($date);
+		if(is_null($last_order_code)){
 			$new_order_code = 'INV.1/'.date('d').'/'.date('M').'/'.date('Y');
 		}else{
 			$loc_explode = explode('/', $last_order_code);
 			$loc_identifier = explode('.', $loc_explode[0]);
-			//var_dump($loc_explode, $loc_identifier);die;
 			$loc_prefix = $loc_identifier[0];
 			$loc_index = $loc_identifier[1];
 			$loc_date = $loc_explode[1];
@@ -47,11 +46,10 @@ class Cashier extends CI_Controller {
 			$loc_datestamp = $loc_date.'-'.$loc_month.'-'.$loc_year;
 			
 			if(date('d-M-Y') == $loc_datestamp){
-				$new_loc_index = $loc_index +  1;
+				$new_loc_index = intval($loc_index) +  1;
 			}else{
 				$new_loc_index = 1;
 			}
-			//var_dump();die;
 			$new_order_code = 'INV.'.$new_loc_index.'/'.date('d').'/'.date('M').'/'.date('Y');
 		}
 		return $new_order_code;

@@ -67,7 +67,7 @@ class Report extends CI_Controller {
 	}
 	public function print_report(){
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2 || $this->session->userdata('level') == 3){
-			var_dump($_GET);die;
+			//var_dump($_GET);die;
 			
 			if(!empty($_GET)){
 				if($_GET['date'] == '01-01-1970' || $_GET['date'] == '' || $_GET['date'] == 'all'){

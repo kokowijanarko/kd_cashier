@@ -56,10 +56,15 @@ class Cashier_model extends CI_Model
 		return $result;
 	}
 	
-	public function getLastOrderCode(){
-		$query = $this->db->query('SELECT MAX(order_code) AS order_code FROM cash_order');
+	public function getLastOrderCode($date){
+		$query = $this->db->query('SELECT order_code AS order_code FROM cash_order WHERE insert_timestamp LIKE "%'. $date .'%" ORDER BY order_id DESC LIMIT 1');
 		$order_code = $query->row();
-		return $order_code->order_code;
+		if($order_code){
+			return $order_code->order_code;
+		}else{
+			return $order_code;
+		}
+		
 	}
 	
 	public function getInventoryType(){

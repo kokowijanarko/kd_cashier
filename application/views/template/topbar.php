@@ -1,6 +1,6 @@
 <?php
 	$photo = !empty($this->session->userdata('photo'))?$this->session->userdata('photo'):'avatar5.png';
-	//var_dump($photo);die;
+	//var_dump($this->session->userdata('photo'));die;
 ?>
 </head>
 <body class="skin-blue">
@@ -50,7 +50,7 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                        <a href="<?php echo site_url('user/profile/'. $this->session->userdata('user_id'))?>" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
                                         <a href="<?php echo site_url('auth/logout') ?>" class="btn btn-default btn-flat">Sign out</a>

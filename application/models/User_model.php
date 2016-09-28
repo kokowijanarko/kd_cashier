@@ -29,6 +29,7 @@ class User_model extends CI_Model
 			a.`user_photo_name`,
 			a.`user_full_name`,
 			a.`user_username`,
+			a.`user_password`,
 			a.`user_email`,
 			a.`user_level_id`,
 			a.`user_desc`,

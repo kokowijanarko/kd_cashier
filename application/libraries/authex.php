@@ -62,16 +62,14 @@ class Authex{
          $CI->db->query("UPDATE user SET user_last_login='".$last_login."' WHERE 
 			user_username = '".$username."' AND user_password = '".md5($password)."'
 		 ");
-		//var_dump($query->row()->custommer_id);die;
-         //store user id in the session
          $CI->session->set_userdata("user_id", $query->row()->user_id);
          $CI->session->set_userdata("username", $query->row()->user_username);
-         $CI->session->set_userdata("fullname", $query->row()->user_full_name);
+         $CI->session->set_userdata("fullname", $query->row()->user_full_name);		 
+         $CI->session->set_userdata("photo", $query->row()->user_photo_name);
 		 
 		 $query_level = $CI->db->get_where("user_ref_level", array('level_id'=>$query->row()->user_level_id));
          $CI->session->set_userdata("level", $query->row()->user_level_id);
          $CI->session->set_userdata("level_name", $query_level->row()->level_name);
-         $CI->session->set_userdata("photo", $query->row()->user_photo_name);
          return true;
      }
  }
@@ -79,7 +77,7 @@ class Authex{
  function logout()
  {
      $CI =& get_instance();
-     $CI->session->unset_userdata("user_id");
+     $CI->session->unset_userdata();
  }
 
  function register($username, $password)

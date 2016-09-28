@@ -31,7 +31,7 @@ class User extends CI_Controller {
 	}
 	
 	public function add(){
-		if($this->session->userdata('level') == 1  ){
+		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
 			$data['level'] = $this->user_model->getUserLevel();
 			//var_dump($data);die;
 			$this->load->view('admin/user/add', $data);
@@ -41,7 +41,7 @@ class User extends CI_Controller {
 	}
 	
 	public function edit($id){
-		if($this->session->userdata('level') == 1  ){
+		if($this->session->userdata('level') == 1  || $this->session->userdata('level') == 2){
 			$data['level'] = $this->user_model->getUserLevel();	
 			$data['detail'] = $this->user_model->getDetailUser($id);
 			// var_dump($data);die;
@@ -123,6 +123,86 @@ class User extends CI_Controller {
 		}
 	}
 	
+	public function doEditProffile(){
+		if($this->session->userdata('level') == 1  ){
+			$this->db->trans_start();
+			$id=$_POST['id'];
+			$detail = $this->user_model->getDetailUser($id);			
+			$foto_name = $_POST['user_full_name'].'-'.$this->session->userdata('level').'.jpeg';
+			
+			$param = array();
+			if($_POST['user_password'] != ''){
+				$old_password = md5($_POST['user_password_old']);
+				if($detail->user_password == $old_password){
+					if($_POST['user_password_conf'] == $_POST['user_password']){
+						$new_password = md5($_POST['user_password']);
+						$param = array(
+							'user_full_name'=>$_POST['user_full_name'],
+							'user_username'=>$_POST['user_username'],
+							'user_email'=>$_POST['user_email'],
+							'user_level_id'=>$_POST['level'],
+							'user_desc'=>$_POST['deskripsi'],
+							'user_password'=>$_POST['deskripsi'],
+							'user_photo_name'=>$foto_name
+						);
+					}else{
+						$msg = '
+							<div class="alert alert-danger alert-dismissible disabled">
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+								<h4><i class="icon fa fa-check"></i>Password Tidak Cocok !</h4>
+							</div>
+						';
+					}
+				}else{
+					$msg = '
+						<div class="alert alert-danger alert-dismissible disabled">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+							<h4><i class="icon fa fa-check"></i>Password Salah !</h4>
+						</div>
+					';
+				}
+			}else{
+				$param = array(
+					'user_full_name'=>$_POST['user_full_name'],
+					'user_username'=>$_POST['user_username'],
+					'user_email'=>$_POST['user_email'],
+					'user_desc'=>$_POST['deskripsi'],
+					'user_photo_name'=>$foto_name
+				);
+
+			}
+			if(!empty($param)){
+				
+				$result = $this->user_model->updateUser($param, $id);
+			}
+			if($result && $_FILES['photo']['error'] != 4 && $_FILES['photo']['type'] == 'image/jpeg'){
+				unlink('assets/user_img/'. $foto_name);
+				$result = $result && $this->foto_upload->process_image($_FILES['photo']['tmp_name'], $foto_name);	
+			}
+			if($result && !isset($msg)){
+				$msg = '
+					<div class="alert alert-success alert-dismissible disabled">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						<h4><i class="icon fa fa-check"></i>Ubah Profil berhasil !</h4>
+					</div>
+					';
+			}elseif(!isset($msg)){
+				$msg = '
+					<div class="alert alert-danger alert-dismissible disabled">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						<h4><i class="icon fa fa-check"></i>Ubah Profil Gagal !</h4>
+					</div>
+					';
+			}
+			$this->session->set_flashdata('msg', $msg);
+			$this->db->trans_complete($result);
+			redirect(base_url('index.php/user/profile/'. $id));
+			
+		}else{
+			redirect(site_url(''));
+		}
+	}
+	
 	public function doDelete($id){
 		if($this->session->userdata('level') == 1  ){
 			$user = $this->user_model->getDetailUser($id);
@@ -137,6 +217,18 @@ class User extends CI_Controller {
 		}else{
 			redirect(site_url(''));
 		}		
+	}
+	
+	public function profile($id){
+		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2 || $this->session->userdata('level') == 3){
+			$data['level'] = $this->user_model->getUserLevel();	
+			$data['detail'] = $this->user_model->getDetailUser($id);
+			// var_dump($data);die;
+			$this->load->view('admin/user/profile', $data);
+
+		}else{
+			redirect(site_url(''));
+		}	
 	}
 	
 	private function getMessage($idx){
