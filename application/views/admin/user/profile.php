@@ -51,15 +51,15 @@ $this->load->view('template/sidebar');
 						</div>
 						<div class="form-group">
 							<label>Password baru</label>
-							<input type="text" name="user_password" id="user_password" class="form-control" placeholder="Password Baru"> *<i>kososngkan jika tidak ingin merubah password</i>
+							<input type="password" name="user_password" id="user_password" class="form-control" placeholder="Password Baru"> *<i>kososngkan jika tidak ingin merubah password</i>
 						</div>						
 						<div class="form-group hide" id="conf_pass">
 							<label>Konfirmasi Password baru</label>
-							<input type="text" name="user_password_conf" id="user_password_conf" class="form-control" placeholder="Konfirmasi Password Baru">
+							<input type="password" name="user_password_conf" id="user_password_conf" class="form-control" placeholder="Konfirmasi Password Baru">
 						</div>		
 						<div class="form-group hide" id="old_pass">
 							<label>Password Lama</label>
-							<input type="text" name="user_password_old" id="user_password_old" class="form-control" placeholder="Password Lama">
+							<input type="password" name="user_password_old" id="user_password_old" class="form-control" placeholder="Password Lama">
 						</div>
 						<div class="form-group">
 							<label>Foto</label>
