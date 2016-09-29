@@ -18,7 +18,7 @@ class User extends CI_Controller {
 	
 	public function index()
 	{	
-		if($this->session->userdata('level') == 1 ){
+		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
 			if(isset($_GET['msg'])){
 				$data['message'] = $this->getMessage($_GET['msg']);
 			}
@@ -54,7 +54,6 @@ class User extends CI_Controller {
 	}
 	
 	public function doAdd(){
-		if($this->session->userdata('level') == 1  ){
 			var_dump($_POST, $_FILES);
 			if(!empty($_POST)){
 				$this->db->trans_start();
@@ -85,16 +84,10 @@ class User extends CI_Controller {
 			}else{
 				redirect(site_url('user/add'));
 			}
-			
-
-		}else{
-			redirect(site_url(''));
-		}
 		
 	}
 	
 	public function doEdit(){
-		if($this->session->userdata('level') == 1  ){
 			$this->db->trans_start();
 			$foto_name = $_POST['user_full_name'].'-'.$_POST['level'].'.jpeg';
 			$param = array(
@@ -118,13 +111,10 @@ class User extends CI_Controller {
 				redirect(base_url('index.php/user/index?msg=Em0'));
 			}
 
-		}else{
-			redirect(site_url(''));
-		}
+	
 	}
 	
 	public function doEditProffile(){
-		if($this->session->userdata('level') == 1  ){
 			$this->db->trans_start();
 			$id=$_POST['id'];
 			$detail = $this->user_model->getDetailUser($id);			
@@ -142,7 +132,7 @@ class User extends CI_Controller {
 							'user_email'=>$_POST['user_email'],
 							'user_level_id'=>$_POST['level'],
 							'user_desc'=>$_POST['deskripsi'],
-							'user_password'=>$_POST['deskripsi'],
+							'user_password'=>$new_password,
 							'user_photo_name'=>$foto_name
 						);
 					}else{
@@ -197,10 +187,7 @@ class User extends CI_Controller {
 			$this->session->set_flashdata('msg', $msg);
 			$this->db->trans_complete($result);
 			redirect(base_url('index.php/user/profile/'. $id));
-			
-		}else{
-			redirect(site_url(''));
-		}
+		
 	}
 	
 	public function doDelete($id){
