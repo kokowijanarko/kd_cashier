@@ -202,19 +202,19 @@ $this->load->view('template/sidebar');
 								</tr>								
 								<tr id="tr_dp">
 									<td colspan="2">DP</td>
-									<td colspan="4"><input type="number" min="0" value="0" name="down_payment" id="down_payment"></td>
+									<td colspan="4"><input type="text" name="down_payment" id="down_payment"></td>
 								</tr>
 								<tr id="tr_kurang">
 									<td colspan="2">Kurang</td>
-									<td colspan="4"><input readonly type="number" min="0" value="0" name="minus" id="minus"></td>
+									<td colspan="4"><input readonly type="text" name="minus" id="minus"></td>
 								</tr>
 								<tr>
 									<td colspan="2">Bayar</td>
-									<td colspan="4"><input type="number" min="0" value="0" name="cash" id="cash" required></td>
+									<td colspan="4"><input type="text"  name="cash" id="cash" required></td>
 								</tr>
 								<tr>
 									<td colspan="2">Kembali</td>
-									<td colspan="4"><input readonly type="number" min="0" value="0" name="cash_back" id="cash_back"></td>
+									<td colspan="4"><input readonly type="text" min="0" value="0" name="cash_back" id="cash_back"></td>
 								</tr>
 							</tfoot>
 						</table>						
@@ -252,7 +252,11 @@ $this->load->view('template/js');
 <script>	
 
 	jQuery(function($) {
-	
+		$('#ord_contact').mask('0000-0000-0000');
+		$('#down_payment').mask('000.000.000.000.000,-', {reverse: true});
+		$('#minus').mask('000.000.000.000.000,-', {reverse: true});
+		$('#cash_back').mask('000.000.000.000.000,-', {reverse: true});
+		$('#cash').mask('000.000.000.000.000,-', {reverse: true});
 		
 		$('input:radio[name=payment][id=payment_lunas]').prop('checked', true);
 		$('input:radio[name=payment_way][id=payment_cash]').prop('checked', true);
@@ -272,7 +276,7 @@ $this->load->view('template/js');
 		var desc = [];
 		var data_order = {product_name, product_id, price, quantity, sub_total, desc};
 		var id_order = [];
-		
+		var is_prod_load;
 		
 		$('#smt-order').click(function(){
 			var prod_val = $('#produk').val();
@@ -312,6 +316,7 @@ $this->load->view('template/js');
 				console.log($line);
 			}
 			$table.appendTo($("#tbl-produk-order"));
+			is_prod_load = 1;
 		});
 		
 		$('#proc-order').click(function(){		
@@ -499,6 +504,7 @@ $this->load->view('template/js');
 		
 		function formVal(){
 			var msg = [];
+			console.log(product_id);
 			var payment_way = $('input:radio[name=payment_way]:checked' ).val();
 			var payment = $('input:radio[name=payment]:checked' ).val();
 			var dp = $('input[name=down_payment]' ).val();
@@ -529,8 +535,14 @@ $this->load->view('template/js');
 				msg.push('Kontak Pemesan Tidak Boleh Kosong');
 			}
 			
+			if(is_prod_load != 1){
+				msg.push('Tidak Bisa Membuat Order Kosong');
+			}
+			
 			return msg;		
 		}
+		
+		
 		
 	});
 	
