@@ -3,7 +3,7 @@ $this->load->view('template/head');
 ?>
 <!--tambahkan custom css disini-->
 <!-- Select2 -->
-<link rel="stylesheet" href="../../plugins/select2/select2.min.css">
+<link href="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/select2/select2.min.css') ?>" rel="stylesheet" type="text/css" />
 <!-- bootstrap datepicker -->
 <link href="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/datepicker/datepicker3.css') ?>" rel="stylesheet" type="text/css" />
 
@@ -37,7 +37,13 @@ $this->load->view('template/sidebar');
             </div>
         </div>
         <div class="box-body">
+			<div class="col-md-12">
+				<div id="msg">
+				</div>
+			</div>
 			<div class="row">
+				
+				<div id="form-order">
 				<div class="col-md-4">
 						<div class="form-group">
 							<label>Produk</label>
@@ -63,7 +69,7 @@ $this->load->view('template/sidebar');
 							<label>Jumlah</label>
 							<div class="input-group">
 								<span class="input-group-addon">@</span>
-								<input id="jumlah"  type="jumlah" name="jumlah" pattern="[1-9].{1,}" class="form-control">
+								<input id="jumlah"  type="number" name="jumlah" min="1" class="form-control">
 								<span class="input-group-addon">Biji</span>
 							</div>
 						</div>
@@ -176,7 +182,7 @@ $this->load->view('template/sidebar');
 											<input type="radio" name="payment" id="payment_dp" value="0"><label for="payment_dp">DP</label>
 										</div>
 										<div>
-											<input type="radio" name="payment" id="payment_lunas" value="1"><label for="payment_lunas">Lunas</label>
+											<input type="radio" name="payment" id="payment_lunas" value="1" checked="checked"><label for="payment_lunas">Lunas</label>
 										</div>
 									</td>	
 								</tr>
@@ -184,7 +190,7 @@ $this->load->view('template/sidebar');
 									<td colspan="2">Cara Pembayaran</td>	
 									<td colspan="4">
 										<div>
-											<input type="radio" name="payment_way" id="payment_cash" value="0" ><label for="payment_cash">Cash</label>
+											<input type="radio" name="payment_way" id="payment_cash" value="0" checked="checked"><label for="payment_cash">Cash</label>
 										</div>
 										<div>
 											<input type="radio" name="payment_way" id="payment_transfer" value="1"><label for="payment_transfer">Transfer</label>
@@ -267,6 +273,7 @@ $this->load->view('template/js');
 		var data_order = {product_name, product_id, price, quantity, sub_total, desc};
 		var id_order = [];
 		
+		
 		$('#smt-order').click(function(){
 			var prod_val = $('#produk').val();
 			var prod_name = $('#produk option:selected').text();
@@ -307,62 +314,77 @@ $this->load->view('template/js');
 			$table.appendTo($("#tbl-produk-order"));
 		});
 		
-		$('#proc-order').click(function(){			
-			var payment_way = $('input:radio[name=payment_way]:checked' ).val();
-			var payment = $('input:radio[name=payment]:checked' ).val();
-			var dp = $('input[name=down_payment]' ).val();
-			var bayar = $('input[name=cash]' ).val();
-			var kurang = $('input[name=minus]' ).val();
-			var kembali = $('input[name=cash_back]' ).val();
-			var no_nota = $('#no_nota').text();
-			var tgl_order = $('input[name=ord_date_order]').val();
-			var tgl_pengambilan = $('input[name=ord_date_take]').val();
-			var tgl_lihat_design = $('input[name=ord_date_design]').val();
-			var nama = $('#ord_name').val();
-			var alamat = $('#ord_address').val();
-			var kontak = $('#ord_contact').val();
-			var email = $('#ord_email').val();
-			
-			
-			var total = 0;
-			for (var i = 0; i < sub_total.length; i++) {
-				total += sub_total[i] << 0;
+		$('#proc-order').click(function(){		
+			var validation = formVal();
+			if(!validation){
+				var payment_way = $('input:radio[name=payment_way]:checked' ).val();
+				var payment = $('input:radio[name=payment]:checked' ).val();
+				var dp = $('input[name=down_payment]' ).val();
+				var bayar = $('input[name=cash]' ).val();
+				var kurang = $('input[name=minus]' ).val();
+				var kembali = $('input[name=cash_back]' ).val();
+				var no_nota = $('#no_nota').text();
+				var tgl_order = $('input[name=ord_date_order]').val();
+				var tgl_pengambilan = $('input[name=ord_date_take]').val();
+				var tgl_lihat_design = $('input[name=ord_date_design]').val();
+				var nama = $('#ord_name').val();
+				var alamat = $('#ord_address').val();
+				var kontak = $('#ord_contact').val();
+				var email = $('#ord_email').val();
+				
+				
+				var total = 0;
+				for (var i = 0; i < sub_total.length; i++) {
+					total += sub_total[i] << 0;
+				}
+				
+				var params = {
+						data_order, 
+						payment_way, 
+						payment, 
+						dp, bayar, 
+						kurang, 
+						kembali, 
+						total,
+						no_nota,
+						tgl_lihat_design,
+						tgl_order,
+						tgl_pengambilan,
+						nama,
+						alamat,
+						kontak,
+						email
+					};
+				
+				console.log(params);
+				// $('#proc-order').addClass('hide');
+				// $('#proc-print').removeClass('hide');
+				var url = '<?php echo site_url('cashier/add_order')?>';
+				// $.ajax({
+					// url: url,
+					// method:'post',
+					// data: params				
+				// }).success(function(result){		
+						// result = JSON.parse(result);
+						// id_order.push(result);
+						// alert('Order Sukses Dibuat');
+						// $('#proc-order').addClass('hide');
+						// $('#proc-print').removeClass('hide');
+				// });				
+			}else{
+				//var msg_param = '';
+				var par_lenght = validation.length;
+				console.log(par_lenght);
+				for(i=0; i < par_lenght; i++){
+					console.log(validation[i]);
+					var msg_param = '<div class="alert alert-warning alert-dismissible">' +
+					'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
+					'<h4><i class="icon fa fa-check"></i> Cek Form!</h4>' + validation[i] +
+					'</div>';
+					console.log(msg_param);
+					$('#msg').append(msg_param);
+				}				
 			}
-			
-			var params = {
-					data_order, 
-					payment_way, 
-					payment, 
-					dp, bayar, 
-					kurang, 
-					kembali, 
-					total,
-					no_nota,
-					tgl_lihat_design,
-					tgl_order,
-					tgl_pengambilan,
-					nama,
-					alamat,
-					kontak,
-					email
-				};
-			
-			console.log(params);
-			// $('#proc-order').addClass('hide');
-			// $('#proc-print').removeClass('hide');
-			var url = '<?php echo site_url('cashier/add_order')?>';
-			$.ajax({
-				url: url,
-				method:'post',
-				data: params				
-			}).success(function(result){		
-					result = JSON.parse(result);
-					id_order.push(result);
-					alert('Order Sukses Dibuat');
-					$('#proc-order').addClass('hide');
-					$('#proc-print').removeClass('hide');
-			});
-			
 		});
 		
 		$('#proc-print').click(function(){			
@@ -447,6 +469,23 @@ $this->load->view('template/js');
 			//console.log(prod);
 		});	
 		
+		// $("#form-order").validate({
+			// rules: {
+				// password: {
+					// required: true,
+					// minlength: 5
+				// },
+				// email: {
+					// required: true,
+					// email: true
+				// },
+				// input_text: {
+					// required: true,
+					// minlength: 5
+				// }
+			// }
+		// });
+		
 		function showHide(par){
 			
 			if(par == '1'){
@@ -456,6 +495,41 @@ $this->load->view('template/js');
 				$('#tr_dp').removeClass('hide');
 				$('#tr_kurang').removeClass('hide');
 			}
+		}
+		
+		function formVal(){
+			var msg = [];
+			var payment_way = $('input:radio[name=payment_way]:checked' ).val();
+			var payment = $('input:radio[name=payment]:checked' ).val();
+			var dp = $('input[name=down_payment]' ).val();
+			var bayar = $('input[name=cash]' ).val();
+			var kurang = $('input[name=minus]' ).val();
+			var kembali = $('input[name=cash_back]' ).val();
+			var no_nota = $('#no_nota').text();
+			var tgl_order = $('input[name=ord_date_order]').val();
+			var tgl_pengambilan = $('input[name=ord_date_take]').val();
+			var tgl_lihat_design = $('input[name=ord_date_design]').val();
+			var nama = $('#ord_name').val();
+			var alamat = $('#ord_address').val();
+			var kontak = $('#ord_contact').val();
+			var email = $('#ord_email').val();
+			if((payment == '0') && (dp == 0)){
+				msg.push('Tidak bisa melakukan proses order tampa DP')
+			}
+			if(!tgl_pengambilan){
+				msg.push('Tanggal Pengambilan Tidak Boleh Kosong');
+			}
+			if(!nama){
+				msg.push('Nama Pemesan Tidak Boleh Kosong');
+			}
+			if(!alamat){
+				msg.push('Alamat Pemesan Tidak Boleh Kosong');
+			}
+			if(!kontak){
+				msg.push('Kontak Pemesan Tidak Boleh Kosong');
+			}
+			
+			return msg;		
 		}
 		
 	});
