@@ -185,7 +185,7 @@ class Cashier extends CI_Controller {
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
 			$data['inv'] = $this->cashier_model->getInvDetailByInvNumber($id);		
 			$data['inv_detail'] = $this->cashier_model->getInvDetail($data['inv']->order_id);
-			//var_dump($data);die;
+			// var_dump($data);die;
 			$this->load->view('admin/cashier/print', $data);
 		}else{
 			redirect(site_url(''));
