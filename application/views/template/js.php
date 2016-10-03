@@ -25,15 +25,18 @@
 <script>
 	jQuery(function($) {
 		var level = <?php echo $this->session->userdata('level')?>;
-		if(level == 2 || level == 4){
+		if(level == 2){
 			$('#menu_cashier').addClass('hide');
 		}
 		if(level == 3){
-			$('#menu_inventory').addClass('hide');
+			$('#menu_inventory').addClass('hide');			
+			$('#menu_user').addClass('hide');
 		}
-		if(level == 1 || level == 2){
-			$('#menu_user').removeClass('hide');
-		}		
+		if(level == 4){
+			$('#menu_cashier').addClass('hide');
+			$('#menu_inventory').addClass('hide');
+			$('#menu_user').addClass('hide');
+		}
 		console.log(level);		
 	});
 </script>
