@@ -34,7 +34,13 @@ $this->load->view('template/sidebar');
                 <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
             </div>
         </div>
+		
         <div class="box-body">
+			<?php
+				if(!empty($this->session->flashdata('msg'))){
+					echo $this->session->flashdata('msg');
+				}	
+			?>
 			<div>
 				<?php
 					if(!empty($msg)){
@@ -73,8 +79,7 @@ $this->load->view('template/sidebar');
 							if($value->order_status == 0){
 								$disabled_stat = 'disabled';
 								$url_stat='#';
-								$hide='hide';
-														
+								$hide='hide';														
 							}else{
 								$disabled = '';		
 							}
@@ -200,7 +205,7 @@ $this->load->view('template/sidebar');
 									<td colspan="5">TOTAL</td>
 									<td class="auto" id="total"></td>
 								</tr>
-								<tr class="hide">
+								<tr >
 									<td colspan="2">Cara Pembayaran</td>	
 									<td id="cara_pembayaran" colspan="4"> </td>	
 								</tr>								
@@ -313,7 +318,15 @@ $this->load->view('template/js');
 			result = JSON.parse(result);
 			console.log(result);
 			
-			var payment_way = $('#cara_pembayaran').text(result['order']['order_payment_way']);
+			if(result['order']['order_payment_way'] == 0){
+				var payment_way = 'Cash';
+			}else if(result['order']['order_payment_way'] == 1){
+				var payment_way = 'Transfer';
+			}else if(result['order']['order_payment_way'] == 2){
+				var payment_way = 'Debit';
+			}
+			
+			$('#cara_pembayaran').text(payment_way);
 			var dp = $('#down_payment' ).val(result['order']['order_down_payment']);
 			var bayar = $('#cash' ).text();
 			var kurang = $('#minus' ).val(result['order']['order_cash_minus']);

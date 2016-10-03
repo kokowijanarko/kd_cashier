@@ -154,7 +154,15 @@
 			}
 			$('#tr_status').removeClass('hide');
 			$('#status').text(status);
-			var payment_way = $('#order_payment_way').text(result['order']['order_payment_way']);
+			if(result['order']['order_payment_way'] == 0){
+				var payment_way = 'Cash';
+			}else if(result['order']['order_payment_way'] == 1){
+				var payment_way = 'Transfer';
+			}else if(result['order']['order_payment_way'] == 2){
+				var payment_way = 'Debit';
+			}
+			
+			$('#order_payment_way').text(payment_way);
 			var dp = $('#down_payment' ).text('Rp. ' + result['order']['order_down_payment']);
 			var bayar = $('#cash').text();
 			var kurang = $('#minus').text('Rp. ' + result['order']['order_cash_minus']);

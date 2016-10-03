@@ -57,7 +57,8 @@ class Cashier extends CI_Controller {
 	
 	public function add_order(){
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
-			$post = $_POST;			
+			$post = $_POST;		
+			var_dump($post);die;
 			$param_order = array(
 				'order_code' => $post['no_nota'],
 				'order_custommer_name' => $post['nama'],
@@ -233,26 +234,44 @@ class Cashier extends CI_Controller {
 	
 	public function orderDone($id){
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
-			$result = 0;
+			$msg = '';
+			$this->db->trans_start();
 			if(!empty($id)){
-				$params = array(
-					'order_status'=>0								
-				);
-				$update = $this->cashier_model->doUpdateOrderStat($params, $id);
-				if($update){
-					$result = 0;
+				$order = $this->cashier_model->getOrderById($id);
+				if(intval($order->order_cash_minus) > 0){
+					$msg .= '<div class="alert alert-danger alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+							<h4><i class="icon fa fa-check"></i> Gagal!</h4>
+							Tagihan Belum Lunas.
+						</div>';
+					
+				}else{
+					$params = array(
+						'order_status'=>0								
+					);
+					
+					$result = $this->cashier_model->doUpdateOrderStat($params, $id);
 				}
 			}
-			
-			if($result == 1){
-				$url = site_url('cashier/list_invoice?msg=ord_done_txt');
-				
-				redirect($url);
+			// var_dump($result);die;
+			$this->db->trans_complete($result);
+			if($result){
+				$msg .= '<div class="alert alert-success alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+							<h4><i class="icon fa fa-check"></i> Berhasil!</h4>
+							Job Order Selesai
+						</div>';
 			}else{
-				$url = site_url('cashier/list_invoice?msg=ord_fail_txt');
 				
-				redirect($url);
+				$msg .= '<div class="alert alert-danger alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+							<h4><i class="icon fa fa-check"></i> Gagal!</h4>
+							Job Order Gagal Diperbarui.
+						</div>';
 			}
+			$this->session->set_flashdata('msg', $msg);
+			$url = site_url('cashier/list_invoice');				
+			redirect($url);
 			
 		}else{
 			redirect(site_url(''));

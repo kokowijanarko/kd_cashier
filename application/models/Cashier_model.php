@@ -209,6 +209,12 @@ class Cashier_model extends CI_Model
 		$result->detail = $result2;
 		return $result;
 	}
+	public function getOrderById($id){
+		$query = $this->db->query('SELECT * FROM cash_order WHERE order_id="'.$id.'"');
+		
+		$result = $query->row();
+		return $result;
+	}
 	
 	public function doUpdateOrder($param, $id){
 		$query = $this->db->update('cash_order', $param, array('order_code'=>$id));	
