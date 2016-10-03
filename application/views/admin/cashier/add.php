@@ -253,10 +253,10 @@ $this->load->view('template/js');
 
 	jQuery(function($) {
 		$('#ord_contact').mask('0000-0000-0000');
-		$('#down_payment').mask('000.000.000.000.000,-', {reverse: true});
-		$('#minus').mask('000.000.000.000.000,-', {reverse: true});
-		$('#cash_back').mask('000.000.000.000.000,-', {reverse: true});
-		$('#cash').mask('000.000.000.000.000,-', {reverse: true});
+		// $('#down_payment').mask('000.000.000.000.000,-', {reverse: true});
+		// $('#minus').mask('000.000.000.000.000,-', {reverse: true});
+		// $('#cash_back').mask('000.000.000.000.000,-', {reverse: true});
+		// $('#cash').mask('000.000.000.000.000,-', {reverse: true});
 		
 		$('input:radio[name=payment][id=payment_lunas]').prop('checked', true);
 		$('input:radio[name=payment_way][id=payment_cash]').prop('checked', true);
@@ -321,7 +321,8 @@ $this->load->view('template/js');
 		
 		$('#proc-order').click(function(){		
 			var validation = formVal();
-			if(!validation){
+			console.log(validation);
+			if(validation == false){
 				var payment_way = $('input:radio[name=payment_way]:checked' ).val();
 				var payment = $('input:radio[name=payment]:checked' ).val();
 				var dp = $('input[name=down_payment]' ).val();
@@ -362,20 +363,21 @@ $this->load->view('template/js');
 					};
 				
 				console.log(params);
-				// $('#proc-order').addClass('hide');
-				// $('#proc-print').removeClass('hide');
+				$('#proc-order').addClass('hide');
+				$('#proc-print').removeClass('hide');
 				var url = '<?php echo site_url('cashier/add_order')?>';
-				// $.ajax({
-					// url: url,
-					// method:'post',
-					// data: params				
-				// }).success(function(result){		
-						// result = JSON.parse(result);
-						// id_order.push(result);
-						// alert('Order Sukses Dibuat');
-						// $('#proc-order').addClass('hide');
-						// $('#proc-print').removeClass('hide');
-				// });				
+				$.ajax({
+					url: url,
+					method:'post',
+					data: params				
+				}).success(function(result){
+						console.log(result);
+						result = JSON.parse(result);
+						id_order.push(result);
+						alert('Order Sukses Dibuat');
+						$('#proc-order').addClass('hide');
+						$('#proc-print').removeClass('hide');
+				});				
 			}else{
 				//var msg_param = '';
 				var par_lenght = validation.length;
@@ -504,7 +506,6 @@ $this->load->view('template/js');
 		
 		function formVal(){
 			var msg = [];
-			console.log(product_id);
 			var payment_way = $('input:radio[name=payment_way]:checked' ).val();
 			var payment = $('input:radio[name=payment]:checked' ).val();
 			var dp = $('input[name=down_payment]' ).val();
