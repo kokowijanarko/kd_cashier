@@ -138,11 +138,11 @@ CREATE TABLE `user` (
   PRIMARY KEY (`user_id`),
   KEY `user_level_id` (`user_level_id`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`user_level_id`) REFERENCES `user_ref_level` (`level_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 /*Data for the table `user` */
 
-insert  into `user`(`user_id`,`user_full_name`,`user_username`,`user_password`,`user_email`,`user_level_id`,`user_desc`,`user_photo_path`,`user_photo_name`) values (1,'root','root','63a9f0ea7bb98050796b649e85481845','surya@sur.ya',1,'',NULL,'root-1.jpeg'),(2,'admin','admin','21232f297a57a5a743894a0e4a801fc3','admin@admin.admin',2,NULL,NULL,NULL),(3,'cashier','cashier','6ac2470ed8ccf204fd5ff89b32a355cf','cashier.cash.ier',3,'',NULL,'cashier-3.jpeg'),(5,'Lele','lele','69bfc4ef467b367e3515cdcf693e65db','lele',3,'asdasdasdas',NULL,'Lele-3.jpeg'),(6,'cek','cek','6ab97dc5c706cfdc425ca52a65d97b0d','cek@cek.com',3,'',NULL,'cek-3.jpeg');
+insert  into `user`(`user_id`,`user_full_name`,`user_username`,`user_password`,`user_email`,`user_level_id`,`user_desc`,`user_photo_path`,`user_photo_name`) values (1,'root','root','63a9f0ea7bb98050796b649e85481845','surya@sur.ya',1,'',NULL,'root-1.jpeg'),(2,'admin','admin','21232f297a57a5a743894a0e4a801fc3','admin@admin.admin',2,NULL,NULL,NULL),(3,'cashier','kasir','c7911af3adbd12a035b289556d96470a','cashier.cash.ier',3,'',NULL,'cashier-3.jpeg'),(4,'owner','owner','72122ce96bfec66e2396d2e25225d70a',NULL,4,NULL,NULL,NULL);
 
 /*Table structure for table `user_ref_level` */
 
@@ -153,11 +153,11 @@ CREATE TABLE `user_ref_level` (
   `level_name` varchar(100) DEFAULT NULL,
   `level_desc` text,
   PRIMARY KEY (`level_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `user_ref_level` */
 
-insert  into `user_ref_level`(`level_id`,`level_name`,`level_desc`) values (1,'root',NULL),(2,'admin',NULL),(3,'cashier',NULL);
+insert  into `user_ref_level`(`level_id`,`level_name`,`level_desc`) values (1,'root',NULL),(2,'admin',NULL),(3,'cashier',NULL),(4,'owner',NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
