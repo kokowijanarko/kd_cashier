@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>AdminLTE 2 | Log in</title>
+        <title>Cashier | Log in</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <!-- Bootstrap 3.3.2 -->
         <link href="<?php echo base_url('assets/AdminLTE-2.0.5/bootstrap/css/bootstrap.min.css') ?>" rel="stylesheet" type="text/css" />
@@ -29,7 +29,7 @@
                 <p class="login-box-msg">Sign in to start your session</p>
                 <form action="<?php echo site_url('auth/login') ?>" method="post">
                     <div class="form-group has-feedback">
-                        <input type="text"name="key" class="form-control" placeholder="Email"/>
+                        <input type="text"name="key" class="form-control" placeholder="Username"/>
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
