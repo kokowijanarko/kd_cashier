@@ -113,6 +113,12 @@ class Cashier_model extends CI_Model
 		");
 		return $query->row();
 	}
+	public function getOrderByCode($inv_number){
+		$query = $this->db->query("
+			SELECT * FROM cash_order WHERE order_code='$inv_number'
+		");
+		return $query->row();
+	}
 	public function getInvDetail($id){
 		$query = $this->db->query("
 			SELECT 
@@ -139,7 +145,36 @@ class Cashier_model extends CI_Model
 	}
 	
 	public function getInvoice(){
-		$query = $this->db->query('SELECT * FROM cash_order');
+		$query = $this->db->query("
+		SELECT
+			IFNULL(DATE_FORMAT(a.`insert_timestamp`, '%d-%m-%Y'), '-') AS insert_date,
+			a.`insert_user_id`,
+			IFNULL(b.`user_full_name`, '-') AS insert_user,
+			IFNULL(b.`user_full_name`,  '-') AS insert_username,
+			a.`order_address`,
+			a.`order_amount`,
+			a.`order_cash_minus`,
+			a.`order_code`,
+			a.`order_contact`,
+			a.`order_custommer_name`,
+			a.`order_date_design`,
+			a.`order_date_order`,
+			a.`order_date_take`,
+			a.`order_down_payment`,
+			a.`order_email`,
+			a.`order_id`,
+			a.`order_payment_way`,
+			a.`order_retur`,
+			a.`order_status`,
+			a.`order_type`,
+			IFNULL(DATE_FORMAT(a.`update_timestamp`, '%d-%m-%Y'), '-') AS update_date,
+			a.`update_user_id`,
+			IFNULL(c.`user_full_name`,  '-') AS `update_user`,
+			IFNULL(c.`user_full_name`,  '-') AS `update_username`
+		FROM cash_order a
+		LEFT JOIN `user` b ON b.`user_id` = a.`insert_user_id`
+		LEFT JOIN `user` c ON c.`user_id` = a.`update_user_id`
+		");
 		$result = $query->result();
 		return $result;
 	}
@@ -158,9 +193,7 @@ class Cashier_model extends CI_Model
 						d.`type_id`,
 						d.`type_name`,
 						b.`inv_price`,
-						a.`orderdetail_quantity`,
-						a.`orderdetail_timestamp`,
-						a.`orderdetail_user_id`
+						a.`orderdetail_quantity`
 
 					FROM cash_order_detail a
 					LEFT JOIN inv_inventory b ON b.`inv_id` = a.`orderdetail_product_id`

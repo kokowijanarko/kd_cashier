@@ -53,6 +53,9 @@ $this->load->view('template/sidebar');
                   <th>Tanggal Pengambilan</th>
                   <th>Total</th>
                   <th>Kurang</th>
+                  <th>Retur</th>
+                  <th>Insert</th>
+                  <th>Update</th>
                   <th>Aksi</th>
                 </tr>
                 </thead>
@@ -64,13 +67,16 @@ $this->load->view('template/sidebar');
 							$disabled = 'disabled';
 							$disabled_stat = '';
 							$url_stat = base_url('index.php/cashier/orderDone/'.$value->order_id);
-							if($value->order_cash_minus > 0){
-								$hide='hide';
-								$disabled = '';
-							}
-							if($value->order_status == 1){
+							// if($value->order_cash_minus > 0){
+								
+							// }
+							if($value->order_status == 0){
 								$disabled_stat = 'disabled';
 								$url_stat='#';
+								$hide='hide';
+														
+							}else{
+								$disabled = '';		
 							}
 							echo '<input type="hidden" id="list_order_id" value="'.$value->order_id.'">';
 							echo '<tr>';
@@ -80,8 +86,11 @@ $this->load->view('template/sidebar');
 							echo '<td>'.$value->order_address.'</td>';
 							echo '<td>'.$value->order_date_order.'</td>';
 							echo '<td>'.$value->order_date_take.'</td>';
-							echo '<td class="auto">'.$value->order_amount.'</td>';
+							echo '<td class="auto">'.$value->order_amount.'</td>';							
 							echo '<td class="auto" id="cash_minus">'.$value->order_cash_minus.'</td>';
+							echo '<td class="auto">'.$value->order_retur.'</td>';
+							echo '<td>'.$value->insert_user .', '. $value->insert_date .'</td>';
+							echo '<td>'.$value->update_user.', '. $value->update_date .'</td>';
 							echo '<td>
 								<div class="btn-group">
 									<a class="hide" id="order_edit" href="'.base_url('index.php/invoice/edit/'.$value->order_id).'">
@@ -184,6 +193,10 @@ $this->load->view('template/sidebar');
 							</thead>
 							<tfoot>
 								<tr>
+									<td colspan="5">RETUR</td>
+									<td class="auto" ><input id="retur" type="number" name="retur" min="0" value="0" class="form-input"></td>
+								</tr>
+								<tr>
 									<td colspan="5">TOTAL</td>
 									<td class="auto" id="total"></td>
 								</tr>
@@ -208,7 +221,7 @@ $this->load->view('template/sidebar');
 									<td ><input class="auto" readonly type="number" min="0" value="0" name="cash_back" id="cash_back"></td>
 								</tr>
 							</tfoot>
-						</table>		
+						</table>								
 						<input type="hidden" id="order_id">
 					</div>
 					<div class="col-md-4 pull-left">						
@@ -239,6 +252,7 @@ $this->load->view('template/js');
 
 <script>
   jQuery(function($) {
+	 var total_hide = [];
 	$('#cash').change(function(){
 		var kurang = $('#minus').val();
 		var bayar = $('#cash').val();
@@ -246,15 +260,33 @@ $this->load->view('template/js');
 		$('#cash_back').val(kembali);
 		//console.log(kembali);
 	});
+	$('#retur').keyup(function(){		
+		var rtr = $('#retur').val();
+		var tot_aftr_rtr = total_hide - rtr;
+		
+		// if(!rtr || rtr <= 0 ){
+			// $('#total').text($('total_hide').val());
+		// }else{
+			// $('#total').text(tot_aftr_rtr);
+		// }
+		console.log(total_hide);
+		console.log(rtr);
+		console.log(tot_aftr_rtr);
+		$('#total').text(tot_aftr_rtr);
+	});
 	$('#proc-order').click(function(){
 		var invo_number = $('#no_nota').text();
+		var total = $('#total').text();
+		var retur = $('#retur').val();
 		var kembali = $('#cash_back').val();
-		console.log(invo_number);
+		// console.log(total);
+		// console.log(retur);
+		
 		if(kembali >= 0){
 			$.ajax({
 				url:"<?php echo site_url('cashier/doAcQuittal')?>",
 				method:'post',
-				data:{'invo_number':invo_number}
+				data:{'invo_number':invo_number, 'total':total, 'retur':retur}
 			}).success(function(result){
 				result = JSON.parse(result);
 				
@@ -297,7 +329,8 @@ $this->load->view('template/js');
 			var alamat = $('#ord_address').text(result['order']['order_address']);
 			var kontak = $('#ord_contact').text(result['order']['order_contact']);
 			var email = $('#ord_email').text(result['order']['order_email']);			
-			var email = $('#total').text(result['order']['order_amount']);			
+			var total = $('#total').text(result['order']['order_amount']);
+			total_hide.push(result['order']['order_amount']);
 			$('#order_id').val($('#list_order_id').val());
 			$( "tbody#order_detail_tbody" ).empty();
 			$table = $( "<tbody id=order_detail_tbody></tbody>" );

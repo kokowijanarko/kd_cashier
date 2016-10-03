@@ -4,12 +4,7 @@
         <link href="<?php echo base_url('assets/font-awesome-4.3.0/css/font-awesome.min.css') ?>" rel="stylesheet" type="text/css" />
         <!-- Ionicons -->
         <link href="<?php echo base_url('assets/ionicons-2.0.1/css/ionicons.min.css') ?>" rel="stylesheet" type="text/css" />
-        <!-- Theme style -->
-        <link href="<?php echo base_url('assets/AdminLTE-2.0.5/dist/css/AdminLTE.css') ?>" rel="stylesheet" type="text/css" />
-        <!-- AdminLTE Skins. Choose a skin from the css/skins 
-             folder instead of downloading all of them to reduce the load. -->
-        <link href="<?php echo base_url('assets/AdminLTE-2.0.5/dist/css/skins/_all-skins.min.css') ?>" rel="stylesheet" type="text/css" />
-		
+        
 		<style>
 		table{
 			border:none;
@@ -91,6 +86,10 @@
 							</thead>
 							<tfoot>
 								<tr>
+									<td colspan="5">RETUR</td>
+									<td class="auto" id="retur"></td>
+								</tr>
+								<tr>
 									<td colspan="5">TOTAL</td>
 									<td class="auto" id="total"></td>
 								</tr>
@@ -132,14 +131,6 @@
 <!-- Bootstrap 3.3.2 JS -->
 <script src="<?php echo base_url('assets/AdminLTE-2.0.5/bootstrap/js/bootstrap.min.js') ?>" type="text/javascript"></script>
 <!-- SlimScroll -->
-<script src="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/slimScroll/jquery.slimScroll.min.js') ?>" type="text/javascript"></script>
-<!-- FastClick -->
-<script src='<?php echo base_url('assets/AdminLTE-2.0.5/plugins/fastclick/fastclick.min.js') ?>'></script>
-<!-- AdminLTE App -->
-<script src="<?php echo base_url('assets/AdminLTE-2.0.5/dist/js/app.min.js') ?>" type="text/javascript"></script>
-<!-- bootstrap datepicker -->
-<script src="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/datepicker/bootstrap-datepicker.js')?>"></script>
-
 
 <script>	
 
@@ -152,13 +143,12 @@
 			method:'post',
 			url:'<?php echo site_url('cashier/get_detail_invoice')?>'
 		}).success(function(result){
-			result = JSON.parse(result);
+			
 			console.log(result);
+			result = JSON.parse(result);
 			if(result['order']['order_cash_minus'] == 0){
-				var status = 'LUNAS';
-				
-				$('#tr_kurang').addClass('hide');
-				
+				var status = 'LUNAS';				
+				$('#tr_kurang').addClass('hide');				
 			}else{
 				var status = 'BELUM LUNAS';
 			}
@@ -177,7 +167,8 @@
 			var alamat = $('#ord_address').text(result['order']['order_address']);
 			var kontak = $('#ord_contact').text(result['order']['order_contact']);
 			var email = $('#ord_email').text(result['order']['order_email']);			
-			var email = $('#total').text(result['order']['order_amount']);			
+			var total = $('#total').text(result['order']['order_amount']);			
+			var retur = $('#retur').text(result['order']['order_retur']);			
 			$('#order_id').val($('#list_order_id').val());
 			$( "tbody#order_detail_tbody" ).empty();
 			$table = $( "<tbody id=order_detail_tbody></tbody>" );

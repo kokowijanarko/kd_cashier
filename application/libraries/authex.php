@@ -59,9 +59,9 @@ class Authex{
              "user_last_login" => $last_login
          );
 
-         $CI->db->query("UPDATE user SET user_last_login='".$last_login."' WHERE 
-			user_username = '".$username."' AND user_password = '".md5($password)."'
-		 ");
+         // $CI->db->query("UPDATE user SET user_last_login='".$last_login."' WHERE 
+			// user_username = '".$username."' AND user_password = '".md5($password)."'
+		 // ");
          $CI->session->set_userdata("user_id", $query->row()->user_id);
          $CI->session->set_userdata("username", $query->row()->user_username);
          $CI->session->set_userdata("fullname", $query->row()->user_full_name);		 

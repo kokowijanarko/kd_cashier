@@ -197,14 +197,12 @@ class Cashier extends CI_Controller {
 		
 		//var_dump($data['msg']);die;
 		$data['invoice'] = $this->cashier_model->getInvoice();
-		//var_dump($data);die;
 		$this->load->view('admin/cashier/list', $data);
 	}
 	
 	public function get_detail_invoice(){
-		
 		$result = $this->cashier_model->getDetailInvoiceByInvoiceCode($_POST['invo_number']);
-		//var_dump($result);die;
+		// var_dump($result);die;
 		echo json_encode($result);
 		exit;
 	}
@@ -215,6 +213,8 @@ class Cashier extends CI_Controller {
 			$result = 0;
 			if(!empty($post['invo_number'])){
 				$params = array(
+					'order_amount'=>$post['total'],
+					'order_retur'=>$post['retur'],
 					'order_cash_minus'=>0,
 					'update_user_id'=>1,
 					'update_timestamp'=>date('Y-m-d H:i:s')
@@ -236,11 +236,11 @@ class Cashier extends CI_Controller {
 			$result = 0;
 			if(!empty($id)){
 				$params = array(
-					'order_status'=>1								
+					'order_status'=>0								
 				);
 				$update = $this->cashier_model->doUpdateOrderStat($params, $id);
 				if($update){
-					$result = 1;
+					$result = 0;
 				}
 			}
 			
