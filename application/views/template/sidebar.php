@@ -62,7 +62,7 @@
                     <li id="child_menu_report_laporan_harian"><a href="<?php echo site_url('report/daily_list') ?>"><i class="fa fa-circle-o"></i>Laporan Harian</a></li>
                 </ul>
             </li>
-			<li id="menu_user" class="treeview hide">
+			<li id="menu_user" class="treeview">
                 <a href="<?php echo site_url('#')?>">
 					<i class="fa fa-files-o"></i> <span>Pengguna</span><i class="fa fa-angle-left pull-right"></i>
                 </a>       

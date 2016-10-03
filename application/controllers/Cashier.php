@@ -71,8 +71,8 @@ class Cashier extends CI_Controller {
 				'order_down_payment'=> $post['dp'],
 				'order_cash_minus'=> $post['kurang'],
 				'order_payment_way'=> $post['payment_way'],
-				'order_status'=> $post['payment'],
-				'insert_user_id'=> 1,
+				'order_status'=> 1,
+				'insert_user_id'=> $this->session->userdata('user_id'),
 				'insert_timestamp'=>date('Y-m-d H:i:s')		
 			);
 			$this->db->trans_start();
@@ -216,7 +216,7 @@ class Cashier extends CI_Controller {
 					'order_amount'=>$post['total'],
 					'order_retur'=>$post['retur'],
 					'order_cash_minus'=>0,
-					'update_user_id'=>1,
+					'update_user_id'=>$this->session->userdata('user_id'),
 					'update_timestamp'=>date('Y-m-d H:i:s')
 				);
 				$update = $this->cashier_model->doUpdateOrder($params, $post['invo_number']);

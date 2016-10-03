@@ -17,7 +17,7 @@ class Inventory extends CI_Controller {
 	
 	public function index()
 	{	
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
+		if(!empty($this->session->userdata('level'))){
 			if(isset($_GET['msg'])){
 				$data['message'] = $this->getMessage($_GET['msg']);
 			}

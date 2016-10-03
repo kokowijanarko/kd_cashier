@@ -28,13 +28,11 @@
 		if(level == 2){
 			$('#menu_cashier').addClass('hide');
 		}
-		if(level == 3){
-			$('#menu_inventory').addClass('hide');			
+		if(level == 3){		
 			$('#menu_user').addClass('hide');
 		}
 		if(level == 4){
 			$('#menu_cashier').addClass('hide');
-			$('#menu_inventory').addClass('hide');
 			$('#menu_user').addClass('hide');
 		}
 		console.log(level);		

@@ -253,6 +253,7 @@ $this->load->view('template/js');
 <script>
   jQuery(function($) {
 	 var total_hide = [];
+	 var cash_minus = [];
 	$('#cash').change(function(){
 		var kurang = $('#minus').val();
 		var bayar = $('#cash').val();
@@ -263,16 +264,12 @@ $this->load->view('template/js');
 	$('#retur').keyup(function(){		
 		var rtr = $('#retur').val();
 		var tot_aftr_rtr = total_hide - rtr;
-		
-		// if(!rtr || rtr <= 0 ){
-			// $('#total').text($('total_hide').val());
-		// }else{
-			// $('#total').text(tot_aftr_rtr);
-		// }
+		var min_aftr_rtr = cash_minus - rtr;
 		console.log(total_hide);
 		console.log(rtr);
 		console.log(tot_aftr_rtr);
 		$('#total').text(tot_aftr_rtr);
+		$('#minus').val(min_aftr_rtr);
 	});
 	$('#proc-order').click(function(){
 		var invo_number = $('#no_nota').text();
@@ -331,6 +328,7 @@ $this->load->view('template/js');
 			var email = $('#ord_email').text(result['order']['order_email']);			
 			var total = $('#total').text(result['order']['order_amount']);
 			total_hide.push(result['order']['order_amount']);
+			cash_minus.push(result['order']['order_cash_minus']);
 			$('#order_id').val($('#list_order_id').val());
 			$( "tbody#order_detail_tbody" ).empty();
 			$table = $( "<tbody id=order_detail_tbody></tbody>" );

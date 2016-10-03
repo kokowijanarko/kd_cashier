@@ -53,7 +53,7 @@ $this->load->view('template/sidebar');
 					  <th>Harga</th>
 					  <th>Stok</th>
 					  <th class="hidden-480">Deskripsi</th>
-					  <th>Aksi</th>
+					  <th class="action">Aksi</th>
 					</tr>
                 </thead>
                 <tbody>
@@ -68,7 +68,7 @@ $this->load->view('template/sidebar');
 							echo '<td><div style="float:left">Rp</div><div class="auto" data-a-sep="." data-a-dec="," style="text-align:right">'.$value->inv_price.'</div></td>';
 							echo '<td>'.$value->inv_stock.'</td>';
 							echo '<td class="hidden-480">'.$value->inv_desc.'</td>';
-							echo '<td>
+							echo '<td class = "action">
 								<div class="btn-group">
 									<button type="button" class="btn btn-info btn-flat">Aksi</button>
 									<button type="button" class="btn btn-info btn-flat dropdown-toggle" data-toggle="dropdown">
@@ -111,6 +111,10 @@ $this->load->view('template/js');
 
 <script>
   jQuery(function($) {
+	  var level = <?php echo $this->session->userdata('level')?>;
+	  if(level == 3 || level == 4){
+			$('.action').addClass('hide');
+	  }
     $('#tbl-inventory').DataTable({
       "paging": true,
       "lengthChange": false,
