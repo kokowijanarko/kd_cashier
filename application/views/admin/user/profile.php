@@ -61,10 +61,16 @@ $this->load->view('template/sidebar');
 							<label>Password Lama</label>
 							<input type="password" name="user_password_old" id="user_password_old" class="form-control" placeholder="Password Lama">
 						</div>
+						<?php
+							$hide_foto = '';
+							if(empty($detail->user_photo_name) || is_null($detail->user_photo_name)){
+								$hide_foto = 'hide';
+							}
+						?>
 						<div class="form-group">
 							<label>Foto</label>
 							<input type="file" name="photo" id="photo">							
-							<label><img height="100px" src="<?php echo base_url('assets/user_img/'. $detail->user_photo_name)?>"></label>
+							<label class="<?php echo $hide_foto ?>" ><img height="100px" src="<?php echo base_url('assets/user_img/'. $detail->user_photo_name)?>"></label>
 						</div>
 						
 						<div class="box-footer">

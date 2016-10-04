@@ -207,7 +207,7 @@ class User extends CI_Controller {
 	}
 	
 	public function profile($id){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2 || $this->session->userdata('level') == 3){
+		if(!empty($this->session->userdata('level'))){
 			$data['level'] = $this->user_model->getUserLevel();	
 			$data['detail'] = $this->user_model->getDetailUser($id);
 			// var_dump($data);die;

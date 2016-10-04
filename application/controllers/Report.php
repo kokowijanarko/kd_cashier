@@ -29,7 +29,7 @@ class Report extends CI_Controller {
 	
 	
 	public function daily_list(){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2 || $this->session->userdata('level') == 3){
+		if(!empty($this->session->userdata('level'))){
 			$filter = array(
 				'user'=>'all'
 			);
@@ -66,9 +66,6 @@ class Report extends CI_Controller {
 		exit;
 	}
 	public function print_report(){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2 || $this->session->userdata('level') == 3){
-			//var_dump($_GET);die;
-			
 			if(!empty($_GET)){
 				if($_GET['date'] == '01-01-1970' || $_GET['date'] == '' || $_GET['date'] == 'all'){
 					$date = 'all';
@@ -199,10 +196,5 @@ class Report extends CI_Controller {
 			$mPDF->WriteHTML($html_body);
 			$mPDF->Output($title . '.pdf', 'D');
 			exit;
-			
-			
-		}else{
-			redirect(site_url(''));
-		}
 	}	
 }
