@@ -29,7 +29,7 @@
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
-            <li class="header">MAIN NAVIGATION</li>
+            <li class="header">MAIN MENU</li>
             <li id="menu_dashboard" class="treeview">
                 <a href="<?php  echo site_url('dashboard1')?>">
                     <i class="fa fa-dashboard"></i> 
@@ -62,7 +62,7 @@
                     <li id="child_menu_report_laporan_harian"><a href="<?php echo site_url('report/daily_list') ?>"><i class="fa fa-circle-o"></i>Laporan Harian</a></li>
                 </ul>
             </li>
-			<li id="menu_user" class="treeview">
+			<li id="menu_user" class="treeview hide">
                 <a href="<?php echo site_url('#')?>">
 					<i class="fa fa-files-o"></i> <span>Pengguna</span><i class="fa fa-angle-left pull-right"></i>
                 </a>       
