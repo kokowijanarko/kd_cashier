@@ -58,7 +58,7 @@ class Cashier extends CI_Controller {
 	public function add_order(){
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
 			$post = $_POST;		
-			var_dump($post);die;
+			// var_dump($post);die;
 			$param_order = array(
 				'order_code' => $post['no_nota'],
 				'order_custommer_name' => $post['nama'],

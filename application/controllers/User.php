@@ -165,19 +165,31 @@ class User extends CI_Controller {
 				
 				$result = $this->user_model->updateUser($param, $id);
 			}
-			if($result && $_FILES['photo']['error'] != 4 && $_FILES['photo']['type'] == 'image/jpeg'){
+			var_dump($_FILES);
+			if($result && $_FILES['photo']['error'] != 4){
 				unlink('assets/user_img/'. $foto_name);
-				$result = $result && $this->foto_upload->process_image($_FILES['photo']['tmp_name'], $foto_name);	
+				
+				// $result = $result && $this->foto_upload->process_image($_FILES['photo']['tmp_name'], $foto_name);	
+				$upload = $this->do_upload($foto_name);	
+				
+				if($upload != ''){
+					$msg = '
+						<div class="alert alert-danger alert-dismissible disabled">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+							<h4><i class="icon fa fa-check"></i> '. $upload .' !</h4>
+						</div>
+					';
+				}
 			}
 			if($result && !isset($msg)){
-				$msg = '
+				$msg .= '
 					<div class="alert alert-success alert-dismissible disabled">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 						<h4><i class="icon fa fa-check"></i>Ubah Profil berhasil !</h4>
 					</div>
 					';
 			}elseif(!isset($msg)){
-				$msg = '
+				$msg .= '
 					<div class="alert alert-danger alert-dismissible disabled">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 						<h4><i class="icon fa fa-check"></i>Ubah Profil Gagal !</h4>
@@ -217,7 +229,18 @@ class User extends CI_Controller {
 			redirect(site_url(''));
 		}	
 	}
-	
+	private function do_upload($name)
+        {
+                $config['upload_path']          = 'assets/user_img/';
+                $config['allowed_types']        = 'gif|jpg|png|JPG|PNG|jpeg|JPEG';
+                $config['max_size']             = 10000;
+                $config['file_name']            = $name;
+                $this->load->library('upload', $config);
+				$this->upload->do_upload('photo');				
+				var_dump($this->upload->display_errors('<p>', '</p>'));
+                return $this->upload->display_errors('<p>', '</p>');
+        }
+		
 	private function getMessage($idx){
 		if($idx == 'Em1'){
 			return '

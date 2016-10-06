@@ -363,8 +363,6 @@ $this->load->view('template/js');
 					};
 				
 				console.log(params);
-				$('#proc-order').addClass('hide');
-				$('#proc-print').removeClass('hide');
 				var url = '<?php echo site_url('cashier/add_order')?>';
 				$.ajax({
 					url: url,

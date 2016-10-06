@@ -135,7 +135,7 @@
 <script>	
 
 	jQuery(function($) {
-		window.print();
+		// window.print('<section>');
 		var invoice_number = '<?php echo $inv->order_code?>';
 		console.log(invoice_number);
 		$.ajax({
