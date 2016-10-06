@@ -44,7 +44,7 @@ $this->load->view('template/sidebar');
 						</div>
 						<div class="form-group">
 							<label>Username</label>
-							<input type="text" value="<?php echo $detail->user_username?>" name="user_username" id="user_username" class="form-control" placeholder="Level">
+							<input type="text" value="<?php echo $detail->user_username?>" name="user_username" id="user_username" class="form-control" placeholder="Username">
 						</div>
 						<div class="form-group">
 							<label>Email</label>

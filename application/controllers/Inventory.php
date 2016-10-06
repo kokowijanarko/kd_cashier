@@ -22,7 +22,6 @@ class Inventory extends CI_Controller {
 				$data['message'] = $this->getMessage($_GET['msg']);
 			}
 			$data['list'] = $this->Inventory_model->getinventory();
-			//var_dump($data);die;
 			$this->load->view('admin/inventory/list', $data);
 		}else{
 			redirect(site_url(''));
@@ -33,7 +32,6 @@ class Inventory extends CI_Controller {
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
 			$data['type'] = $this->Inventory_model->getinventoryType();
 			$data['category'] = $this->Inventory_model->getinventoryCategory();
-			//var_dump($data);die;
 			$this->load->view('admin/inventory/add', $data);
 		}else{
 			redirect(site_url(''));
@@ -65,7 +63,6 @@ class Inventory extends CI_Controller {
 				'inv_stock' => $_POST['stok'],
 				'inv_desc' => $_POST['deskripsi']
 			);
-			//var_dump($param_inv);die;
 			$result = $this->Inventory_model->insertInventory($param_inv);
 			
 			if($result == true){

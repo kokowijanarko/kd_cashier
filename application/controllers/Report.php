@@ -33,7 +33,6 @@ class Report extends CI_Controller {
 			$filter = array(
 				'user'=>'all'
 			);
-			// var_dump($_POST);
 			if(!empty($_POST)){
 				if($_POST['date'] == '1970-01-01' || $_POST['date'] == ''){
 					$date = 'all';
