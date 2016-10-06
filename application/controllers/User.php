@@ -58,7 +58,7 @@ class User extends CI_Controller {
 			if(!empty($_POST)){
 				$this->db->trans_start();
 				$password = md5($_POST['username']);	
-				$foto_name = $_POST['full_name'].'-'.$_POST['level'].'.jpeg';
+				$foto_name = str_replace(' ', '_', $_POST['full_name']).'-'.$_POST['level'].'.jpeg';
 				$param = array(
 					'user_full_name'=>$_POST['full_name'],
 					'user_username'=>$_POST['username'],
@@ -89,7 +89,7 @@ class User extends CI_Controller {
 	
 	public function doEdit(){
 			$this->db->trans_start();
-			$foto_name = $_POST['user_full_name'].'-'.$_POST['level'].'.jpeg';
+			$foto_name = str_replace(' ', '_', $_POST['user_full_name']).'-'.$_POST['level'].'.jpeg';
 			$param = array(
 				'user_full_name'=>$_POST['user_full_name'],
 				'user_username'=>$_POST['user_username'],
@@ -101,8 +101,8 @@ class User extends CI_Controller {
 			$id=$_POST['id'];
 			$result = $this->user_model->updateUser($param, $id);
 			if($result && $_FILES['photo']['error'] != 4){
-				unlink('assets/user_img/'. $foto_name);	
-				$upload = $this->do_upload($foto_name);				
+				$upload = $this->do_upload($foto_name);		
+				// var_dump($upload);die;
 			}
 			$this->db->trans_complete($result);
 			if($result == true){
@@ -118,8 +118,8 @@ class User extends CI_Controller {
 			$this->db->trans_start();
 			$id=$_POST['id'];
 			$detail = $this->user_model->getDetailUser($id);			
-			$foto_name = $_POST['user_full_name'].'-'.$this->session->userdata('level').'.jpeg';
-			
+			$foto_name = str_replace(' ', '_', $_POST['user_full_name']).'-'.$this->session->userdata('level').'.jpeg';
+			// var_dump($foto_name);die;
 			$param = array();
 			if($_POST['user_password'] != ''){
 				$old_password = md5($_POST['user_password_old']);
@@ -167,11 +167,11 @@ class User extends CI_Controller {
 			}
 			var_dump($_FILES);
 			if($result && $_FILES['photo']['error'] != 4){
-				unlink('assets/user_img/'. $foto_name);
-				
-				// $result = $result && $this->foto_upload->process_image($_FILES['photo']['tmp_name'], $foto_name);	
+				unlink('assets/user_img/'. $foto_name);	
 				$upload = $this->do_upload($foto_name);	
 				
+				$this->session->set_userdata("photo", $foto_name);
+				//var_dump($this->session->userdata());die;
 				if($upload != ''){
 					$msg = '
 						<div class="alert alert-danger alert-dismissible disabled">
@@ -231,10 +231,11 @@ class User extends CI_Controller {
 	}
 	private function do_upload($name)
         {
-                $config['upload_path']          = 'assets/user_img/';
-                $config['allowed_types']        = 'gif|jpg|png|JPG|PNG|jpeg|JPEG';
-                $config['max_size']             = 10000;
-                $config['file_name']            = $name;
+                $config['upload_path']      = 'assets/user_img/';
+                $config['allowed_types']    = 'gif|jpg|png|JPG|PNG|jpeg|JPEG';
+                $config['max_size']         = 10000;
+				$config['overwrite'] 		= TRUE;
+                $config['file_name']        = $name;
                 $this->load->library('upload', $config);
 				$this->upload->do_upload('photo');				
 				var_dump($this->upload->display_errors('<p>', '</p>'));
