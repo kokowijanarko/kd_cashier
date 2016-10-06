@@ -100,9 +100,9 @@ class User extends CI_Controller {
 			);
 			$id=$_POST['id'];
 			$result = $this->user_model->updateUser($param, $id);
-			if($result && $_FILES['photo']['error'] != 4 && $_FILES['photo']['type'] == 'image/jpeg'){
-				unlink('assets/user_img/'. $foto_name);
-				$result = $result && $this->foto_upload->process_image($_FILES['photo']['tmp_name'], $foto_name);	
+			if($result && $_FILES['photo']['error'] != 4){
+				unlink('assets/user_img/'. $foto_name);	
+				$upload = $this->do_upload($foto_name);				
 			}
 			$this->db->trans_complete($result);
 			if($result == true){
