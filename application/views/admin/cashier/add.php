@@ -196,7 +196,7 @@ $this->load->view('template/sidebar');
 											<input type="radio" name="payment_way" id="payment_transfer" value="1"><label for="payment_transfer">Transfer</label>
 										</div>
 										<div>
-											<input type="radio" name="payment_way" id="payment_debit" value="3"><label for="payment_debit">Debit</label>
+											<input type="radio" name="payment_way" id="payment_debit" value="2"><label for="payment_debit">Debit</label>
 										</div>
 									</td>	
 								</tr>								
