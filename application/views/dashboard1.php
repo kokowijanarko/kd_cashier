@@ -24,7 +24,7 @@ $this->load->view('template/sidebar');
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Selamat Datang di Sistem Informasi Kasir dan Laporan Periodik
+        Selamat Datang di Point Of Sale
         <small>Kedai Digital</small>
     </h1>
     <ol class="breadcrumb">
